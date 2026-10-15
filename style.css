@@ -176,12 +176,120 @@ body {
 }
 .footer a { color: var(--blue); }
 
+/* ===== Homepage: "now available" box ===== */
+.cta-box {
+  margin: 0 auto 36px;
+  max-width: 560px;
+  padding: 20px;
+  border: 2px solid var(--green);
+  border-radius: 20px;
+}
+.cta-title {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--navy);
+}
+.cta-text { margin: 0 0 14px; font-size: 17px; }
+.section-label {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+/* ===== Worksheet pages ===== */
+.topbar {
+  padding: 12px 20px;
+  border-bottom: 1px solid #E6EAF2;
+}
+.topbar-logo {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+}
+.page-wide { max-width: 1080px; text-align: left; padding-top: 20px; }
+.crumbs { font-size: 15px; color: #5B6478; margin-bottom: 8px; }
+.crumbs a { color: var(--blue); }
+.page-title {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--navy);
+}
+.page-intro { margin: 0 0 6px; font-size: 18px; max-width: 680px; }
+.facts { margin: 0 0 24px; font-size: 15px; color: #5B6478; }
+
+.btn-download {
+  background: var(--green);
+  text-align: center;
+}
+
+.pack {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: #EAF6EE;
+}
+.pack-title { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); }
+.pack-text { margin: 0; font-size: 16px; }
+
+.sheet-grid {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;          /* one per row on phones */
+  gap: 18px;
+}
+.sheet-card {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  border: 1px solid #E6EAF2;
+  border-radius: 20px;
+  background: #FFFFFF;
+}
+.sheet-card img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #E6EAF2;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.sheet-code { font-size: 14px; color: #5B6478; }
+.sheet-title { margin: 0; font-size: 22px; font-weight: 800; color: var(--navy); }
+.sheet-text { margin: 2px 0 12px; font-size: 16px; flex-grow: 1; }
+
+.tips {
+  margin-bottom: 28px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: var(--soft);
+}
+.tips-title { margin: 0 0 6px; font-size: 20px; font-weight: 800; color: var(--navy); }
+.tips-list { margin: 0; padding-left: 20px; font-size: 17px; }
+.whatsapp { background: #1E8E4E; }
+
 /* ===== Bigger screens (tablets and laptops) ===== */
 @media (min-width: 700px) {
   .page { padding-top: 72px; }
+  .page-wide { padding-top: 32px; }
   .logo { font-size: 96px; }
   .tagline { font-size: 26px; }
   .headline { font-size: 40px; }
   .intro { font-size: 20px; }
   .cards { grid-template-columns: repeat(3, 1fr); }  /* three side by side */
+  .page-title { font-size: 42px; }
+  .sheet-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 960px) {
+  .sheet-grid { grid-template-columns: repeat(3, 1fr); }
 }
