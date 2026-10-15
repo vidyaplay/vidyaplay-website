@@ -1,0 +1,187 @@
+/* ===== Brand colours (change them here once, used everywhere) ===== */
+:root {
+  --blue: #1E5BB8;
+  --navy: #13234A;
+  --pink: #E8456B;
+  --orange: #F39A1E;
+  --green: #2E9E4F;
+  --purple: #7B4CC9;
+  --text: #2C3550;
+  --soft: #F4F7FC;
+}
+
+/* ===== Basics ===== */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Baloo 2", system-ui, sans-serif;
+  color: var(--text);
+  background: #FFFFFF;
+  line-height: 1.5;
+}
+
+/* ===== Page layout: phone first ===== */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 20px 32px;
+  text-align: center;
+}
+
+/* ===== Logo ===== */
+.logo {
+  margin: 0;
+  font-size: 56px;          /* phone size */
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+.i-with-sprout {
+  position: relative;
+  display: inline-block;
+}
+.sprout {
+  position: absolute;
+  width: 0.44em;
+  height: 0.44em;
+  left: 50%;
+  bottom: 0.53em;
+  transform: translateX(-50%);
+}
+
+/* Colour helpers */
+.blue   { color: var(--blue); }
+.pink   { color: var(--pink); }
+.orange { color: var(--orange); }
+.green  { color: var(--green); }
+.purple { color: var(--purple); }
+.pink-bg   { background: var(--pink); }
+.blue-bg   { background: var(--blue); }
+.orange-bg { background: var(--orange); }
+.green-bg  { background: var(--green); }
+
+/* ===== Tagline: Learn • Play • Grow ===== */
+.tagline {
+  margin: 4px 0 24px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 0 8px;
+  vertical-align: middle;
+}
+
+/* ===== "Coming soon" badge ===== */
+.badge {
+  display: inline-block;
+  margin: 0 0 16px;
+  padding: 4px 16px;
+  border-radius: 999px;
+  background: #FFF4E0;
+  color: #8A4B00;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* ===== Headline and intro ===== */
+.headline {
+  margin: 0 0 8px;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.2;
+}
+.intro {
+  margin: 0 auto 32px;
+  max-width: 520px;
+  font-size: 18px;
+}
+
+/* ===== Cards: stacked on phones ===== */
+.cards {
+  list-style: none;
+  margin: 0 0 36px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;   /* one column on phones */
+  gap: 14px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px;
+  border-radius: 20px;
+  background: var(--soft);
+}
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 8px;
+  border-radius: 16px;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 22px;
+}
+.card-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.card-text {
+  font-size: 16px;
+}
+
+/* ===== Follow buttons ===== */
+.follow-text {
+  margin: 0 0 12px;
+  font-size: 17px;
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.button {
+  display: inline-block;
+  min-width: 150px;
+  padding: 12px 24px;         /* tall enough for a thumb (about 48px) */
+  border-radius: 14px;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+}
+.button:hover { opacity: 0.9; }
+.youtube   { background: #C4302B; }
+.instagram { background: var(--purple); }
+
+/* ===== Footer ===== */
+.footer {
+  padding: 20px;
+  text-align: center;
+  font-size: 15px;
+  color: #5B6478;
+  border-top: 1px solid #E6EAF2;
+}
+.footer a { color: var(--blue); }
+
+/* ===== Bigger screens (tablets and laptops) ===== */
+@media (min-width: 700px) {
+  .page { padding-top: 72px; }
+  .logo { font-size: 96px; }
+  .tagline { font-size: 26px; }
+  .headline { font-size: 40px; }
+  .intro { font-size: 20px; }
+  .cards { grid-template-columns: repeat(3, 1fr); }  /* three side by side */
+}
