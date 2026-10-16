@@ -198,13 +198,62 @@ body {
   color: var(--navy);
 }
 
-/* ===== Worksheet pages ===== */
-.topbar {
-  padding: 12px 20px;
+/* ===== Site header: logo left, menu right (same on every page) ===== */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 6px 10px 6px 16px;
   border-bottom: 1px solid #E6EAF2;
+  background: #FFFFFF;
 }
+.site-nav {
+  display: flex;
+  gap: 2px;
+}
+.site-nav a {
+  padding: 10px 8px;            /* big enough to tap with a thumb */
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--navy);
+  text-decoration: none;
+}
+.site-nav a:hover { background: var(--soft); }
+.site-nav a[aria-current="page"] {   /* the page you are on */
+  background: #E8EFFA;
+  color: var(--blue);
+}
+
+/* ===== Footer links ===== */
+.footer-links { margin: 0 0 6px; }
+.footer-links a { margin: 0 8px; }
+
+/* ===== Simple text pages (About, Privacy, 404) ===== */
+.text-page { max-width: 720px; }
+.text-page h2 {
+  margin: 28px 0 6px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--navy);
+}
+.text-page p, .text-page li { font-size: 18px; }
+.text-page a { color: var(--blue); }
+.text-page .buttons { justify-content: flex-start; margin-top: 12px; }
+.text-page .button { color: #FFFFFF; }
+.btn-blue { background: var(--blue); }
+.text-page .oops {
+  margin: 8px 0 0;
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--orange);
+}
+
+/* ===== Worksheet pages ===== */
 .topbar-logo {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.5px;
   text-decoration: none;
@@ -288,8 +337,18 @@ body {
   .intro { font-size: 20px; }
   .cards { grid-template-columns: repeat(3, 1fr); }  /* three side by side */
   .page-title { font-size: 42px; }
+  .site-header { padding: 8px 24px; }
+  .site-nav { gap: 8px; }
+  .site-nav a { padding: 10px 14px; font-size: 18px; }
+  .topbar-logo { font-size: 30px; }
   .sheet-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 960px) {
   .sheet-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ===== Very small phones (320px wide) ===== */
+@media (max-width: 340px) {
+  .topbar-logo { font-size: 23px; }
+  .site-nav a { padding: 10px 6px; }
 }
