@@ -352,3 +352,29 @@ body {
   .topbar-logo { font-size: 23px; }
   .site-nav a { padding: 10px 6px; }
 }
+
+/* ===== A to Z letter strip (LKG English) ===== */
+.alpha-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 24px;
+}
+.alpha-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--blue);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 20px;
+  text-decoration: none;
+}
+.alpha-soon {                       /* letters not ready yet: not a link */
+  background: var(--soft);
+  color: #9AA3B2;
+}
+.letter-section { scroll-margin-top: 16px; }
