@@ -246,8 +246,8 @@
     // ===== One flower with a letter =====
     function drawLetter(g, letter) {
       if (letter === "a") {                       // children's ball-and-stick a
-        el("circle", { cx: -3, cy: 4, r: 7.5, fill: "none", "stroke-width": 4.2, "class": "ink-line" }, g);
-        el("line", { x1: 4.5, y1: -4, x2: 4.5, y2: 12, "stroke-width": 4.2, "stroke-linecap": "round", "class": "ink-line" }, g);
+        el("circle", { cx: 0, cy: 1, r: 7.5, fill: "none", "stroke-width": 4.2, "class": "ink-line" }, g);   // centred in the flower
+        el("line", { x1: 7.5, y1: -6.5, x2: 7.5, y2: 8.5, "stroke-width": 4.2, "stroke-linecap": "round", "class": "ink-line" }, g);
       } else {
         var big = letter === letter.toUpperCase();
         var t = el("text", { x: 0, y: big ? 10 : 9, "text-anchor": "middle",
