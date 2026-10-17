@@ -393,3 +393,32 @@ body {
   .topbar-logo { font-size: 20px; }
   .site-nav a { padding: 10px 5px; font-size: 14px; }
 }
+
+/* ===== Homepage: trust line and "Start here" cards ===== */
+.trust { margin: -18px auto 28px; font-size: 16px; font-weight: 700; color: var(--green); }
+.start-cards {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.start-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 20px 16px;
+  border: 2px solid #E6EAF2;
+  border-radius: 20px;
+  background: #FFFFFF;
+  color: var(--text);
+  text-decoration: none;
+}
+.start-card:hover, .start-card:focus-visible { border-color: var(--blue); }
+.start-go { margin-top: 10px; font-weight: 800; color: var(--blue); }
+.coming-next { margin: 0 0 36px; font-size: 15px; color: #5B6478; }
+@media (min-width: 700px) {
+  .start-cards { grid-template-columns: repeat(3, 1fr); }
+}
