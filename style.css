@@ -378,3 +378,18 @@ body {
   color: #9AA3B2;
 }
 .letter-section { scroll-margin-top: 16px; }
+
+/* ===== Play (online games) ===== */
+.play-btn { background: var(--orange); text-align: center; margin-top: 8px; }
+
+/* ===== Phones: fit 4 menu links ===== */
+@media (max-width: 420px) {
+  .site-header { padding: 6px 6px 6px 12px; }
+  .topbar-logo { font-size: 22px; }
+  .site-nav { gap: 0; }
+  .site-nav a { padding: 10px 6px; font-size: 15px; }
+}
+@media (max-width: 340px) {
+  .topbar-logo { font-size: 20px; }
+  .site-nav a { padding: 10px 5px; font-size: 14px; }
+}

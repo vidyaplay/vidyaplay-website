@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apple Tree Hunt: Find the Letter A Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online letter A game for LKG kids: tap every apple with big A or small a. Works on phones, no sign-up. Print the matching worksheet too.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="canonical" href="https://vidyaplay.in/play/apple-tree-hunt/">
+
+  <style>
+    /* ===== Game: Apple Tree Hunt (only used on this page) ===== */
+    .game-card {
+      position: relative;
+      max-width: 520px;
+      margin: 0 auto 20px;
+      padding: 14px 12px 16px;
+      border-radius: 24px;
+      background: #EEF7EF;
+      text-align: center;
+    }
+    .game-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 4px 6px;
+    }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn {
+      flex: none;
+      width: 48px; height: 48px;
+      border: 0; border-radius: 14px;
+      background: #FFFFFF;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .tree { display: block; width: 100%; height: auto; touch-action: manipulation; }
+    .apple { cursor: pointer; outline: none; }
+    .apple .shape {
+      transform-box: fill-box; transform-origin: center;
+      transition: fill 0.2s;
+    }
+    .apple:focus-visible .ring { stroke: var(--blue); stroke-width: 5; }
+    .apple .body { fill: #FFFFFF; stroke: #2C3550; stroke-width: 3; }
+    .apple .ink { fill: var(--navy); }
+    .apple .ink-line { stroke: var(--navy); }
+    .apple.found .body { fill: #E53935; stroke: #9E1C1A; }
+    .apple.found .ink { fill: #FFFFFF; }
+    .apple.found .ink-line { stroke: #FFFFFF; }
+    .apple.found .shape { animation: pop 0.35s ease-out; }
+    .apple.nope .shape { animation: wiggle 0.45s ease-in-out; }
+    @keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.25); } 100% { transform: scale(1); } }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0); }
+      20% { transform: rotate(-12deg); } 40% { transform: rotate(10deg); }
+      60% { transform: rotate(-7deg); } 80% { transform: rotate(4deg); }
+    }
+
+    .score {
+      display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+      gap: 6px 10px; margin-top: 4px;
+    }
+    .basket { display: flex; gap: 4px; }
+    .basket span {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2.5px dashed #9AA3B2; background: #FFFFFF;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .basket span.on { background: #E53935; border: 2.5px solid #9E1C1A; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+    .win {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+      padding: 20px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.93);
+    }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 34px; font-weight: 800; line-height: 1.1; color: var(--green); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-apples { font-size: 40px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-apples { animation: bounce 0.9s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note {
+      margin: 0 auto 28px; max-width: 520px;
+      padding: 14px 18px; border-radius: 18px;
+      background: var(--soft); font-size: 16px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .apple .shape, .win-apples { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../index.html" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <a href="../../nursery/pre-writing/index.html">Nursery</a>
+      <a href="../../lkg/english/index.html">LKG</a>
+      <a href="../../play/index.html" aria-current="page">Play</a>
+      <a href="../../about/index.html">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a> › <a href="../index.html">Play</a> › <span>Apple Tree Hunt</span>
+    </nav>
+
+    <h1 class="page-title">Apple Tree Hunt</h1>
+    <p class="facts">LKG English · Letter A · Ages 3.5 to 5</p>
+
+    <section class="game-card" aria-label="Apple Tree Hunt game">
+      <div class="game-top">
+        <p class="game-ask">Tap every <span class="pink">A</span> and <span class="pink">a</span> apple</p>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+      </div>
+
+      <svg class="tree" id="tree" viewBox="0 0 400 450" role="group" aria-label="Apple tree with 14 apples">
+        <!-- trunk -->
+        <path d="M178 330 C182 370 176 405 160 440 L240 440 C224 405 218 370 222 330 Z" fill="#A86B3C" stroke="#6E4322" stroke-width="3"/>
+        <!-- leafy crown made of overlapping circles -->
+        <g fill="#7CC37F" stroke="#3F8F45" stroke-width="3">
+          <circle cx="200" cy="70" r="70"/>
+          <circle cx="110" cy="110" r="70"/>
+          <circle cx="290" cy="110" r="70"/>
+          <circle cx="62" cy="200" r="58"/>
+          <circle cx="338" cy="200" r="58"/>
+          <circle cx="95" cy="280" r="62"/>
+          <circle cx="305" cy="280" r="62"/>
+          <circle cx="200" cy="300" r="66"/>
+        </g>
+        <!-- hide the inner circle lines so the crown reads as one shape -->
+        <g fill="#7CC37F">
+          <circle cx="200" cy="70" r="67"/>
+          <circle cx="110" cy="110" r="67"/>
+          <circle cx="290" cy="110" r="67"/>
+          <circle cx="62" cy="200" r="55"/>
+          <circle cx="338" cy="200" r="55"/>
+          <circle cx="95" cy="280" r="59"/>
+          <circle cx="305" cy="280" r="59"/>
+          <circle cx="200" cy="300" r="63"/>
+          <ellipse cx="200" cy="195" rx="150" ry="125"/>
+        </g>
+        <g id="apples"></g>
+      </svg>
+
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 7 found</p>
+      </div>
+
+      <div class="win" id="win" hidden>
+        <div class="win-apples" aria-hidden="true">🍎🍎🍎</div>
+        <p class="win-big">You found them all!</p>
+        <p class="win-text">7 apples with A and a. Well done!</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-A3_Apple_Tree_Hunt.pdf" download>Print the worksheet (PDF)</a>
+        <a class="button btn-blue" href="../index.html">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say "a" as in apple
+      each time your child finds one. Then print the worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/index.html">About</a> <a href="../../privacy/index.html">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // ===== Settings: change these to make the same game for another letter =====
+    var TARGETS = ["A", "A", "A", "a", "a", "a", "a"];        // 3 big A + 4 small a
+    var OTHERS  = ["o", "e", "c", "m", "s"];                  // letters that are not A
+    var ROWS    = [[120, 200, 280], [80, 160, 240, 320], [80, 160, 240, 320], [120, 200, 280]];
+    var ROW_Y   = [92, 168, 244, 320];
+
+    var NS = "http://www.w3.org/2000/svg";
+    var applesBox = document.getElementById("apples");
+    var basket = document.getElementById("basket");
+    var scoreText = document.getElementById("score");
+    var win = document.getElementById("win");
+    var soundBtn = document.getElementById("sound");
+    var found = 0;
+    var soundOn = true;
+
+    function el(name, attrs, parent) {
+      var e = document.createElementNS(NS, name);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+
+    // ===== Pop sound, made in the browser (no sound files to download) =====
+    var audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start;
+      var osc = audio.createOscillator();
+      var gain = audio.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination);
+      osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound on this device: the game still works */ }
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn;
+      soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn);
+      soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+    });
+
+    // ===== Draw one apple with a letter =====
+    function drawLetter(g, letter) {
+      if (letter === "a") {                       // children's ball-and-stick a
+        el("circle", { cx: -3, cy: 4, r: 8, fill: "none", "stroke-width": 4.5, "class": "ink-line" }, g);
+        el("line", { x1: 5, y1: -5, x2: 5, y2: 13, "stroke-width": 4.5, "stroke-linecap": "round", "class": "ink-line" }, g);
+      } else {
+        var t = el("text", { x: 0, y: letter === letter.toUpperCase() ? 11 : 10, "text-anchor": "middle",
+          "font-family": "'Baloo 2', system-ui, sans-serif", "font-weight": 800,
+          "font-size": letter === letter.toUpperCase() ? 32 : 34, "class": "ink" }, g);
+        t.textContent = letter;
+      }
+    }
+    function makeApple(x, y, letter) {
+      var spot = el("g", { transform: "translate(" + x + " " + y + ")" }, applesBox);
+      var a = el("g", { "class": "apple", tabindex: 0, role: "button",
+        "aria-label": "Apple with letter " + (letter === "A" ? "big A" : letter === "a" ? "small a" : letter) }, spot);
+      var shape = el("g", { "class": "shape" }, a);
+      el("path", { d: "M0 -20 Q 2 -30 7 -36", fill: "none", stroke: "#6E4322", "stroke-width": 4, "stroke-linecap": "round" }, shape);
+      el("ellipse", { cx: 15, cy: -32, rx: 10, ry: 5, transform: "rotate(-25 15 -32)", fill: "#4CAF50", stroke: "#2E7D32", "stroke-width": 2 }, shape);
+      el("path", { "class": "body ring",
+        d: "M0 -20 C -10 -31 -35 -29 -35 -3 C -35 22 -16 35 0 29 C 16 35 35 22 35 -3 C 35 -29 10 -31 0 -20 Z" }, shape);
+      drawLetter(shape, letter);
+      a.dataset.letter = letter;
+      function tap() {
+        if (a.classList.contains("found")) return;
+        if (letter === "A" || letter === "a") {
+          a.classList.add("found");
+          a.setAttribute("aria-label", a.getAttribute("aria-label") + ", found");
+          found++;
+          play("pop");
+          update();
+        } else {
+          a.classList.remove("nope");
+          void a.getBoundingClientRect();         // restart the wiggle
+          a.classList.add("nope");
+        }
+      }
+      a.addEventListener("click", tap);
+      a.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tap(); }
+      });
+    }
+
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < found ? "on" : "";
+      scoreText.textContent = found + " of " + TARGETS.length + " found";
+      if (found === TARGETS.length) {
+        setTimeout(function () { play("win"); win.hidden = false; document.getElementById("again").focus(); }, 450);
+      }
+    }
+
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = list[i]; list[i] = list[j]; list[j] = t;
+      }
+      return list;
+    }
+
+    // ===== New round: same tree, letters in new places =====
+    function newRound(first) {
+      var slots = 0;
+      ROWS.forEach(function (r) { slots += r.length; });
+      var letters = TARGETS.slice();
+      while (letters.length < slots) letters.push(OTHERS[(letters.length) % OTHERS.length]);
+      // the first round matches the printed worksheet; later rounds are mixed
+      letters = first ? ["A","o","a","e","a","s","A","m","A","c","a","o","e","a"] : shuffle(letters);
+      applesBox.innerHTML = "";
+      var n = 0;
+      ROWS.forEach(function (row, r) {
+        row.forEach(function (x) { makeApple(x, ROW_Y[r], letters[n++]); });
+      });
+      basket.innerHTML = "";
+      TARGETS.forEach(function () { basket.appendChild(document.createElement("span")); });
+      found = 0;
+      win.hidden = true;
+      update();
+    }
+
+    document.getElementById("again").addEventListener("click", function () { newRound(false); });
+    newRound(true);
+  })();
+  </script>
+</body>
+</html>
