@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colour the Caterpillar: Find the Letter C Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online letter C game for LKG kids: tap every caterpillar circle with big C or small c. Works on phones, no sign-up. Print the matching worksheet too.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="canonical" href="https://vidyaplay.in/play/colour-the-caterpillar/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Colour the Caterpillar: Find the Letter C Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online letter C game for LKG kids: tap every caterpillar circle with big C or small c. Works on phones, no sign-up. Print the matching worksheet too.">
+  <meta property="og:url" content="https://vidyaplay.in/play/colour-the-caterpillar/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Colour the Caterpillar (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px;
+      border-radius: 24px; background: #EEF7E6; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
+    .seg { cursor: pointer; outline: none; }
+    .seg .shape { transform-box: fill-box; transform-origin: center; }
+    .seg .ball { fill: #FFFFFF; stroke: #2C3550; stroke-width: 3; transition: fill 0.2s; }
+    .seg:focus-visible .ball { stroke: var(--blue); stroke-width: 5; }
+    .seg .ink { fill: var(--navy); }
+    .seg .ink-line { stroke: var(--navy); }
+    .seg.found .ball { fill: #7CC37F; stroke: #1B5E20; }
+    .seg.found .shape { animation: pop 0.35s ease-out; }
+    .seg.nope .shape { animation: wiggle 0.45s ease-in-out; }
+    @keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-12deg); } 40% { transform: rotate(10deg); }
+      60% { transform: rotate(-7deg); } 80% { transform: rotate(4deg); } }
+    .head-bob { animation: bob 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center bottom; }
+    @keyframes bob { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-6deg); } }
+
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF;
+      transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #7CC37F; border: 2.5px solid #1B5E20; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+    .win { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; padding: 20px; border-radius: 24px; background: rgba(255, 255, 255, 0.93); }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 34px; font-weight: 800; line-height: 1.1; color: var(--green); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 40px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .seg .shape, .win-icons, .head-bob { animation: none !important; } }
+  </style>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../index.html" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <a href="../../nursery/pre-writing/index.html">Nursery</a>
+      <a href="../../lkg/english/index.html">LKG</a>
+      <a href="../../play/index.html" aria-current="page">Play</a>
+      <a href="../../about/index.html">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a> › <a href="../index.html">Play</a> › <span>Colour the Caterpillar</span>
+    </nav>
+
+    <h1 class="page-title">Colour the Caterpillar</h1>
+    <p class="facts">LKG English · Letter C · Ages 3.5 to 5</p>
+
+    <section class="game-card" aria-label="Colour the Caterpillar game">
+      <div class="game-top">
+        <p class="game-ask">Tap every <span class="green">C</span> and <span class="green">c</span> circle</p>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+      </div>
+
+      <svg class="meadow" id="meadow" viewBox="0 0 400 380" role="group" aria-label="Caterpillar with 14 circles">
+        <g id="body"></g>
+        <g id="segs"></g>
+      </svg>
+
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 7 found</p>
+      </div>
+
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🐛🍃🐛</div>
+        <p class="win-big">You found them all!</p>
+        <p class="win-text">7 circles with C and c. Your caterpillar is ready, well done!</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-C3_Colour_the_Caterpillar.pdf" download>Print the worksheet (PDF)</a>
+        <a class="button btn-blue" href="../index.html">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say "c" as in cat
+      each time your child finds one. Then print the worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/index.html">About</a> <a href="../../privacy/index.html">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // ===== Settings =====
+    var TARGET = { "C": true, "c": true };
+    var TARGETS = ["C", "C", "C", "c", "c", "c", "c"];        // 3 big C + 4 small c
+    var OTHERS  = ["o", "e", "a", "s", "n", "o", "e"];        // small look-alikes only, no capital G
+    var FIRST   = ["C","o","c","e","a","C","s","c","n","c","o","C","e","c"];   // matches the printed C3 sheet
+    // the caterpillar winds in 3 rows: left to right, right to left, left to right
+    var R = 28, STEP = 64;
+    var SPOTS = [];
+    [[100, 80, 1, 5], [356, 205, -1, 5], [100, 330, 1, 4]].forEach(function (row) {
+      for (var i = 0; i < row[3]; i++) SPOTS.push({ x: row[0] + row[2] * i * STEP, y: row[1] });
+    });
+    var HEAD = { x: 38, y: 80 };
+
+    var NS = "http://www.w3.org/2000/svg";
+    var segsBox = document.getElementById("segs");
+    var bodyBox = document.getElementById("body");
+    var basket = document.getElementById("basket");
+    var scoreText = document.getElementById("score");
+    var win = document.getElementById("win");
+    var soundBtn = document.getElementById("sound");
+    var found = 0;
+    var soundOn = true;
+
+    function el(name, attrs, parent) {
+      var e = document.createElementNS(NS, name);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+
+    // ===== Pop sound, made in the browser =====
+    var audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start;
+      var osc = audio.createOscillator();
+      var gain = audio.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination);
+      osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound on this device: the game still works */ }
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn;
+      soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn);
+      soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+    });
+
+    // ===== Caterpillar body, legs and head (drawn once) =====
+    var last = SPOTS[SPOTS.length - 1];
+    el("path", { d: "M" + HEAD.x + " 80 H356 C 404 80 404 205 356 205 H100 C 52 205 52 330 100 330 H" + last.x,
+      fill: "none", stroke: "#C5E1A5", "stroke-width": 30, "stroke-linecap": "round", "stroke-linejoin": "round" }, bodyBox);
+    SPOTS.forEach(function (p) {
+      [-11, 11].forEach(function (dx) {
+        el("line", { x1: p.x + dx, y1: p.y + R - 2, x2: p.x + dx * 1.25, y2: p.y + R + 10, stroke: "#2C3550",
+          "stroke-width": 3, "stroke-linecap": "round" }, bodyBox);
+      });
+    });
+    var head = el("g", { "class": "head-bob", "aria-hidden": "true" }, bodyBox);
+    el("path", { d: "M30 56 Q 22 30 12 26 M46 56 Q 52 30 62 26", fill: "none", stroke: "#2C3550", "stroke-width": 3, "stroke-linecap": "round" }, head);
+    el("circle", { cx: 12, cy: 26, r: 5, fill: "#EC407A" }, head);
+    el("circle", { cx: 62, cy: 26, r: 5, fill: "#EC407A" }, head);
+    el("circle", { cx: HEAD.x, cy: HEAD.y, r: 30, fill: "#7CC37F", stroke: "#1B5E20", "stroke-width": 3 }, head);
+    el("circle", { cx: 28, cy: 74, r: 5, fill: "#2C3550" }, head);
+    el("circle", { cx: 48, cy: 74, r: 5, fill: "#2C3550" }, head);
+    el("path", { d: "M27 90 Q 38 100 49 90", fill: "none", stroke: "#2C3550", "stroke-width": 3, "stroke-linecap": "round" }, head);
+
+    // ===== One body circle with a letter =====
+    function drawLetter(g, letter) {
+      if (letter === "a") {                       // children's ball-and-stick a
+        el("circle", { cx: -1, cy: 1, r: 9, fill: "none", "stroke-width": 4.8, "class": "ink-line" }, g);
+        el("line", { x1: 8, y1: -8, x2: 8, y2: 10, "stroke-width": 4.8, "stroke-linecap": "round", "class": "ink-line" }, g);
+      } else {
+        var big = letter === letter.toUpperCase();
+        var t = el("text", { x: 0, y: big ? 12 : 11, "text-anchor": "middle",
+          "font-family": "'Baloo 2', system-ui, sans-serif", "font-weight": 800,
+          "font-size": big ? 34 : 36, "class": "ink" }, g);
+        t.textContent = letter;
+      }
+    }
+    function makeSeg(p, letter) {
+      var spot = el("g", { transform: "translate(" + p.x + " " + p.y + ")" }, segsBox);
+      var f = el("g", { "class": "seg", tabindex: 0, role: "button",
+        "aria-label": "Circle with letter " + (letter === "C" ? "big C" : letter === "c" ? "small c" : letter) }, spot);
+      var shape = el("g", { "class": "shape" }, f);
+      el("circle", { "class": "ball", cx: 0, cy: 0, r: R }, shape);
+      drawLetter(shape, letter);
+      function tap() {
+        if (f.classList.contains("found")) return;
+        if (TARGET[letter]) {
+          f.classList.add("found");
+          f.setAttribute("aria-label", f.getAttribute("aria-label") + ", found");
+          found++;
+          play("pop");
+          update();
+        } else {
+          f.classList.remove("nope");
+          void f.getBoundingClientRect();         // restart the wiggle
+          f.classList.add("nope");
+        }
+      }
+      f.addEventListener("click", tap);
+      f.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tap(); }
+      });
+    }
+
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < found ? "on" : "";
+      scoreText.textContent = found + " of " + TARGETS.length + " found";
+      if (found === TARGETS.length) {
+        setTimeout(function () { play("win"); win.hidden = false; document.getElementById("again").focus(); }, 450);
+      }
+    }
+
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = list[i]; list[i] = list[j]; list[j] = t;
+      }
+      return list;
+    }
+    function sameNext(list) {                     // no two of the same letter side by side
+      for (var i = 1; i < list.length; i++) if (list[i] === list[i - 1]) return true;
+      return false;
+    }
+
+    // ===== New round: letters in new places =====
+    function newRound(first) {
+      var letters;
+      if (first) {
+        letters = FIRST.slice();
+      } else {
+        do { letters = shuffle(TARGETS.concat(OTHERS)); } while (sameNext(letters));
+      }
+      segsBox.innerHTML = "";
+      SPOTS.forEach(function (p, i) { makeSeg(p, letters[i]); });
+      basket.innerHTML = "";
+      TARGETS.forEach(function () { basket.appendChild(document.createElement("span")); });
+      found = 0;
+      win.hidden = true;
+      update();
+    }
+
+    document.getElementById("again").addEventListener("click", function () { newRound(false); });
+    newRound(true);
+  })();
+  </script>
+</body>
+</html>
