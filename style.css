@@ -422,3 +422,18 @@ body {
 @media (min-width: 700px) {
   .start-cards { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ===== LKG letter pages ===== */
+.alpha-letter[aria-current="page"] { background: var(--navy); outline: 3px solid #FFD54A; }
+.card-link { display: block; }
+.sheet-card .letter-pack { margin-top: 8px; }
+.letter-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 28px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.letter-nav a { color: var(--blue); }
