@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decorate the Dinosaur: Find the Letter D Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online letter D game for LKG kids: tap every dinosaur spot with big D or small d. Works on phones, no sign-up. Print the matching worksheet too.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="canonical" href="https://vidyaplay.in/play/decorate-the-dinosaur/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Decorate the Dinosaur: Find the Letter D Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online letter D game for LKG kids: tap every dinosaur spot with big D or small d. Works on phones, no sign-up. Print the matching worksheet too.">
+  <meta property="og:url" content="https://vidyaplay.in/play/decorate-the-dinosaur/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Decorate the Dinosaur (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px;
+      border-radius: 24px; background: #FFF1E6; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
+    .seg { cursor: pointer; outline: none; }
+    .seg .shape { transform-box: fill-box; transform-origin: center; }
+    .seg .ball { fill: #FFFFFF; stroke: #2C3550; stroke-width: 5; transition: fill 0.2s; }
+    .seg:focus-visible .ball { stroke: var(--blue); stroke-width: 9; }
+    .seg .ink { fill: var(--navy); }
+    .seg .ink-line { stroke: var(--navy); }
+    .seg.found .ball { fill: #FB8C00; stroke: #8A3B00; }
+    .seg .ball.party { transition: fill 0.6s; }
+    .body-fill { fill: #FFFFFF; transition: fill 0.9s ease; }
+    .body-fill.done { fill: #7CC37F; }
+    .seg.found .shape { animation: pop 0.35s ease-out; }
+    .seg.nope .shape { animation: wiggle 0.45s ease-in-out; }
+    @keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-12deg); } 40% { transform: rotate(10deg); }
+      60% { transform: rotate(-7deg); } 80% { transform: rotate(4deg); } }
+    
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF;
+      transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #FB8C00; border: 2.5px solid #8A3B00; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column;
+      align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .seg .shape, .win-icons { animation: none !important; } }
+  </style>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../index.html" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <a href="../../nursery/pre-writing/index.html">Nursery</a>
+      <a href="../../lkg/english/index.html">LKG</a>
+      <a href="../../play/index.html" aria-current="page">Play</a>
+      <a href="../../about/index.html">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a> › <a href="../index.html">Play</a> › <span>Decorate the Dinosaur</span>
+    </nav>
+
+    <h1 class="page-title">Decorate the Dinosaur</h1>
+    <p class="facts">LKG English · Letter D · Ages 3.5 to 5</p>
+
+    <section class="game-card" aria-label="Decorate the Dinosaur game">
+      <div class="game-top">
+        <p class="game-ask">Tap every <span class="orange">D</span> and <span class="orange">d</span> spot</p>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+      </div>
+
+      <svg class="meadow" id="meadow" viewBox="0 0 800 775" role="group" aria-label="Dinosaur with 14 spots">
+        <defs><mask id="bodymask"><image href="fill.png" width="800" height="775"/></mask></defs>
+        <rect id="bodyfill" class="body-fill" width="800" height="775" mask="url(#bodymask)"/>
+        <image href="outline.png" width="800" height="775" aria-hidden="true"/>
+        <g id="segs"></g>
+      </svg>
+
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 7 found</p>
+      </div>
+
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🦕🎉🦕</div>
+        <p class="win-big">You found them all!</p>
+        <p class="win-text">7 spots with D and d. Look at your dinosaur!</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-D3_Decorate_the_Dinosaur.pdf" download>Print the worksheet (PDF)</a>
+        <a class="button btn-blue" href="../index.html">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say "d" as in dog
+      each time your child finds one. Then print the worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/index.html">About</a> <a href="../../privacy/index.html">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // ===== Settings (spots and letters exactly as on the printed D3 sheet) =====
+    var TARGET = { "D": true, "d": true };
+    var TARGETS = ["D", "D", "D", "d", "d", "d", "d"];        // 3 big D + 4 small d
+    var OTHERS  = ["e", "o", "n", "a", "o", "c", "m"];        // small look-alikes only
+    var R = 47.8;
+    var SHEET = [[176.2, 288.7, "d"], [304.5, 288.7, "e"], [432.9, 288.7, "o"], [240.4, 399.8, "D"], [368.7, 399.8, "n"],
+                 [497.1, 399.8, "a"], [176.2, 511.0, "o"], [304.5, 511.0, "d"], [432.9, 511.0, "c"], [561.3, 511.0, "d"],
+                 [240.4, 622.2, "m"], [368.7, 622.2, "D"], [497.1, 622.2, "d"], [625.5, 622.2, "D"]];
+    var SPOTS = SHEET.map(function (p) { return { x: p[0], y: p[1] }; });
+    var FIRST = SHEET.map(function (p) { return p[2]; });
+    var PARTY = ["#F48FB1", "#64B5F6", "#FFE066", "#CE93D8", "#80DEEA", "#EF9A9A", "#B39DDB"];   // light, so letters stay clear and only D/d are orange
+
+    var NS = "http://www.w3.org/2000/svg";
+    var segsBox = document.getElementById("segs");
+    var bodyFill = document.getElementById("bodyfill");
+    var basket = document.getElementById("basket");
+    var scoreText = document.getElementById("score");
+    var win = document.getElementById("win");
+    var soundBtn = document.getElementById("sound");
+    var found = 0;
+    var soundOn = true;
+
+    function el(name, attrs, parent) {
+      var e = document.createElementNS(NS, name);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+
+    // ===== Pop sound, made in the browser =====
+    var audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start;
+      var osc = audio.createOscillator();
+      var gain = audio.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination);
+      osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound on this device: the game still works */ }
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn;
+      soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn);
+      soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+    });
+
+    // ===== One body circle with a letter =====
+    function drawLetter(g, letter) {
+      if (letter === "a") {                       // children's ball-and-stick a
+        el("circle", { cx: -2, cy: 2, r: 15, fill: "none", "stroke-width": 8, "class": "ink-line" }, g);
+        el("line", { x1: 13, y1: -13, x2: 13, y2: 17, "stroke-width": 8, "stroke-linecap": "round", "class": "ink-line" }, g);
+      } else {
+        var big = letter === letter.toUpperCase();
+        var t = el("text", { x: 0, y: big ? 20 : 18, "text-anchor": "middle",
+          "font-family": "'Baloo 2', system-ui, sans-serif", "font-weight": 800,
+          "font-size": big ? 58 : 62, "class": "ink" }, g);
+        t.textContent = letter;
+      }
+    }
+    function makeSeg(p, letter) {
+      var spot = el("g", { transform: "translate(" + p.x + " " + p.y + ")" }, segsBox);
+      var f = el("g", { "class": "seg", tabindex: 0, role: "button",
+        "aria-label": "Spot with letter " + (letter === "D" ? "big D" : letter === "d" ? "small d" : letter) }, spot);
+      var shape = el("g", { "class": "shape" }, f);
+      el("circle", { "class": "ball", cx: 0, cy: 0, r: R }, shape);
+      drawLetter(shape, letter);
+      function tap() {
+        if (f.classList.contains("found")) return;
+        if (TARGET[letter]) {
+          f.classList.add("found");
+          f.setAttribute("aria-label", f.getAttribute("aria-label") + ", found");
+          found++;
+          play("pop");
+          update();
+        } else {
+          f.classList.remove("nope");
+          void f.getBoundingClientRect();         // restart the wiggle
+          f.classList.add("nope");
+        }
+      }
+      f.addEventListener("click", tap);
+      f.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tap(); }
+      });
+    }
+
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < found ? "on" : "";
+      scoreText.textContent = found + " of " + TARGETS.length + " found";
+      if (found === TARGETS.length) {
+        setTimeout(function () {                  // the dinosaur colours itself, then the well-done card
+          play("win");
+          bodyFill.classList.add("done");
+          var k = 0;
+          Array.prototype.forEach.call(segsBox.querySelectorAll(".seg:not(.found) .ball"), function (b) {
+            b.classList.add("party"); b.style.fill = PARTY[k++ % PARTY.length];
+          });
+        }, 350);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); }, 1900);
+      }
+    }
+
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = list[i]; list[i] = list[j]; list[j] = t;
+      }
+      return list;
+    }
+    function sameNext(list) {                     // no two of the same letter side by side
+      for (var i = 1; i < list.length; i++) if (list[i] === list[i - 1]) return true;
+      return false;
+    }
+
+    // ===== New round: letters in new places =====
+    function newRound(first) {
+      var letters;
+      if (first) {
+        letters = FIRST.slice();
+      } else {
+        do { letters = shuffle(TARGETS.concat(OTHERS)); } while (sameNext(letters));
+      }
+      segsBox.innerHTML = "";
+      SPOTS.forEach(function (p, i) { makeSeg(p, letters[i]); });
+      basket.innerHTML = "";
+      TARGETS.forEach(function () { basket.appendChild(document.createElement("span")); });
+      found = 0;
+      win.hidden = true;
+      bodyFill.classList.remove("done");
+      update();
+    }
+
+    document.getElementById("again").addEventListener("click", function () { newRound(false); });
+    newRound(true);
+  })();
+  </script>
+</body>
+</html>
