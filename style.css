@@ -289,6 +289,7 @@ body {
 }
 .pack-title { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); }
 .pack-text { margin: 0; font-size: 16px; }
+.pack-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .sheet-grid {
   list-style: none;
