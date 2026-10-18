@@ -224,6 +224,7 @@
       var f = el("g", { "class": "seg", tabindex: 0, role: "button",
         "aria-label": "Spot with letter " + (letter === "D" ? "big D" : letter === "d" ? "small d" : letter) }, spot);
       var shape = el("g", { "class": "shape" }, f);
+      el("circle", { cx: 0, cy: 0, r: R * 1.18, fill: "transparent" }, f);   // bigger tap area for small fingers
       el("circle", { "class": "ball", cx: 0, cy: 0, r: R }, shape);
       drawLetter(shape, letter);
       function tap() {

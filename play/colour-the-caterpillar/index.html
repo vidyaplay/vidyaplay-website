@@ -43,6 +43,9 @@
     .seg .ink-line { stroke: var(--navy); }
     .seg.found .ball { fill: #7CC37F; stroke: #1B5E20; }
     .seg.found .shape { animation: pop 0.35s ease-out; }
+    .seg .ball.party { transition: fill 0.6s; }
+    .cat-body { stroke: #C5E1A5; transition: stroke 0.9s ease; }
+    .cat-body.done { stroke: #FFB74D; }
     .seg.nope .shape { animation: wiggle 0.45s ease-in-out; }
     @keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.2); } 100% { transform: scale(1); } }
     @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-12deg); } 40% { transform: rotate(10deg); }
@@ -57,12 +60,13 @@
     .basket span.on { background: #7CC37F; border: 2.5px solid #1B5E20; }
     .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
 
-    .win { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 10px; padding: 20px; border-radius: 24px; background: rgba(255, 255, 255, 0.93); }
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column;
+      align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
     .win[hidden] { display: none; }
-    .win-big { margin: 0; font-size: 34px; font-weight: 800; line-height: 1.1; color: var(--green); text-wrap: balance; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--green); text-wrap: balance; }
     .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
-    .win-icons { font-size: 40px; letter-spacing: 6px; }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
     .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
     @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
@@ -163,6 +167,7 @@
     var win = document.getElementById("win");
     var soundBtn = document.getElementById("sound");
     var found = 0;
+    var PARTY = ["#F48FB1", "#64B5F6", "#FFE066", "#CE93D8", "#80DEEA", "#EF9A9A", "#B39DDB"];   // light; only C/c are green
     var soundOn = true;
 
     function el(name, attrs, parent) {
@@ -206,7 +211,7 @@
     // ===== Caterpillar body, legs and head (drawn once) =====
     var last = SPOTS[SPOTS.length - 1];
     el("path", { d: "M" + HEAD.x + " 80 H356 C 404 80 404 205 356 205 H100 C 52 205 52 330 100 330 H" + last.x,
-      fill: "none", stroke: "#C5E1A5", "stroke-width": 30, "stroke-linecap": "round", "stroke-linejoin": "round" }, bodyBox);
+      fill: "none", "class": "cat-body", id: "catbody", "stroke-width": 30, "stroke-linecap": "round", "stroke-linejoin": "round" }, bodyBox);
     SPOTS.forEach(function (p) {
       [-11, 11].forEach(function (dx) {
         el("line", { x1: p.x + dx, y1: p.y + R - 2, x2: p.x + dx * 1.25, y2: p.y + R + 10, stroke: "#2C3550",
@@ -240,6 +245,7 @@
       var f = el("g", { "class": "seg", tabindex: 0, role: "button",
         "aria-label": "Circle with letter " + (letter === "C" ? "big C" : letter === "c" ? "small c" : letter) }, spot);
       var shape = el("g", { "class": "shape" }, f);
+      el("circle", { cx: 0, cy: 0, r: R * 1.12, fill: "transparent" }, f);   // bigger tap area for small fingers
       el("circle", { "class": "ball", cx: 0, cy: 0, r: R }, shape);
       drawLetter(shape, letter);
       function tap() {
@@ -267,7 +273,15 @@
       for (var i = 0; i < dots.length; i++) dots[i].className = i < found ? "on" : "";
       scoreText.textContent = found + " of " + TARGETS.length + " found";
       if (found === TARGETS.length) {
-        setTimeout(function () { play("win"); win.hidden = false; document.getElementById("again").focus(); }, 450);
+        setTimeout(function () {                  // the caterpillar colours itself, then the well-done card
+          play("win");
+          document.getElementById("catbody").classList.add("done");
+          var k = 0;
+          Array.prototype.forEach.call(segsBox.querySelectorAll(".seg:not(.found) .ball"), function (b) {
+            b.classList.add("party"); b.style.fill = PARTY[k++ % PARTY.length];
+          });
+        }, 350);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); }, 1900);
       }
     }
 
@@ -297,6 +311,7 @@
       TARGETS.forEach(function () { basket.appendChild(document.createElement("span")); });
       found = 0;
       win.hidden = true;
+      document.getElementById("catbody").classList.remove("done");
       update();
     }
 
