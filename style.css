@@ -442,3 +442,11 @@ body {
 /* Logo: the text says a real "i" (for Google and screen readers); a dotless i is drawn instead so the sprout sits on top */
 .real-i{font-size:0}
 .i-with-sprout::before{content:"\0131"}
+
+/* Tabs on the Nursery and LKG pages */
+.tab-bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+.tab-bar a { padding: 9px 16px; border-radius: 999px; background: #EEF2F8; color: var(--navy); font-weight: 700; text-decoration: none; }
+.tab-bar a[aria-selected="true"] { background: var(--blue); color: #fff; }
+.tab-panel { margin-top: 10px; }
+.tab-title { margin: 12px 0 4px; font-size: 1.5rem; color: var(--navy); }
+.tab-buttons { justify-content: flex-start; margin: 8px 0 14px; }
