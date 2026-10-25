@@ -10,11 +10,15 @@
   </url>
   <url>
     <loc>https://vidyaplay.in/lkg/</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-25</lastmod>
   </url>
   <url>
     <loc>https://vidyaplay.in/lkg/english/</loc>
     <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://vidyaplay.in/lkg/english/action-words/</loc>
+    <lastmod>2026-10-25</lastmod>
   </url>
   <url>
     <loc>https://vidyaplay.in/lkg/english/letter-a/</loc>
@@ -50,15 +54,19 @@
   </url>
   <url>
     <loc>https://vidyaplay.in/lkg/maths/</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-25</lastmod>
   </url>
   <url>
     <loc>https://vidyaplay.in/lkg/maths/number-1/</loc>
     <lastmod>2026-10-23</lastmod>
   </url>
   <url>
+    <loc>https://vidyaplay.in/lkg/maths/number-2/</loc>
+    <lastmod>2026-10-25</lastmod>
+  </url>
+  <url>
     <loc>https://vidyaplay.in/nursery/</loc>
-    <lastmod>2026-10-23</lastmod>
+    <lastmod>2026-10-25</lastmod>
   </url>
   <url>
     <loc>https://vidyaplay.in/nursery/colouring/</loc>
@@ -83,6 +91,10 @@
   <url>
     <loc>https://vidyaplay.in/nursery/pre-writing/</loc>
     <lastmod>2026-10-23</lastmod>
+  </url>
+  <url>
+    <loc>https://vidyaplay.in/nursery/shapes/</loc>
+    <lastmod>2026-10-25</lastmod>
   </url>
   <url>
     <loc>https://vidyaplay.in/play/</loc>
