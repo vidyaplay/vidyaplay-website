@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=3">
+  <link rel="stylesheet" href="/style.css?v=4">
   <meta name="robots" content="noindex">
 </head>
 <body>
@@ -24,10 +24,27 @@
       <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
     </a>
     <nav class="site-nav" aria-label="Main menu">
-      <a href="/nursery/pre-writing/">Nursery</a>
-      <a href="/lkg/english/">LKG</a>
-      <a href="/play/">Play</a>
-      <a href="/about/">About</a>
+      <div class="nav-item"><a href="nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="nursery/colouring/">Colouring</a></li>
+          <li><a href="nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="nursery/cutting/">Cutting</a></li>
+          <li><a href="nursery/looking/">Looking and thinking</a></li>
+          <li><a href="nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="lkg/english/action-words/">Words and vocabulary</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="lkg/maths/">Numbers 1 to 4</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="lkg/evs/">EVS worksheets</a></li>
+        </ul></div>
+      <a href="play/">Play</a>
+      <a href="about/">About</a>
     </nav>
   </header>
 
@@ -48,5 +65,24 @@
     <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
   </footer>
 
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
 </body>
 </html>

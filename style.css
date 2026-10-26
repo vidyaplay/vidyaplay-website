@@ -450,3 +450,37 @@ body {
 .tab-panel { margin-top: 10px; }
 .tab-title { margin: 12px 0 4px; font-size: 1.5rem; color: var(--navy); }
 .tab-buttons { justify-content: flex-start; margin: 8px 0 14px; }
+
+/* ===== Dropdown menu (nav_menu.py) ===== */
+.site-header { position: relative; z-index: 20; }
+.nav-item { position: relative; display: flex; align-items: center; }
+.nav-toggle { border: 0; background: none; color: var(--navy); font: inherit; font-size: 14px; font-weight: 700;
+  min-width: 28px; min-height: 40px; padding: 10px 7px; margin-left: -6px; cursor: pointer; border-radius: 10px; line-height: 1; }
+.nav-toggle:focus-visible, .nav-menu a:focus-visible { outline: 3px solid var(--blue); outline-offset: 1px; }
+.nav-item.open .nav-toggle span { display: inline-block; transform: rotate(180deg); }
+.nav-menu { display: none; position: absolute; top: 100%; left: 0; min-width: 240px; margin: 4px 0 0; padding: 8px;
+  list-style: none; background: #FFFFFF; border: 1px solid #E6EAF2; border-radius: 16px; box-shadow: 0 10px 28px rgba(19, 35, 74, .14); }
+.nav-item.open .nav-menu { display: block; }
+.nav-menu li { margin: 0; }
+.site-nav .nav-menu a { display: block; padding: 10px 12px; font-size: 16px; border-radius: 10px; white-space: nowrap; }
+.site-nav .nav-menu a.sub { padding-left: 26px; font-weight: 600; }
+.nav-group { padding: 10px 12px 2px; font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--green); }
+@media (hover: hover) and (min-width: 700px) {
+  .nav-item:hover .nav-menu { display: block; }   /* keyboard: the ▾ button opens it */
+}
+@media (max-width: 699px) {            /* phones: the open menu is a full-width panel under the header */
+  .nav-item { position: static; }
+  .nav-menu { left: 8px; right: 8px; min-width: 0; }
+}
+@media (max-width: 380px) {            /* small phones: logo + 2 menus + Play + About must fit */
+  .topbar-logo { font-size: 19px; }
+  .site-nav > a, .nav-item > a { padding: 10px 4px; font-size: 14px; }
+  .nav-toggle { min-width: 24px; padding: 10px 5px; margin-left: -5px; }
+}
+@media (max-width: 340px) {            /* 320 px phones */
+  .site-header { padding-left: 8px; }
+  .topbar-logo { font-size: 17px; }
+  .site-nav > a, .nav-item > a { padding: 10px 3px; font-size: 13px; }
+  .nav-toggle { padding: 10px 4px; margin-left: -4px; }
+}
+/* ===== end dropdown menu ===== */
