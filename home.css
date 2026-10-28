@@ -1,0 +1,53 @@
+/* ===== New homepage (28 Oct design: "this week first" + browse by topic) ===== */
+.home { max-width: 1120px; margin: 0 auto; padding: 8px 20px 24px; text-align: left; }
+.home h1, .home h2, .home h3 { font-family: "Baloo 2", system-ui, sans-serif; color: var(--navy); margin: 0; }
+.home-hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; padding: 26px 0 12px; }
+.home-tag { display: inline-block; background: #FDE7EF; color: #B0204A; font-weight: 700; font-size: 14px; padding: 3px 12px; border-radius: 999px; }
+.home-hero h1 { font-size: 46px; line-height: 1.08; font-weight: 800; margin: 10px 0 8px; }
+.home-hero h1 span { color: var(--pink); }
+.home-lead { font-size: 19px; margin: 0 0 18px; max-width: 520px; }
+.home-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.home-btn { display: inline-block; padding: 11px 22px; border-radius: 999px; font-weight: 700; font-size: 17px; text-decoration: none; line-height: 1.3; }
+.home-btn.pink { background: #C9305A; color: #fff; }
+.home-btn.green { background: #1F7A3C; color: #fff; }
+.home-btn.line { border: 2px solid var(--navy); color: var(--navy); }
+.home-btn:hover { opacity: .92; }
+.home-btn:focus-visible, .home-age:focus-visible, .home-topic:focus-visible, .home-card a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.home-pics { position: relative; height: 340px; }
+.home-pics img { position: absolute; width: 44%; height: auto; border-radius: 12px; background: #fff; box-shadow: 0 8px 22px rgba(19, 35, 74, .25); }
+.home-pics .p1 { left: 1%; top: 28px; transform: rotate(-6deg); }
+.home-pics .p2 { left: 28%; top: 0; transform: rotate(3deg); z-index: 2; }
+.home-pics .p3 { right: 0; top: 36px; transform: rotate(8deg); }
+.home-week { background: #FFF7EA; border-radius: 24px; padding: 24px 24px 28px; margin-top: 14px; }
+.home h2 { font-size: 30px; font-weight: 800; }
+.home-sub { margin: 2px 0 16px; color: #5B6478; font-size: 17px; }
+.home-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.home-grid.three { grid-template-columns: repeat(3, 1fr); }
+.home-grid.two { grid-template-columns: repeat(2, 1fr); }
+.home-card { background: #fff; border-radius: 18px; padding: 14px; box-shadow: 0 2px 10px rgba(19, 35, 74, .08); display: flex; flex-direction: column; }
+.home-card img { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 14px rgba(19, 35, 74, .15); }
+.home-card .home-tag { align-self: flex-start; margin-top: 12px; font-size: 13px; }
+.home-card h3 { font-size: 21px; margin: 6px 0 0; line-height: 1.2; }
+.home-card p { margin: 4px 0 12px; color: #5B6478; font-size: 16px; }
+.home-card .home-btn { margin-top: auto; align-self: flex-start; }
+.home-sec { margin-top: 38px; }
+.home-age { display: block; border-radius: 24px; padding: 24px; color: #fff; text-decoration: none; }
+.home-age.nursery { background: #1F7A3C; }
+.home-age.lkg { background: var(--blue); }
+.home-age h3 { color: #fff; font-size: 30px; font-weight: 800; }
+.home-age p { margin: 2px 0 12px; font-size: 17px; opacity: .95; }
+.home-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.home-chips span { background: #fff; color: var(--navy); font-weight: 700; font-size: 15px; padding: 6px 14px; border-radius: 999px; }
+.home-topics { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.home-topic { display: block; border-radius: 18px; padding: 16px 10px; text-align: center; font-weight: 700; font-size: 18px; color: var(--navy); text-decoration: none; }
+.home-topic i { display: block; font-style: normal; font-size: 32px; line-height: 1.2; margin-bottom: 2px; }
+.home-trust { display: flex; flex-wrap: wrap; gap: 8px 26px; justify-content: center; margin: 38px 0 4px; font-weight: 700; font-size: 17px; color: var(--navy); list-style: none; padding: 0; }
+.home-follow { text-align: center; margin-top: 22px; }
+@media (max-width: 760px) {
+  .home-hero { grid-template-columns: 1fr; }
+  .home-hero h1 { font-size: 34px; }
+  .home-pics { height: 250px; }
+  .home-grid.three, .home-grid.two { grid-template-columns: 1fr; }
+  .home-topics { grid-template-columns: repeat(2, 1fr); }
+  .home h2 { font-size: 26px; }
+}

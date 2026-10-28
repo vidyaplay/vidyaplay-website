@@ -22,6 +22,7 @@
 
   <!-- Our own styles -->
   <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="home.css?v=2">
 
   <!-- Main address of this page (helps Google: www and non-www are the same page) -->
   <link rel="canonical" href="https://vidyaplay.in/">
@@ -74,76 +75,90 @@
     </nav>
   </header>
 
-  <main class="page">
+  <main class="home">
 
-    <!-- Logo: "Vidya" in blue, "Play" in four colours, sprout on the i -->
-    <h1 class="logo">
-      <span class="blue">V</span><span class="blue i-with-sprout"><span class="real-i">i</span><svg class="sprout" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 39 L20 20" stroke="#2E9E4F" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M20 26 Q7 24 4 10 Q18 10 20 26 Z" fill="#2E9E4F"/><path d="M20 21 Q31 15 36 2 Q22 3 20 21 Z" fill="#7ACB5A"/></svg></span><span class="blue">dya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
-    </h1>
+    <!-- First screen: what a parent wants right now -->
+    <section class="home-hero">
+      <div>
+        <span class="home-tag">New worksheets every week</span>
+        <h1>Free worksheets your child will <span>love to finish</span></h1>
+        <p class="home-lead">Print-ready PDFs and simple games for Nursery and LKG, based on the CBSE syllabus. No sign-up, no email. Made by a parent, tested by my LKG kids.</p>
+        <div class="home-cta">
+          <a class="home-btn pink" href="#this-week">Get this week's sheets</a>
+          <a class="home-btn line" href="#age">Choose my child's age</a>
+        </div>
+      </div>
+      <div class="home-pics" aria-hidden="true">
+        <img class="p1" src="images/worksheets/L-FS-02.webp" width="480" height="679" alt="">
+        <img class="p2" src="images/worksheets/L-FS-01.webp" width="480" height="679" alt="">
+        <img class="p3" src="images/worksheets/L-EN-H1.webp" width="480" height="679" alt="">
+      </div>
+    </section>
 
-    <p class="tagline">Learn <span class="dot pink-bg"></span> Play <span class="dot blue-bg"></span> Grow</p>
+    <!-- The newest sheets (update every week) -->
+    <section class="home-week" id="this-week">
+      <h2>This week at VidyaPlay</h2>
+      <p class="home-sub">The newest sheets, one tap away.</p>
+      <ul class="home-grid three">
+        <li class="home-card">
+          <img src="images/worksheets/L-FS-01.webp" width="480" height="679" loading="lazy" alt="Diwali I Spy worksheet for LKG">
+          <span class="home-tag">Diwali · LKG</span>
+          <h3>Diwali I Spy, Rangoli and more</h3>
+          <p>4 festive sheets, ready before Diwali.</p>
+          <a class="home-btn green" href="lkg/diwali/">Get the Diwali sheets</a>
+        </li>
+        <li class="home-card">
+          <img src="images/worksheets/L-EN-H1.webp" width="480" height="679" loading="lazy" alt="Learn the Letter H worksheet for LKG">
+          <span class="home-tag">Letter of the week · LKG</span>
+          <h3>Letter H h</h3>
+          <p>Trace, hunt and a free game.</p>
+          <a class="home-btn green" href="lkg/english/letter-h/">Get the Letter H sheets</a>
+        </li>
+        <li class="home-card">
+          <img src="images/worksheets/L-EN-R2.webp" width="480" height="679" loading="lazy" alt="A to E revision worksheet for LKG">
+          <span class="home-tag">Revision · LKG</span>
+          <h3>A to E Revision pack</h3>
+          <p>6 sheets, a parent guide and a tracker.</p>
+          <a class="home-btn green" href="lkg/english/a-to-e-revision/">Get the A to E pack</a>
+        </li>
+      </ul>
+    </section>
 
-    <p class="badge">New worksheets every week</p>
+    <!-- Age choice -->
+    <section class="home-sec" id="age">
+      <h2>How old is your child?</h2>
+      <ul class="home-grid two" style="margin-top:14px">
+        <li><a class="home-age nursery" href="nursery/"><h3>Nursery</h3><p>Ages 2.5 to 4: lines, colours, dots and cutting.</p>
+          <div class="home-chips"><span>Pre-writing</span><span>Colouring</span><span>Dot painting</span><span>Cutting</span><span>Diwali</span></div></a></li>
+        <li><a class="home-age lkg" href="lkg/"><h3>LKG</h3><p>Ages 3.5 to 5: letters, numbers and EVS.</p>
+          <div class="home-chips"><span>Letters A to H</span><span>Numbers 1 to 5</span><span>EVS</span><span>Diwali</span><span>Revision</span></div></a></li>
+      </ul>
+    </section>
 
-    <h2 class="headline">Little Steps. Big Learning.</h2>
+    <!-- Browse by topic -->
+    <section class="home-sec">
+      <h2>Browse by topic</h2>
+      <ul class="home-topics" style="margin-top:14px">
+        <li><a class="home-topic" style="background:#FDE7EF" href="lkg/english/"><i aria-hidden="true">Aa</i>Letters</a></li>
+        <li><a class="home-topic" style="background:#E3EEFB" href="lkg/maths/"><i aria-hidden="true">123</i>Numbers</a></li>
+        <li><a class="home-topic" style="background:#E5F5EA" href="lkg/evs/"><i aria-hidden="true">🌳</i>EVS</a></li>
+        <li><a class="home-topic" style="background:#FFF1D6" href="lkg/diwali/"><i aria-hidden="true">🪔</i>Festivals</a></li>
+        <li><a class="home-topic" style="background:#F0E8FA" href="nursery/pre-writing/"><i aria-hidden="true">✏️</i>Pre-writing</a></li>
+        <li><a class="home-topic" style="background:#E5F5EA" href="nursery/colouring/"><i aria-hidden="true">🎨</i>Colouring</a></li>
+        <li><a class="home-topic" style="background:#E3EEFB" href="play/"><i aria-hidden="true">🎮</i>Play online</a></li>
+        <li><a class="home-topic" style="background:#FFF1D6" href="lkg/english/action-words/"><i aria-hidden="true">🏃</i>Action words</a></li>
+      </ul>
+    </section>
 
-    <p class="intro">
-      Free printable worksheets and simple learning games for
-      <strong>Nursery and LKG</strong>, based on the CBSE syllabus. UKG is coming later.
-    </p>
-    <p class="trust">Made by a parent, tested by my LKG kids.</p>
-
-    <!-- Start here: what is available now -->
-    <p class="section-label">Start here</p>
-    <ul class="start-cards">
-      <li>
-        <a class="start-card" href="lkg/english/">
-          <span class="card-icon pink-bg">Aa</span>
-          <span class="card-title">LKG letters A to H</span>
-          <span class="card-text">28 worksheets: trace big and small letters, then hunts and mazes.</span>
-          <span class="start-go">Get the worksheets →</span>
-        </a>
-      </li>
-      <li>
-        <a class="start-card" href="play/">
-          <span class="card-icon orange-bg">▶</span>
-          <span class="card-title">Play online</span>
-          <span class="card-text">Tap-and-find letter games for A to G. No sign-up, no ads.</span>
-          <span class="start-go">Play a game →</span>
-        </a>
-      </li>
-      <li>
-        <a class="start-card" href="nursery/">
-          <span class="card-icon green-bg">✎</span>
-          <span class="card-title">Nursery worksheets</span>
-          <span class="card-text">Pre-writing, colouring, dot painting, cutting and little puzzles.</span>
-          <span class="start-go">Get the worksheets →</span>
-        </a>
-      </li>
-      <li>
-        <a class="start-card" href="nursery/diwali/">
-          <span class="card-icon orange-bg">🪔</span>
-          <span class="card-title">Diwali worksheets</span>
-          <span class="card-text">4 diya sheets: decorate, count, trace, big and small. For Nursery.</span>
-          <span class="start-go">Get the worksheets →</span>
-        </a>
-      </li>
-      <li>
-        <a class="start-card" href="lkg/#maths">
-          <span class="card-icon blue-bg">123</span>
-          <span class="card-title">LKG numbers</span>
-          <span class="card-text">Number 1: trace, count, find and colour. A new number every week.</span>
-          <span class="start-go">Get the worksheets →</span>
-        </a>
-      </li>
-    </ul>
-    <p class="coming-next">Coming next: a new letter and a new number every week.</p>
+    <ul class="home-trust"><li><span aria-hidden="true">✓</span> Free</li><li><span aria-hidden="true">✓</span> No sign-up</li><li><span aria-hidden="true">✓</span> Prints in black and white</li><li><span aria-hidden="true">✓</span> School-book letters</li></ul>
 
     <!-- Follow links -->
-    <p class="follow-text">Follow us for free worksheets and updates</p>
-    <div class="buttons">
-      <a class="button youtube" href="https://www.youtube.com/@vidyaplayin" target="_blank" rel="noopener">YouTube</a>
-      <a class="button instagram" href="https://www.instagram.com/vidyaplay.in/" target="_blank" rel="noopener">Instagram</a>
+    <div class="home-follow">
+      <p class="follow-text">Follow us for free worksheets and updates</p>
+      <div class="buttons">
+        <a class="button youtube" href="https://www.youtube.com/@vidyaplayin" target="_blank" rel="noopener">YouTube</a>
+        <a class="button instagram" href="https://www.instagram.com/vidyaplay.in/" target="_blank" rel="noopener">Instagram</a>
+      </div>
     </div>
 
   </main>
