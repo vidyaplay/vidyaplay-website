@@ -27,6 +27,29 @@
   <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
   <meta name="twitter:card" content="summary_large_image">
 
+  <style>
+    .topic-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; padding: 0; list-style: none; }
+    .topic-jump a { display: inline-block; padding: 9px 16px; border-radius: 999px; background: #EAF2FB; color: var(--navy);
+      font-weight: 700; text-decoration: none; border: 2px solid #CFE0F3; }
+    .topic-jump a:hover, .topic-jump a:focus-visible { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .topic-section { margin-top: 34px; padding-top: 18px; border-top: 2px solid #E4EAF1; scroll-margin-top: 16px; }
+    .topic-section > h2 { margin: 0 0 6px; color: var(--navy); font-size: 1.55rem; }
+    .topic-section > p { margin: 0 0 14px; max-width: 760px; }
+    .topic-section .sheet-grid { margin-top: 12px; }
+    .mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; list-style: none; padding: 0; margin: 14px 0 0; }
+    .mini-card { background: #fff; border: 2px solid #E4EAF1; border-radius: 14px; padding: 10px; text-align: center; }
+    .mini-card img { width: 100%; height: auto; border-radius: 8px; border: 1px solid #E4EAF1; }
+    .mini-card h3 { margin: 8px 0 6px; font-size: 1.1rem; color: var(--navy); }
+    .mini-card h3 a { color: inherit; text-decoration: none; }
+    .mini-card .mini-links { display: flex; flex-direction: column; gap: 6px; font-size: .9rem; }
+    .mini-card .mini-links a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 6px 8px;
+      border-radius: 10px; font-weight: 700; text-decoration: none; line-height: 1.2; }
+    .mini-card .mini-links a:first-child { background: var(--blue); color: #fff; }
+    .mini-card .mini-links a:last-child { background: #E6F4EA; color: #1E6B36; border: 2px solid #BFE3C8; }
+    .alpha-strip .alpha-letter { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .soon-note { margin: 6px 0 0; color: #5B6B7D; font-size: .95rem; }
+  </style>
+
   <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"LKG Worksheets","item":"https://vidyaplay.in/lkg/"}]}</script>
 </head>
 <body>
@@ -76,78 +99,66 @@
       <h2 class="tab-title">English: Letters</h2>
       <p class="page-intro">Four worksheets for every letter, a new letter every week.</p>
       <div class="buttons tab-buttons"><a class="button btn-blue" href="english/">Open all letters</a></div>
-      <ul class="sheet-grid">
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-a/"><img src="../images/worksheets/L-EN-A1.webp" width="480" height="679" loading="lazy" alt="Letter A worksheets preview"></a>
-          <span class="sheet-code">4 worksheets + online game</span>
-          <h3 class="sheet-title">Letter A a</h3>
-          <a class="button btn-blue" href="english/letter-a/">See letter A</a>
+      <ul class="mini-grid">
+        <li class="mini-card">
+          <a href="english/letter-a/"><img src="../images/worksheets/L-EN-A1.webp" width="480" height="679" loading="lazy" alt="Letter A worksheets preview"></a>
+          <h3><a href="english/letter-a/">Letter A a</a></h3>
+          <div class="mini-links"><a href="english/letter-a/">See 4 worksheets + game</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-b/"><img src="../images/worksheets/L-EN-B1.webp" width="480" height="679" loading="lazy" alt="Letter B worksheets preview"></a>
-          <span class="sheet-code">4 worksheets + online game</span>
-          <h3 class="sheet-title">Letter B b</h3>
-          <a class="button btn-blue" href="english/letter-b/">See letter B</a>
+        <li class="mini-card">
+          <a href="english/letter-b/"><img src="../images/worksheets/L-EN-B1.webp" width="480" height="679" loading="lazy" alt="Letter B worksheets preview"></a>
+          <h3><a href="english/letter-b/">Letter B b</a></h3>
+          <div class="mini-links"><a href="english/letter-b/">See 4 worksheets + game</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-c/"><img src="../images/worksheets/L-EN-C1.webp" width="480" height="679" loading="lazy" alt="Letter C worksheets preview"></a>
-          <span class="sheet-code">4 worksheets + online game</span>
-          <h3 class="sheet-title">Letter C c</h3>
-          <a class="button btn-blue" href="english/letter-c/">See letter C</a>
+        <li class="mini-card">
+          <a href="english/letter-c/"><img src="../images/worksheets/L-EN-C1.webp" width="480" height="679" loading="lazy" alt="Letter C worksheets preview"></a>
+          <h3><a href="english/letter-c/">Letter C c</a></h3>
+          <div class="mini-links"><a href="english/letter-c/">See 4 worksheets + game</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-d/"><img src="../images/worksheets/L-EN-D1.webp" width="480" height="679" loading="lazy" alt="Letter D worksheets preview"></a>
-          <span class="sheet-code">4 worksheets + online game</span>
-          <h3 class="sheet-title">Letter D d</h3>
-          <a class="button btn-blue" href="english/letter-d/">See letter D</a>
+        <li class="mini-card">
+          <a href="english/letter-d/"><img src="../images/worksheets/L-EN-D1.webp" width="480" height="679" loading="lazy" alt="Letter D worksheets preview"></a>
+          <h3><a href="english/letter-d/">Letter D d</a></h3>
+          <div class="mini-links"><a href="english/letter-d/">See 4 worksheets + game</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-e/"><img src="../images/worksheets/L-EN-E1.webp" width="480" height="679" loading="lazy" alt="Letter E worksheets preview"></a>
-          <span class="sheet-code">4 worksheets + online game</span>
-          <h3 class="sheet-title">Letter E e</h3>
-          <a class="button btn-blue" href="english/letter-e/">See letter E</a>
+        <li class="mini-card">
+          <a href="english/letter-e/"><img src="../images/worksheets/L-EN-E1.webp" width="480" height="679" loading="lazy" alt="Letter E worksheets preview"></a>
+          <h3><a href="english/letter-e/">Letter E e</a></h3>
+          <div class="mini-links"><a href="english/letter-e/">See 4 worksheets + game</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-f/"><img src="../images/worksheets/L-EN-F1.webp" width="480" height="679" loading="lazy" alt="Letter F worksheets preview"></a>
-          <span class="sheet-code">4 worksheets + online game</span>
-          <h3 class="sheet-title">Letter F f</h3>
-          <a class="button btn-blue" href="english/letter-f/">See letter F</a>
+        <li class="mini-card">
+          <a href="english/letter-f/"><img src="../images/worksheets/L-EN-F1.webp" width="480" height="679" loading="lazy" alt="Letter F worksheets preview"></a>
+          <h3><a href="english/letter-f/">Letter F f</a></h3>
+          <div class="mini-links"><a href="english/letter-f/">See 4 worksheets + game</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-g/"><img src="../images/worksheets/L-EN-G1.webp" width="480" height="679" loading="lazy" alt="Letter G worksheets preview"></a>
-          <span class="sheet-code">4 worksheets + online game</span>
-          <h3 class="sheet-title">Letter G g</h3>
-          <a class="button btn-blue" href="english/letter-g/">See letter G</a>
+        <li class="mini-card">
+          <a href="english/letter-g/"><img src="../images/worksheets/L-EN-G1.webp" width="480" height="679" loading="lazy" alt="Letter G worksheets preview"></a>
+          <h3><a href="english/letter-g/">Letter G g</a></h3>
+          <div class="mini-links"><a href="english/letter-g/">See 4 worksheets + game</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-h/"><img src="../images/worksheets/L-EN-H1.webp" width="480" height="679" loading="lazy" alt="Letter H worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Letter H h</h3>
-          <a class="button btn-blue" href="english/letter-h/">See letter H</a>
+        <li class="mini-card">
+          <a href="english/letter-h/"><img src="../images/worksheets/L-EN-H1.webp" width="480" height="679" loading="lazy" alt="Letter H worksheets preview"></a>
+          <h3><a href="english/letter-h/">Letter H h</a></h3>
+          <div class="mini-links"><a href="english/letter-h/">See 4 worksheets</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-i/"><img src="../images/worksheets/L-EN-I1.webp" width="480" height="679" loading="lazy" alt="Letter I worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Letter I i</h3>
-          <a class="button btn-blue" href="english/letter-i/">See letter I</a>
+        <li class="mini-card">
+          <a href="english/letter-i/"><img src="../images/worksheets/L-EN-I1.webp" width="480" height="679" loading="lazy" alt="Letter I worksheets preview"></a>
+          <h3><a href="english/letter-i/">Letter I i</a></h3>
+          <div class="mini-links"><a href="english/letter-i/">See 4 worksheets</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-j/"><img src="../images/worksheets/L-EN-J1.webp" width="480" height="679" loading="lazy" alt="Letter J worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Letter J j</h3>
-          <a class="button btn-blue" href="english/letter-j/">See letter J</a>
+        <li class="mini-card">
+          <a href="english/letter-j/"><img src="../images/worksheets/L-EN-J1.webp" width="480" height="679" loading="lazy" alt="Letter J worksheets preview"></a>
+          <h3><a href="english/letter-j/">Letter J j</a></h3>
+          <div class="mini-links"><a href="english/letter-j/">See 4 worksheets</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-k/"><img src="../images/worksheets/L-EN-K1.webp" width="480" height="679" loading="lazy" alt="Letter K worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Letter K k</h3>
-          <a class="button btn-blue" href="english/letter-k/">See letter K</a>
+        <li class="mini-card">
+          <a href="english/letter-k/"><img src="../images/worksheets/L-EN-K1.webp" width="480" height="679" loading="lazy" alt="Letter K worksheets preview"></a>
+          <h3><a href="english/letter-k/">Letter K k</a></h3>
+          <div class="mini-links"><a href="english/letter-k/">See 4 worksheets</a></div>
         </li>
-        <li class="sheet-card">
-          <a class="card-link" href="english/letter-l/"><img src="../images/worksheets/L-EN-L1.webp" width="480" height="679" loading="lazy" alt="Letter L worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Letter L l</h3>
-          <a class="button btn-blue" href="english/letter-l/">See letter L</a>
+        <li class="mini-card">
+          <a href="english/letter-l/"><img src="../images/worksheets/L-EN-L1.webp" width="480" height="679" loading="lazy" alt="Letter L worksheets preview"></a>
+          <h3><a href="english/letter-l/">Letter L l</a></h3>
+          <div class="mini-links"><a href="english/letter-l/">See 4 worksheets</a></div>
         </li>
       </ul>
       <h2 class="tab-title">English: Words and vocabulary</h2>
@@ -175,68 +186,7 @@
       <h2 class="tab-title">Maths: Numbers</h2>
       <p class="page-intro">Trace, count, find and colour, a new number every week.</p>
       <div class="buttons tab-buttons"><a class="button btn-blue" href="maths/">Open all maths topics</a></div>
-      <ul class="sheet-grid">
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-1/"><img src="../images/worksheets/N-MA-01.webp" width="480" height="679" loading="lazy" alt="Number 1 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 1</h3>
-          <a class="button btn-blue" href="maths/number-1/">See number 1</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-2/"><img src="../images/worksheets/N-MA-05.webp" width="480" height="679" loading="lazy" alt="Number 2 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 2</h3>
-          <a class="button btn-blue" href="maths/number-2/">See number 2</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-3/"><img src="../images/worksheets/N-MA-09.webp" width="480" height="679" loading="lazy" alt="Number 3 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 3</h3>
-          <a class="button btn-blue" href="maths/number-3/">See number 3</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-4/"><img src="../images/worksheets/N-MA-13.webp" width="480" height="679" loading="lazy" alt="Number 4 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 4</h3>
-          <a class="button btn-blue" href="maths/number-4/">See number 4</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-5/"><img src="../images/worksheets/N-MA-17.webp" width="480" height="679" loading="lazy" alt="Number 5 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 5</h3>
-          <a class="button btn-blue" href="maths/number-5/">See number 5</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-6/"><img src="../images/worksheets/N-MA-25.webp" width="480" height="679" loading="lazy" alt="Number 6 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 6</h3>
-          <a class="button btn-blue" href="maths/number-6/">See number 6</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-7/"><img src="../images/worksheets/N-MA-29.webp" width="480" height="679" loading="lazy" alt="Number 7 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 7</h3>
-          <a class="button btn-blue" href="maths/number-7/">See number 7</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-8/"><img src="../images/worksheets/N-MA-33.webp" width="480" height="679" loading="lazy" alt="Number 8 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 8</h3>
-          <a class="button btn-blue" href="maths/number-8/">See number 8</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-9/"><img src="../images/worksheets/N-MA-37.webp" width="480" height="679" loading="lazy" alt="Number 9 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 9</h3>
-          <a class="button btn-blue" href="maths/number-9/">See number 9</a>
-        </li>
-        <li class="sheet-card">
-          <a class="card-link" href="maths/number-10/"><img src="../images/worksheets/N-MA-41.webp" width="480" height="679" loading="lazy" alt="Number 10 worksheets preview"></a>
-          <span class="sheet-code">4 worksheets</span>
-          <h3 class="sheet-title">Number 10</h3>
-          <a class="button btn-blue" href="maths/number-10/">See number 10</a>
-        </li>
-      </ul>
+      <nav class="alpha-strip" aria-label="Choose a number"><a class="alpha-letter" href="maths/number-1/">1</a> <a class="alpha-letter" href="maths/number-2/">2</a> <a class="alpha-letter" href="maths/number-3/">3</a> <a class="alpha-letter" href="maths/number-4/">4</a> <a class="alpha-letter" href="maths/number-5/">5</a> <a class="alpha-letter" href="maths/number-6/">6</a> <a class="alpha-letter" href="maths/number-7/">7</a> <a class="alpha-letter" href="maths/number-8/">8</a> <a class="alpha-letter" href="maths/number-9/">9</a> <a class="alpha-letter" href="maths/number-10/">10</a></nav>
       <h2 class="tab-title">Maths: Counting</h2>
       <p class="page-intro">Extra counting practice once your child knows the numbers.</p>
       <ul class="sheet-grid">
@@ -253,7 +203,7 @@
           <a class="button btn-blue" href="maths/counting-6-to-10/">See counting 6 to 10</a>
         </li>
       </ul>
-      <h2 class="tab-title">Maths: Number sequence (before, after, missing)</h2>
+      <h2 class="tab-title">Maths: Number sequence: before, after, missing</h2>
       <p class="page-intro">Which number comes next, which comes before, and which one is missing.</p>
       <ul class="sheet-grid">
         <li class="sheet-card">
@@ -281,63 +231,63 @@
       <ul class="sheet-grid">
         <li class="sheet-card">
           <img src="../images/worksheets/E-MB-01.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: my body">
-          <span class="sheet-code">E-MB-01</span>
+          <span class="sheet-code">Worksheet 1</span>
           <h3 class="sheet-title">My Body</h3>
           <p class="sheet-text">Point and say, then match parts to the boy.</p>
           <a class="button btn-download" href="../downloads/E-MB-01_My_Body.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/E-SE-01.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: my five senses">
-          <span class="sheet-code">E-SE-01</span>
+          <span class="sheet-code">Worksheet 2</span>
           <h3 class="sheet-title">My Senses</h3>
           <p class="sheet-text">See, hear, smell, taste, touch.</p>
           <a class="button btn-download" href="../downloads/E-SE-01_My_Senses.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/E-FA-01.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: my family">
-          <span class="sheet-code">E-FA-01</span>
+          <span class="sheet-code">Worksheet 3</span>
           <h3 class="sheet-title">My Family</h3>
           <p class="sheet-text">Name the family, then colour them.</p>
           <a class="button btn-download" href="../downloads/E-FA-01_My_Family.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/E-HO-01.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: rooms in my home">
-          <span class="sheet-code">E-HO-01</span>
+          <span class="sheet-code">Worksheet 4</span>
           <h3 class="sheet-title">My Home</h3>
           <p class="sheet-text">Rooms, and where things belong.</p>
           <a class="button btn-download" href="../downloads/E-HO-01_My_Home.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/E-FV-01.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: fruits and vegetables">
-          <span class="sheet-code">E-FV-01</span>
+          <span class="sheet-code">Worksheet 5</span>
           <h3 class="sheet-title">Fruits and Vegetables</h3>
           <p class="sheet-text">Sort them into the right basket.</p>
           <a class="button btn-download" href="../downloads/E-FV-01_Fruits_and_Vegetables.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/E-AN-01.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: animal sounds">
-          <span class="sheet-code">E-AN-01</span>
+          <span class="sheet-code">Worksheet 6</span>
           <h3 class="sheet-title">Animals and Their Sounds</h3>
           <p class="sheet-text">Make the sound, then match.</p>
           <a class="button btn-download" href="../downloads/E-AN-01_Animals_and_Their_Sounds.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/E-AN-02.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: farm animals">
-          <span class="sheet-code">E-AN-02</span>
+          <span class="sheet-code">Worksheet 7</span>
           <h3 class="sheet-title">Farm Animals</h3>
           <p class="sheet-text">Names, sounds and counting.</p>
           <a class="button btn-download" href="../downloads/E-AN-02_Farm_Animals.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/E-AN-03.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: animal homes">
-          <span class="sheet-code">E-AN-03</span>
+          <span class="sheet-code">Worksheet 8</span>
           <h3 class="sheet-title">Animal Homes</h3>
           <p class="sheet-text">Nest, burrow, kennel, beehive.</p>
           <a class="button btn-download" href="../downloads/E-AN-03_Animal_Homes.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/E-AN-04.webp" width="480" height="679" loading="lazy" alt="EVS worksheet: farm animals and their homes">
-          <span class="sheet-code">E-AN-04</span>
+          <span class="sheet-code">Worksheet 9</span>
           <h3 class="sheet-title">Farm Animals and Their Homes</h3>
           <p class="sheet-text">Cowshed, coop, stable, pond, pen.</p>
           <a class="button btn-download" href="../downloads/E-AN-04_Farm_Animals_and_Their_Homes.pdf" download>Download PDF</a>
@@ -351,28 +301,28 @@
       <ul class="sheet-grid">
         <li class="sheet-card">
           <img src="../images/worksheets/L-FS-01.webp" width="480" height="679" loading="lazy" alt="Diwali I Spy worksheet for LKG: find, count and write the number">
-          <span class="sheet-code">L-FS-01</span>
+          <span class="sheet-code">Worksheet 1</span>
           <h3 class="sheet-title">Diwali I Spy</h3>
           <p class="sheet-text">Find each Diwali picture, count it and write how many.</p>
           <a class="button btn-download" href="../downloads/L-FS-01_Diwali_I_Spy.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/L-FS-02.webp" width="480" height="679" loading="lazy" alt="Diwali rangoli worksheet: colour the other half to match">
-          <span class="sheet-code">L-FS-02</span>
+          <span class="sheet-code">Worksheet 2</span>
           <h3 class="sheet-title">Complete the Rangoli</h3>
           <p class="sheet-text">Colour the white half to match the coloured half.</p>
           <a class="button btn-download" href="../downloads/L-FS-02_Complete_the_Rangoli.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/L-FS-03.webp" width="480" height="679" loading="lazy" alt="Diwali shadow matching worksheet: diya, sparkler, ladoo, gift and lantern">
-          <span class="sheet-code">L-FS-03</span>
+          <span class="sheet-code">Worksheet 3</span>
           <h3 class="sheet-title">Diwali Shadow Matching</h3>
           <p class="sheet-text">Draw a line from each picture to its shadow.</p>
           <a class="button btn-download" href="../downloads/L-FS-03_Diwali_Shadow_Matching.pdf" download>Download PDF</a>
         </li>
         <li class="sheet-card">
           <img src="../images/worksheets/L-FS-05.webp" width="480" height="679" loading="lazy" alt="Diwali dot to dot worksheet: join 1 to 10 to make a diya">
-          <span class="sheet-code">L-FS-05</span>
+          <span class="sheet-code">Worksheet 4</span>
           <h3 class="sheet-title">Join the Dots: Diya</h3>
           <p class="sheet-text">Join the dots 1 to 10 to make a diya, then colour it.</p>
           <a class="button btn-download" href="../downloads/L-FS-05_Join_the_Dots_Diya.pdf" download>Download PDF</a>

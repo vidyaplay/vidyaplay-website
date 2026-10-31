@@ -41,8 +41,13 @@
     .mini-card img { width: 100%; height: auto; border-radius: 8px; border: 1px solid #E4EAF1; }
     .mini-card h3 { margin: 8px 0 6px; font-size: 1.1rem; color: var(--navy); }
     .mini-card h3 a { color: inherit; text-decoration: none; }
-    .mini-card .mini-links { display: flex; flex-direction: column; gap: 6px; font-size: .92rem; }
-    .mini-card .mini-links a { color: var(--blue); font-weight: 700; }
+    .mini-card .mini-links { display: flex; flex-direction: column; gap: 6px; font-size: .9rem; }
+    .mini-card .mini-links a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 6px 8px;
+      border-radius: 10px; font-weight: 700; text-decoration: none; line-height: 1.2; }
+    .mini-card .mini-links a:first-child { background: var(--blue); color: #fff; }
+    .mini-card .mini-links a:last-child { background: #E6F4EA; color: #1E6B36; border: 2px solid #BFE3C8; }
+    .alpha-strip .alpha-letter { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .soon-note { margin: 6px 0 0; color: #5B6B7D; font-size: .95rem; }
   </style>
 
   <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"LKG","item":"https://vidyaplay.in/lkg/"},{"@type":"ListItem","position":3,"name":"LKG English Worksheets","item":"https://vidyaplay.in/lkg/english/"}]}</script>
@@ -104,6 +109,7 @@
       <a class="alpha-letter" href="letter-a/">A</a> <a class="alpha-letter" href="letter-b/">B</a> <a class="alpha-letter" href="letter-c/">C</a> <a class="alpha-letter" href="letter-d/">D</a> <a class="alpha-letter" href="letter-e/">E</a> <a class="alpha-letter" href="letter-f/">F</a> <a class="alpha-letter" href="letter-g/">G</a> <a class="alpha-letter" href="letter-h/">H</a> <a class="alpha-letter" href="letter-i/">I</a> <a class="alpha-letter" href="letter-j/">J</a> <a class="alpha-letter" href="letter-k/">K</a> <a class="alpha-letter" href="letter-l/">L</a> <span class="alpha-letter alpha-soon" title="Coming soon">M</span> <span class="alpha-letter alpha-soon" title="Coming soon">N</span> <span class="alpha-letter alpha-soon" title="Coming soon">O</span> <span class="alpha-letter alpha-soon" title="Coming soon">P</span> <span class="alpha-letter alpha-soon" title="Coming soon">Q</span> <span class="alpha-letter alpha-soon" title="Coming soon">R</span> <span class="alpha-letter alpha-soon" title="Coming soon">S</span> <span class="alpha-letter alpha-soon" title="Coming soon">T</span> <span class="alpha-letter alpha-soon" title="Coming soon">U</span> <span class="alpha-letter alpha-soon" title="Coming soon">V</span> <span class="alpha-letter alpha-soon" title="Coming soon">W</span> <span class="alpha-letter alpha-soon" title="Coming soon">X</span> <span class="alpha-letter alpha-soon" title="Coming soon">Y</span> <span class="alpha-letter alpha-soon" title="Coming soon">Z</span>
     </nav>
 
+      <p class="soon-note">Pale letters are coming soon: a new letter every week.</p>
       <ul class="mini-grid">
         <li class="mini-card">
           <a href="letter-a/"><img src="../../images/worksheets/L-EN-A1.webp" width="480" height="679" loading="lazy" alt="Letter A worksheets preview"></a>
@@ -177,7 +183,7 @@
           <span class="sheet-code">6 worksheets + guide + tracker</span>
           <h3 class="sheet-title">A to E Revision</h3>
           <p class="sheet-text">Missing letters, first sounds, writing and detective games for A to E.</p>
-          <a class="button btn-blue" href="a-to-e-revision/">See the A to E revision</a>
+          <a class="button btn-blue" href="a-to-e-revision/">See the worksheets</a>
           <a class="button btn-download letter-pack" href="../../downloads/VidyaPlay_LKG_A_to_E_Revision_Pack.pdf" download>Download the pack (PDF)</a>
         </li>
       </ul>
@@ -192,7 +198,7 @@
           <span class="sheet-code">5 worksheets</span>
           <h3 class="sheet-title">Action Words</h3>
           <p class="sheet-text">Run, jump, clap, sing: do it, say it, trace it, match it.</p>
-          <a class="button btn-blue" href="action-words/">See the action words worksheets</a>
+          <a class="button btn-blue" href="action-words/">See the worksheets</a>
           <a class="button btn-download letter-pack" href="../../downloads/VidyaPlay_LKG_Action_Words_Pack.pdf" download>Download all 5 (PDF)</a>
         </li>
       </ul>
