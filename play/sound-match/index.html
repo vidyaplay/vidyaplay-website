@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sound Match: Letter Sounds Game for LKG Kids | VidyaPlay</title>
+  <meta name="description" content="Free letter sounds game for LKG kids: listen to the sound and tap the picture that starts with it. Letters A to M, works on phones, no sign-up.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=5">
+  <link rel="canonical" href="https://vidyaplay.in/play/sound-match/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Sound Match: Letter Sounds Game for LKG Kids | VidyaPlay">
+  <meta property="og:description" content="Free letter sounds game for LKG kids: listen to the sound and tap the picture that starts with it. Letters A to M, works on phones, no sign-up.">
+  <meta property="og:url" content="https://vidyaplay.in/play/sound-match/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    /* ===== Quiz (only used on quiz pages) ===== */
+    .quiz-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 18px;
+      border-radius: 24px; background: #EEF7EF; text-align: center; }
+    .quiz-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 8px; }
+    .quiz-count { margin: 0; font-size: 17px; font-weight: 700; color: var(--navy); }
+    .stars { display: flex; gap: 3px; }
+    .stars svg { width: 26px; height: 26px; }
+    .star-off { fill: #FFFFFF; stroke: #C3CAD8; stroke-width: 2; }
+    .star-on { fill: #FFC107; stroke: #D98E00; stroke-width: 2.5; }
+    .stars svg.pop { animation: pop 0.4s ease-out; }
+    .quiz-pic { margin: 4px 0 6px; min-height: 40px; }
+    .show { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; }
+    .grp { display: grid; gap: 4px; justify-content: center; }
+    .it { width: var(--sz); height: var(--sz); display: flex; align-items: center; justify-content: center; }
+    .it img, .it svg { width: 100%; height: 100%; object-fit: contain; }
+    .it.tx { font-size: calc(var(--sz) * 0.7); font-weight: 800; color: var(--navy); background: #FFFFFF;
+      border: 3px solid #D9E1F0; border-radius: 12px; line-height: 1; }
+    .it.qm { font-size: calc(var(--sz) * 0.7); font-weight: 800; color: var(--orange); border: 3px dashed var(--orange);
+      border-radius: 12px; background: #FFFFFF; line-height: 1; }
+    .quiz-q { margin: 6px 4px 14px; font-size: 26px; font-weight: 800; line-height: 1.15; color: var(--navy); text-wrap: balance; }
+    .choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 2px; }
+    .choices.list { grid-template-columns: 1fr; }
+    .choice { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      min-height: 96px; padding: 8px 4px; border: 3px solid #D9E1F0; border-radius: 18px; background: #FFFFFF;
+      font-family: inherit; font-size: 44px; font-weight: 800; line-height: 1; color: var(--navy);
+      cursor: pointer; touch-action: manipulation; }
+    .list .choice { min-height: 64px; font-size: 22px; line-height: 1.15; padding: 10px 12px; }
+    .choice:hover { border-color: var(--blue); }
+    .choice:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .choice img, .choice svg { height: 64px; width: 64px; object-fit: contain; }
+    .choice .t3 { font-size: 36px; } .choice .t4 { font-size: 27px; }
+    .choice .word { font-size: 22px; line-height: 1.1; }
+    .choice .word.w2 { font-size: 17px; } .choice .word.w3 { font-size: 15px; }
+    .choice.right { border-color: var(--green); background: #E3F5E8; animation: pop 0.4s ease-out; }
+    .choice.wrong { border-color: #E3B2BD; background: #F6ECEE; color: #9AA3B2; animation: wiggle 0.45s ease-in-out; }
+    .choice:disabled { cursor: default; }
+    .choice:disabled:not(.right):not(.wrong) { opacity: 0.55; }
+    .say { min-height: 50px; margin: 14px 4px 6px; font-size: 20px; font-weight: 700; color: var(--navy); line-height: 1.25; }
+    .say.good { color: #1D7A37; }
+    .say.try { color: #B2402F; }
+    .next-wrap { min-height: 52px; }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .end { padding: 8px 4px 4px; }
+    .end[hidden], .quiz-body[hidden], .quiz-pic[hidden], .btn-play[hidden] { display: none; }
+    .end .stars { justify-content: center; margin: 10px 0; }
+    .end .stars svg { width: 44px; height: 44px; }
+    .end-big { margin: 6px 0 0; font-size: 34px; font-weight: 800; line-height: 1.1; color: var(--green); text-wrap: balance; }
+    .end-text { margin: 4px 0 14px; font-size: 20px; color: var(--navy); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .btn-print { background: var(--green); }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    .voice-row { display: flex; justify-content: center; gap: 8px; margin: 0 0 6px; }
+    .voice-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 16px; border: 0; border-radius: 14px;
+      background: var(--blue); color: #FFFFFF; font-family: inherit; font-size: 17px; font-weight: 800; cursor: pointer; }
+    .voice-btn svg { width: 22px; height: 22px; }
+    .voice-btn.quiet { background: #FFFFFF; color: var(--navy); border: 2px solid #D9E1F0; font-size: 15px; font-weight: 700; }
+    .voice-btn.quiet[aria-pressed="true"] { color: #9AA3B2; }
+    .voice-btn:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .voice-btn.pulse { animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(30, 91, 184, 0.45); } 50% { box-shadow: 0 0 0 9px rgba(30, 91, 184, 0); } }
+    .choice { position: relative; }
+    .kb { display: none; position: absolute; top: 5px; left: 7px; min-width: 20px; padding: 1px 5px; border-radius: 6px; background: #EEF1F7;
+      font-size: 13px; font-weight: 800; line-height: 1.3; color: #5B6478; }
+    .kbd-hint { display: none; max-width: 520px; margin: 0 auto 14px; text-align: center; font-size: 15px; color: #5B6478; }
+    .kbd-hint kbd, .kbd-hint-k { padding: 1px 7px; border: 1px solid #C3CAD8; border-bottom-width: 2px; border-radius: 6px; background: #FFFFFF;
+      font: inherit; font-weight: 800; color: var(--navy); }
+    @media (hover: hover) and (pointer: fine) { .kb { display: block; } .kbd-hint { display: block; } }
+    @keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.12); } 100% { transform: scale(1); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-4deg); } 40% { transform: rotate(3deg); } 60% { transform: rotate(-2deg); } }
+    @media (max-width: 380px) {
+      .quiz-q { font-size: 22px; }
+      .choice { font-size: 38px; min-height: 88px; }
+      .choice .t3 { font-size: 32px; } .choice .t4 { font-size: 24px; }
+      .choice .word { font-size: 18px; } .choice .word.w2 { font-size: 15px; } .choice .word.w3 { font-size: 13px; }
+      .choice img, .choice svg { height: 52px; width: 52px; }
+      .list .choice { font-size: 19px; }
+      .stars svg { width: 22px; height: 22px; }
+    }
+    @media (max-width: 340px) {
+      .choices { gap: 6px; margin: 0; }
+      .choice { padding: 6px 2px; border-width: 2px; }
+      .choice .word.w2 { font-size: 13px; } .choice .word.w3 { font-size: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .choice, .stars svg, .voice-btn { animation: none !important; } }
+    .big-letter { display: inline-flex; align-items: baseline; justify-content: center; gap: 10px; margin: 6px auto 4px; padding: 6px 26px;
+      border-radius: 22px; background: #FFFFFF; border: 4px solid #D9E1F0; font-size: 92px; font-weight: 800; line-height: 1.05; color: var(--navy); }
+    .big-letter small { font-size: 70px; color: var(--blue); }
+    .choice img { height: 84px; width: 84px; }
+    @media (max-width: 380px) { .big-letter { font-size: 76px; } .big-letter small { font-size: 58px; } .choice img { height: 66px; width: 66px; } }
+  </style>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Sound Match: Letters A to M","item":"https://vidyaplay.in/play/sound-match/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 10</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Sound Match</span>
+    </nav>
+
+    <h1 class="page-title">Sound Match: Letters A to M</h1>
+    <p class="facts">LKG English · Letter sounds · Ages 3.5 to 5</p>
+
+    <section class="quiz-card" aria-label="Sound Match game">
+      <div class="quiz-body" id="body">
+        <div class="quiz-top">
+          <p class="quiz-count" id="count" aria-live="polite"></p>
+          <div class="stars" id="stars" role="img" aria-label="Stars"></div>
+        </div>
+        <div class="voice-row">
+          <button class="voice-btn pulse" id="hear" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Listen</button>
+          <button class="voice-btn quiet" id="mute" type="button" aria-pressed="false"><span id="mutetxt">Sound on</span></button>
+        </div>
+        <div class="big-letter" id="letter" aria-hidden="true"></div>
+        <h2 class="quiz-q" id="q"></h2>
+        <div class="choices" id="choices" role="group" aria-labelledby="q"></div>
+        <p class="say" id="say" aria-live="polite"></p>
+        <div class="next-wrap"><button class="button btn-play" id="next" type="button" hidden>Next</button></div>
+      </div>
+      <div class="end" id="end" hidden>
+        <div class="stars" id="endstars" role="img"></div>
+        <p class="end-big" id="endbig"></p>
+        <p class="end-text" id="endtext"></p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <p class="kbd-hint">On a computer: press <kbd>1</kbd>, <kbd>2</kbd> or <kbd>3</kbd> to answer, <kbd>R</kbd> to hear it again, <kbd>M</kbd> for sound on or off.</p>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../lkg/english/">Letters A to Z worksheets</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> Tap Listen and say the sound together, then let your child choose. Each game asks 5 letters, so it is short. Nothing is saved or collected, and a wrong tap simply lets your child try again. Voice made with AI.
+    </p>
+
+  </main>
+
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+
+  <script>
+  (function () {
+    var DATA = {"letters": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"], "words": ["apple", "ball", "cat", "dog", "egg", "fish", "goat", "hat", "igloo", "jam", "kite", "lion", "mango"], "same": {"C": "K", "K": "C"}};
+    var A = "../../audio/sound-match/", P = "../../images/sound-match/", TOTAL = 5;
+    var $ = function (id) { return document.getElementById(id); };
+    var STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="%C" d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.2 1.2-6.5L2.5 9.5l6.6-.9z" stroke-linejoin="round"/></svg>';
+    var rounds = [], i = 0, score = 0, firstTry = true, done = false, acted = false, soundOn = true;
+    try { if (localStorage.getItem("vp_quiz_sound") === "off") soundOn = false; } catch (e) {}
+    var cache = {}, run = 0, current = null;
+    function clip(p) { if (!cache[p]) { var a = new Audio(); a.preload = "auto"; a.src = p; cache[p] = a; } return cache[p]; }
+    function stopVoice() { run++; if (current) { try { current.pause(); current.currentTime = 0; } catch (e) {} current = null; } }
+    function speak(list) {
+      stopVoice(); if (!soundOn || !list.length) return;
+      var id = run, k = 0;
+      (function next() {
+        if (id !== run || k >= list.length) return;
+        var a = clip(list[k++]); current = a;
+        try { a.currentTime = 0; } catch (e) {}
+        a.onended = function () { setTimeout(next, 150); }; a.onerror = function () { setTimeout(next, 0); };
+        var pr = a.play(); if (pr && pr.catch) pr.catch(function () {});
+      })();
+    }
+    function setSound(on) {
+      soundOn = on; if (!on) stopVoice();
+      $("mute").setAttribute("aria-pressed", on ? "false" : "true"); $("mutetxt").textContent = on ? "Sound on" : "Sound off";
+      try { localStorage.setItem("vp_quiz_sound", on ? "on" : "off"); } catch (e) {}
+    }
+    ["pointerdown", "keydown", "touchstart"].forEach(function (ev) { document.addEventListener(ev, function () { acted = true; }, true); });
+    function shuffle(a) { a = a.slice(); for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; } return a; }
+    function drawStars(el, n, popLast) {
+      var h = ""; for (var k = 0; k < TOTAL; k++) h += STAR.replace("%C", k < n ? "star-on" : "star-off");
+      el.innerHTML = h; el.setAttribute("aria-label", n + " of " + TOTAL + " stars");
+      if (popLast && n > 0) el.children[n - 1].setAttribute("class", "pop");
+    }
+    function newGame() {
+      var L = DATA.letters;
+      rounds = shuffle(L.map(function (_, k) { return k; })).slice(0, TOTAL).map(function (k) {
+        var wrong = shuffle(L.map(function (_, j) { return j; }).filter(function (j) { return j !== k && L[j] !== DATA.same[L[k]]; })).slice(0, 2);
+        return { k: k, opts: shuffle([k].concat(wrong)) };
+      });
+      i = 0; score = 0;
+    }
+    function readQuestion() { speak([A + "q-" + DATA.letters[rounds[i].k].toLowerCase() + ".mp3"]); }
+    function show() {
+      var r = rounds[i], L = DATA.letters[r.k]; firstTry = true; done = false;
+      $("count").textContent = "Question " + (i + 1) + " of " + TOTAL; drawStars($("stars"), score, false);
+      $("letter").innerHTML = L + " <small>" + L.toLowerCase() + "</small>";
+      $("q").textContent = "Which one starts with " + L + "?";
+      $("say").textContent = ""; $("say").className = "say";
+      $("next").hidden = true; $("next").textContent = (i === TOTAL - 1) ? "See my stars" : "Next";
+      var box = $("choices"); box.innerHTML = "";
+      r.opts.forEach(function (j, pos) {
+        var w = DATA.words[j], b = document.createElement("button");
+        b.type = "button"; b.className = "choice"; b.setAttribute("data-ok", j === r.k ? "1" : "0"); b.setAttribute("data-w", w);
+        b.setAttribute("aria-label", w);
+        b.innerHTML = '<span class="kb" aria-hidden="true">' + (pos + 1) + '</span>';      // picture only: the child listens, no written word to copy
+        var im = document.createElement("img"); im.alt = ""; im.width = 84; im.height = 84; im.src = P + w + ".webp"; b.appendChild(im);
+        b.addEventListener("click", function () { pick(b); }); box.appendChild(b);
+        clip(A + "w-" + w + ".mp3");
+      });
+      if (acted) readQuestion();
+    }
+    function pick(b) {
+      if (done || b.disabled) return;
+      var w = A + "w-" + b.getAttribute("data-w") + ".mp3", say = $("say");
+      if (b.getAttribute("data-ok") === "1") {
+        done = true; b.classList.add("right");
+        if (firstTry) { score++; drawStars($("stars"), score, true); }
+        Array.prototype.forEach.call($("choices").children, function (x) { x.disabled = true; });
+        var last = i === TOTAL - 1, L = DATA.letters[rounds[i].k];
+        say.className = "say good"; say.textContent = (last ? "Yes! Well done! " : "Super! ") + b.getAttribute("data-w").replace(/^./, function (c) { return c.toUpperCase(); }) + " starts with " + L + ".";
+        $("next").hidden = false; $("next").focus();
+        speak([w, A + (last ? "yes.mp3" : "super.mp3")]);
+      } else {
+        firstTry = false; b.classList.add("wrong"); b.disabled = true;
+        say.className = "say try"; say.textContent = "Nice try! Look again.";
+        speak([w, A + "try.mp3"]);
+      }
+    }
+    function finish() {
+      $("body").hidden = true; $("end").hidden = false; drawStars($("endstars"), score, false);
+      var all = score === TOTAL;
+      $("endbig").textContent = all ? "All " + TOTAL + " stars!" : "You got " + score + " of " + TOTAL + " stars!";
+      $("endtext").textContent = all ? "Great job! You know your letter sounds." : "Good try! Play again and collect more stars.";
+      $("again").focus(); speak([A + (all ? "all.mp3" : "again.mp3")]);
+    }
+    $("next").addEventListener("click", function () { if (i === TOTAL - 1) finish(); else { i++; show(); } });
+    $("again").addEventListener("click", function () { newGame(); $("end").hidden = true; $("body").hidden = false; show(); });
+    $("hear").addEventListener("click", function () { $("hear").classList.remove("pulse"); if (!soundOn) setSound(true); readQuestion(); });
+    $("mute").addEventListener("click", function () { setSound(!soundOn); });
+    document.addEventListener("keydown", function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      var k = e.key;
+      if (k === "1" || k === "2" || k === "3") { var b = !$("body").hidden && $("choices").children[+k - 1]; if (b && !b.disabled && !done) { b.click(); e.preventDefault(); } }
+      else if (k === "r" || k === "R") { if (!$("body").hidden) { $("hear").classList.remove("pulse"); readQuestion(); } }
+      else if (k === "m" || k === "M") { setSound(!soundOn); }
+      else if ((k === "Enter" || k === " ") && document.activeElement === document.body) {
+        if (!$("body").hidden && !$("next").hidden) { $("next").click(); e.preventDefault(); }
+        else if (!$("end").hidden) { $("again").click(); e.preventDefault(); }
+      }
+    });
+    setSound(soundOn); newGame(); show();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+</body>
+</html>
