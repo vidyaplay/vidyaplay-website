@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colour Sort: Red and Yellow Game for Nursery Kids | VidyaPlay</title>
+  <meta name="description" content="Free colour sorting game for Nursery kids: put each picture in the red or the yellow basket. Big pictures, works on phones, no sign-up.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=5">
+  <link rel="canonical" href="https://vidyaplay.in/play/colour-sort/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Colour Sort: Red and Yellow Game for Nursery Kids | VidyaPlay">
+  <meta property="og:description" content="Free colour sorting game for Nursery kids: put each picture in the red or the yellow basket. Big pictures, works on phones, no sign-up.">
+  <meta property="og:url" content="https://vidyaplay.in/play/colour-sort/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    /* ===== Colour Sort game ===== */
+    .sort-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 18px;
+      border-radius: 24px; background: #FFF8E6; text-align: center; }
+    .sort-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .sort-prog { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+    .sort-count { margin: 0; font-size: 17px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .dots { display: flex; gap: 5px; }
+    .dots i { width: 12px; height: 12px; border-radius: 50%; background: #FFFFFF; border: 2px solid #C3CAD8; }
+    .dots i.on { background: var(--green); border-color: #1D7A37; }
+    .sort-q { margin: 2px 4px 8px; font-size: 28px; font-weight: 800; line-height: 1.15; color: var(--navy); }
+    .sort-q .r { color: #D62828; } .sort-q .y { color: #B88400; }
+    .stage { position: relative; height: 178px; display: flex; align-items: center; justify-content: center; }
+    .pic { width: 150px; height: 150px; padding: 10px; border-radius: 26px; background: #FFFFFF; border: 3px solid #E6DCC2;
+      box-shadow: 0 4px 0 #E6DCC2; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
+      transition: transform 0.25s ease, opacity 0.25s ease; }
+    .pic { position: relative; z-index: 5; }
+    .pic.dragging { z-index: 20; cursor: grabbing; transition: none; box-shadow: 0 10px 18px rgba(19, 35, 74, 0.18); }
+    .pic.gone { opacity: 0; transform: scale(0.4); }
+    .pic.wiggle { animation: wiggle 0.45s ease-in-out; }
+    .pic img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+    .word { margin: 4px 0 6px; min-height: 22px; font-size: 17px; font-weight: 700; color: #5B6478; }
+    .baskets { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 2px; }
+    .basket { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 150px;
+      padding: 10px 6px 8px; border: 3px solid #D9E1F0; border-radius: 22px; background: #FFFFFF; cursor: pointer;
+      font-family: inherit; touch-action: manipulation; }
+    .basket:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .basket.over { border-color: var(--blue); background: #EEF4FF; }
+    .basket.happy { animation: pop 0.45s ease-out; border-color: var(--green); }
+    .basket.shake { animation: shake 0.45s ease-in-out; border-color: #E3B2BD; }
+    .basket.hint { border-color: var(--green); box-shadow: 0 0 0 5px rgba(46, 158, 79, 0.25); }
+    .basket svg { width: 112px; height: 84px; }
+    .basket .lbl { display: inline-flex; align-items: center; gap: 6px; font-size: 22px; font-weight: 800; line-height: 1; }
+    .basket .lbl b { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #2C3550; }
+    .b-red .lbl { color: #D62828; } .b-red .lbl b { background: #E0393E; }
+    .b-yellow .lbl { color: #B88400; } .b-yellow .lbl b { background: #FFD21F; }
+    .inside { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; min-height: 30px; max-width: 150px; }
+    .inside img { width: 28px; height: 28px; object-fit: contain; animation: pop 0.4s ease-out; }
+    .kb { display: none; position: absolute; top: 6px; left: 9px; min-width: 20px; padding: 1px 5px; border-radius: 6px;
+      background: #EEF1F7; font-size: 13px; font-weight: 800; line-height: 1.3; color: #5B6478; }
+    .say { min-height: 52px; margin: 12px 4px 2px; font-size: 20px; font-weight: 700; color: var(--navy); line-height: 1.25; }
+    .say.good { color: #1D7A37; } .say.try { color: #B2402F; }
+        .sound-btn { min-height: 44px; padding: 6px 14px; border: 2px solid #D9E1F0; border-radius: 14px; background: #FFFFFF;
+      font-family: inherit; font-size: 15px; font-weight: 700; color: var(--navy); cursor: pointer; white-space: nowrap; }
+    .sound-btn[aria-pressed="true"] { color: #9AA3B2; }
+    .sound-btn:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .end { padding: 8px 4px 4px; }
+    .end[hidden], .sort-body[hidden] { display: none; }
+    .end-stars { display: flex; justify-content: center; gap: 6px; margin: 8px 0; }
+    .end-stars svg { width: 50px; height: 50px; animation: pop 0.5s ease-out; }
+    .end-big { margin: 6px 0 0; font-size: 34px; font-weight: 800; line-height: 1.1; color: var(--green); }
+    .end-text { margin: 4px 0 14px; font-size: 20px; color: var(--navy); }
+    .end-baskets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 14px; }
+    .end-baskets div { padding: 8px; border-radius: 16px; background: #FFFFFF; }
+    .end-baskets .inside { max-width: none; }
+    .end-baskets .inside img { width: 42px; height: 42px; }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .btn-print { background: var(--green); }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    .kbd-hint { display: none; max-width: 520px; margin: 0 auto 14px; text-align: center; font-size: 15px; color: #5B6478; }
+    .kbd-hint kbd { padding: 1px 7px; border: 1px solid #C3CAD8; border-bottom-width: 2px; border-radius: 6px; background: #FFFFFF;
+      font: inherit; font-weight: 800; color: var(--navy); }
+    @media (hover: hover) and (pointer: fine) { .kb { display: block; } .kbd-hint { display: block; } }
+    @keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 50% { transform: rotate(5deg); } 75% { transform: rotate(-3deg); } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
+    @media (max-width: 380px) {
+      .sort-q { font-size: 24px; }
+      .pic { width: 128px; height: 128px; } .stage { height: 152px; }
+      .basket svg { width: 92px; height: 70px; } .basket .lbl { font-size: 20px; }
+    }
+    /* short screens (small phones): the whole game fits once the card is scrolled into view */
+    @media (max-height: 760px) {
+      .sort-card { padding-top: 10px; }
+      .sort-q { font-size: 23px; margin: 0 4px 4px; }
+      .pic { width: 112px; height: 112px; padding: 8px; } .stage { height: 126px; }
+      .word { margin: 2px 0 4px; }
+      .basket { min-height: 118px; padding: 8px 6px 6px; } .basket svg { width: 84px; height: 62px; }
+      .say { min-height: 46px; margin-top: 8px; font-size: 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .pic, .basket, .inside img, .end-stars svg { animation: none !important; transition: none !important; } }
+  </style>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Colour Sort: Red and Yellow","item":"https://vidyaplay.in/play/colour-sort/"}]}</script>
+</head>
+<body>
+
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to M (more coming)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 10</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+
+  
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Colour Sort</span>
+    </nav>
+
+    <h1 class="page-title">Colour Sort: Red and Yellow</h1>
+    <p class="facts">Nursery · Colours · Ages 2.5 to 4</p>
+
+    <section class="sort-card" aria-label="Colour Sort game">
+      <div class="sort-body" id="body">
+        <div class="sort-top">
+          <div class="sort-prog">
+            <p class="sort-count" id="count" aria-live="polite"></p>
+            <div class="dots" id="dots" aria-hidden="true"></div>
+          </div>
+          <button class="sound-btn" id="mute" type="button"><span id="mutetxt">Sound on</span></button>
+        </div>
+        <h2 class="sort-q" id="q"><span class="r">Red</span> or <span class="y">yellow</span>?</h2>
+        <div class="stage"><div class="pic" id="pic" role="img"><img id="picimg" alt="" width="130" height="130"></div></div>
+        <p class="word" id="word"></p>
+        <div class="baskets" role="group" aria-labelledby="q">
+          <button class="basket b-red" id="b-red" type="button" data-c="red" aria-label="Red basket">
+            <span class="kb" aria-hidden="true">1</span>
+            <svg viewBox="0 0 120 90" aria-hidden="true"><path d="M30 34 C30 6 90 6 90 34" fill="none" stroke="#8E1B1F" stroke-width="6" stroke-linecap="round"/><path d="M12 34 H108 L98 84 H22 Z" fill="#E0393E" stroke="#2C3550" stroke-width="3" stroke-linejoin="round"/><path d="M16 52 H104 M19 68 H101" stroke="#8E1B1F" stroke-width="3" opacity="0.55"/><path d="M40 34 L44 84 M60 34 V84 M80 34 L76 84" stroke="#8E1B1F" stroke-width="3" opacity="0.55"/><rect x="8" y="28" width="104" height="10" rx="5" fill="#E0393E" stroke="#2C3550" stroke-width="3"/></svg>
+            <span class="lbl"><b aria-hidden="true"></b>red</span>
+            <span class="inside" id="in-red" aria-hidden="true"></span>
+          </button>
+          <button class="basket b-yellow" id="b-yellow" type="button" data-c="yellow" aria-label="Yellow basket">
+            <span class="kb" aria-hidden="true">2</span>
+            <svg viewBox="0 0 120 90" aria-hidden="true"><path d="M30 34 C30 6 90 6 90 34" fill="none" stroke="#B88400" stroke-width="6" stroke-linecap="round"/><path d="M12 34 H108 L98 84 H22 Z" fill="#FFD21F" stroke="#2C3550" stroke-width="3" stroke-linejoin="round"/><path d="M16 52 H104 M19 68 H101" stroke="#B88400" stroke-width="3" opacity="0.55"/><path d="M40 34 L44 84 M60 34 V84 M80 34 L76 84" stroke="#B88400" stroke-width="3" opacity="0.55"/><rect x="8" y="28" width="104" height="10" rx="5" fill="#FFD21F" stroke="#2C3550" stroke-width="3"/></svg>
+            <span class="lbl"><b aria-hidden="true"></b>yellow</span>
+            <span class="inside" id="in-yellow" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="say" id="say" aria-live="polite"></p>
+      </div>
+      <div class="end" id="end" hidden>
+        <div class="end-stars" id="endstars" aria-hidden="true"></div>
+        <p class="end-big">All sorted!</p>
+        <p class="end-text" id="endtext"></p>
+        <div class="end-baskets">
+          <div><span class="lbl" style="color:#D62828;font-weight:800">red</span><div class="inside" id="sum-red"></div></div>
+          <div><span class="lbl" style="color:#B88400;font-weight:800">yellow</span><div class="inside" id="sum-yellow"></div></div>
+        </div>
+        <button class="button btn-play" id="again" type="button" aria-describedby="endtext">Play again</button>
+      </div>
+    </section>
+
+    <p class="kbd-hint">On a computer: press <kbd>1</kbd> for the red basket or <kbd>2</kbd> for the yellow basket, <kbd>M</kbd> for sound on or off.</p>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../nursery/colours/red/">Red worksheets</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> Say the picture's name and ask, "Is it red or yellow?" Your child taps the basket, or drags the picture into it. A wrong basket simply lets your child try again. Each game has 8 pictures. Nothing is collected; only your Sound on/off choice is remembered on this device.
+    </p>
+
+  </main>
+
+
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+
+  
+  <script>
+  (function () {
+    var DATA = {"per_colour": 4, "red": [{"file": "apple", "name": "apple"}, {"file": "strawberry", "name": "strawberry"}, {"file": "rose", "name": "rose"}, {"file": "redballoon", "name": "balloon"}, {"file": "chilli", "name": "chilli"}, {"file": "crab", "name": "crab"}, {"file": "car", "name": "car"}, {"file": "heart", "name": "heart"}, {"file": "shoe", "name": "shoe"}], "yellow": [{"file": "banana", "name": "banana"}, {"file": "sun", "name": "sun"}, {"file": "duck", "name": "duck"}, {"file": "bus", "name": "bus"}, {"file": "lemon", "name": "lemon"}, {"file": "sunflower", "name": "sunflower"}, {"file": "star", "name": "star"}, {"file": "yellowballoon", "name": "balloon"}, {"file": "umbrella", "name": "umbrella"}, {"file": "chick", "name": "chick"}, {"file": "key", "name": "key"}]};
+    var P = "../../images/colour-sort/", TOTAL = DATA.per_colour * 2;
+    var $ = function (id) { return document.getElementById(id); };
+    var STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.2 1.2-6.5L2.5 9.5l6.6-.9z" fill="#FFC107" stroke="#D98E00" stroke-width="2" stroke-linejoin="round"/></svg>';
+    var items = [], i = 0, busy = false, soundOn = true, actx = null, misses = 0, drag = null;
+    try { if (localStorage.getItem("vp_quiz_sound") === "off") soundOn = false; } catch (e) {}
+
+    // gentle tones made in the browser (no recordings)
+    function tone(freqs, len) {
+      if (!soundOn) return;
+      try {
+        actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+        freqs.forEach(function (f, k) {
+          var o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + k * 0.11;
+          o.type = "sine"; o.frequency.value = f; o.connect(g); g.connect(actx.destination);
+          g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.18, t + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + len); o.start(t); o.stop(t + len + 0.05);
+        });
+      } catch (e) {}
+    }
+    function setSound(on) {
+      soundOn = on; $("mutetxt").textContent = on ? "Sound on" : "Sound off";
+      try { localStorage.setItem("vp_quiz_sound", on ? "on" : "off"); } catch (e) {}
+    }
+    function shuffle(a) { a = a.slice(); for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; } return a; }
+    function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
+
+    function newGame() {
+      var pick = function (c) { return shuffle(DATA[c]).slice(0, DATA.per_colour).map(function (p) { return { p: p, c: c }; }); };
+      items = shuffle(pick("red").concat(pick("yellow")));
+      // never more than 2 of the same colour in a row
+      for (var t = 0; t < 50; t++) {
+        var bad = false;
+        for (var k = 2; k < items.length; k++) if (items[k].c === items[k - 1].c && items[k].c === items[k - 2].c) { bad = true; break; }
+        if (!bad) break; items = shuffle(items);
+      }
+      i = 0; $("in-red").innerHTML = ""; $("in-yellow").innerHTML = "";
+      items.forEach(function (it) { var im = new Image(); im.src = P + it.p.file + ".webp"; });   // preload all 8
+    }
+    function dots() {
+      var h = ""; for (var k = 0; k < TOTAL; k++) h += '<i class="' + (k < i ? "on" : "") + '"></i>';
+      $("dots").innerHTML = h;
+    }
+    function stopDrag() {
+      drag = null; var pc = $("pic"); pc.classList.remove("dragging"); pc.style.transform = "";
+      ["red", "yellow"].forEach(function (k) { $("b-" + k).classList.remove("over"); });
+    }
+    function show() {
+      var it = items[i]; busy = false; misses = 0; stopDrag();
+      $("count").innerHTML = (i + 1) + " of " + TOTAL + '<span class="sr">: ' + it.p.name + "</span>";
+      dots();
+      ["red", "yellow"].forEach(function (c) { $("b-" + c).classList.remove("happy", "shake", "over", "hint"); });
+      var pic = $("pic"); pic.className = "pic"; pic.style.transform = "";
+      pic.setAttribute("aria-label", it.p.name);
+      $("picimg").src = P + it.p.file + ".webp";
+      $("word").textContent = it.p.name;
+      $("say").textContent = ""; $("say").className = "say";
+    }
+    function choose(c) {
+      if (busy || !$("end").hidden) return;
+      var it = items[i], b = $("b-" + c), say = $("say");
+      b.classList.remove("happy", "shake"); void b.offsetWidth;
+      if (c === it.c) {
+        busy = true; stopDrag(); b.classList.remove("hint"); b.classList.add("happy"); tone([660, 880], 0.35);
+        say.className = "say good"; say.textContent = "Yes! The " + it.p.name + " is " + it.c + ".";
+        var im = document.createElement("img"); im.src = P + it.p.file + ".webp"; im.alt = ""; $("in-" + c).appendChild(im);
+        $("pic").classList.add("gone");
+        setTimeout(function () { i++; if (i >= TOTAL) finish(); else show(); }, 1100);
+      } else {
+        b.classList.add("shake"); $("pic").classList.remove("wiggle"); void $("pic").offsetWidth; $("pic").classList.add("wiggle");
+        tone([330], 0.25);
+        say.className = "say try"; say.textContent = "Look again! Is the " + it.p.name + " red or yellow?";
+        misses++; if (misses >= 2) $("b-" + it.c).classList.add("hint");      // after 2 tries, gently show the right basket
+      }
+    }
+    function finish() {
+      $("body").hidden = true; $("end").hidden = false;
+      $("endstars").innerHTML = STAR + STAR + STAR;
+      $("endtext").textContent = "You sorted " + TOTAL + " things into the right baskets.";
+      $("sum-red").innerHTML = $("in-red").innerHTML; $("sum-yellow").innerHTML = $("in-yellow").innerHTML;
+      tone([523, 659, 784, 1047], 0.4); $("again").focus();
+    }
+
+    // tap a basket
+    ["red", "yellow"].forEach(function (c) { $("b-" + c).addEventListener("click", function () { choose(c); }); });
+
+    // or drag the picture onto a basket
+    var pic = $("pic");
+    function basketAt(x, y) {
+      var hit = null;
+      ["red", "yellow"].forEach(function (c) {
+        var r = $("b-" + c).getBoundingClientRect();
+        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) hit = c;
+      });
+      return hit;
+    }
+    function mark(c) { ["red", "yellow"].forEach(function (k) { $("b-" + k).classList.toggle("over", k === c); }); }
+    pic.addEventListener("pointerdown", function (e) {
+      if (busy) return;
+      drag = { x: e.clientX, y: e.clientY, moved: false }; pic.classList.add("dragging");
+      try { pic.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    pic.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true;
+      pic.style.transform = "translate(" + dx + "px," + dy + "px) scale(0.85)";
+      mark(basketAt(e.clientX, e.clientY));
+    });
+    function endDrag(e) {
+      if (!drag) return;
+      var c = drag.moved ? basketAt(e.clientX, e.clientY) : null;
+      var moved = drag.moved;
+      stopDrag();
+      if (c) choose(c);
+      else if (!moved) { pic.classList.remove("wiggle"); void pic.offsetWidth; pic.classList.add("wiggle"); }   // a tap shows it can move
+    }
+    pic.addEventListener("pointerup", endDrag);
+    pic.addEventListener("pointercancel", endDrag);
+
+    $("again").addEventListener("click", function () { newGame(); $("end").hidden = true; $("body").hidden = false; show(); $("b-red").focus(); });
+    $("mute").addEventListener("click", function () { setSound(!soundOn); });
+    document.addEventListener("keydown", function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.target && e.target.closest && e.target.closest(".site-header")) return;          // not while using the menu
+      var k = e.key;
+      if (k === "1") { choose("red"); e.preventDefault(); }
+      else if (k === "2") { choose("yellow"); e.preventDefault(); }
+      else if (k === "m" || k === "M") { setSound(!soundOn); }
+    });
+    setSound(soundOn); newGame(); show();
+    // small screens: bring the whole game into view so both baskets can be seen
+    setTimeout(function () {
+      var r = $("b-red").getBoundingClientRect();
+      if (r.bottom > window.innerHeight) $("body").closest(".sort-card").scrollIntoView({ block: "start" });
+    }, 60);
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+
+</body>
+</html>
