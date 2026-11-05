@@ -25,6 +25,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
   <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Colour Sort","item":"https://vidyaplay.in/play/colour-sort/"}]}</script>
   <style>
     /* ===== Colour Sort game ===== */
     .sort-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 18px;
@@ -121,8 +122,6 @@
     }
     @media (prefers-reduced-motion: reduce) { .pic, .basket, .inside img, .end-stars svg, .voice-btn { animation: none !important; transition: none !important; } }
   </style>
-
-  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Colour Sort: Red and Yellow","item":"https://vidyaplay.in/play/colour-sort/"}]}</script>
 </head>
 <body>
 
@@ -303,8 +302,8 @@
       var h = ""; for (var k = 0; k < TOTAL; k++) h += '<i class="' + (k < i ? "on" : "") + '"></i>';
       $("dots").innerHTML = h;
     }
-    function stopDrag() {
-      drag = null; var pc = $("pic"); pc.classList.remove("dragging"); pc.style.transform = "";
+    function stopDrag(keep) {
+      drag = null; var pc = $("pic"); pc.classList.remove("dragging"); if (!keep) pc.style.transform = "";
       ["red", "yellow"].forEach(function (k) { $("b-" + k).classList.remove("over"); });
     }
     function show() {
@@ -312,22 +311,29 @@
       $("count").innerHTML = (i + 1) + " of " + TOTAL + '<span class="sr">: ' + it.p.name + "</span>";
       dots();
       ["red", "yellow"].forEach(function (c) { $("b-" + c).classList.remove("happy", "shake", "over", "hint"); });
-      var pic = $("pic"); pic.className = "pic"; pic.style.transform = "";
+      var pic = $("pic"), img = $("picimg"), src = P + it.p.file + ".webp";
+      pic.style.transition = "none"; pic.style.transform = ""; pic.style.opacity = "0"; pic.className = "pic";
+      void pic.offsetWidth; pic.style.transition = "";
       pic.setAttribute("aria-label", it.p.name);
-      $("picimg").src = P + it.p.file + ".webp";
+      var shown = false, reveal = function () { if (shown || img.getAttribute("src") !== src) return; shown = true; pic.style.opacity = ""; };
+      img.onload = reveal; img.src = src;
+      if (img.complete) reveal();
+      setTimeout(reveal, 600);                                  // slow line: show it anyway
       $("word").textContent = it.p.name;
       $("say").textContent = ""; $("say").className = "say";
       if (acted) ask();
     }
-    function choose(c) {
+    function choose(c, dropped) {
       if (busy || !$("end").hidden) return;
       var it = items[i], b = $("b-" + c), say = $("say");
       b.classList.remove("happy", "shake"); void b.offsetWidth;
       if (c === it.c) {
-        busy = true; stopDrag(); b.classList.remove("hint"); b.classList.add("happy"); stopVoice(); tone([660, 880], 0.25);
+        busy = true; stopDrag(!!dropped); b.classList.remove("hint"); b.classList.add("happy"); stopVoice(); tone([660, 880], 0.25);
         say.className = "say good"; say.textContent = "Yes! The " + it.p.name + " is " + it.c + ".";
         var im = document.createElement("img"); im.src = P + it.p.file + ".webp"; im.alt = ""; $("in-" + c).appendChild(im);
-        $("pic").classList.add("gone");
+        var pc = $("pic");
+        if (dropped) { pc.style.transform = dropped + " scale(0.3)"; pc.style.opacity = "0"; }   // shrink inside the basket
+        else pc.classList.add("gone");
         var go = function () { i++; if (i >= TOTAL) finish(); else show(); };
         setTimeout(function () { speak([A + "yes-" + c + ".mp3"], go); }, 280);
       } else {
@@ -374,7 +380,8 @@
     function endDrag(e) {
       if (!drag) return;
       var c = drag.moved ? basketAt(e.clientX, e.clientY) : null;
-      var moved = drag.moved;
+      var moved = drag.moved, here = "translate(" + (e.clientX - drag.x) + "px," + (e.clientY - drag.y) + "px)";
+      if (c && !busy && c === items[i].c) { choose(c, here); return; }
       stopDrag();
       if (c) choose(c);
       else if (!moved) { pic.classList.remove("wiggle"); void pic.offsetWidth; pic.classList.add("wiggle"); }   // a tap shows it can move
