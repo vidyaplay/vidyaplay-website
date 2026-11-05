@@ -70,7 +70,18 @@
     .say.good { color: #1D7A37; } .say.try { color: #B2402F; }
         .sound-btn { min-height: 44px; padding: 6px 14px; border: 2px solid #D9E1F0; border-radius: 14px; background: #FFFFFF;
       font-family: inherit; font-size: 15px; font-weight: 700; color: var(--navy); cursor: pointer; white-space: nowrap; }
-    .sound-btn[aria-pressed="true"] { color: #9AA3B2; }
+    .voice-row { display: flex; gap: 6px; }
+    .voice-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 14px; border: 0; border-radius: 14px;
+      background: var(--blue); color: #FFFFFF; font-family: inherit; font-size: 17px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+    .voice-btn svg { width: 22px; height: 22px; }
+    .voice-btn:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .voice-btn.pulse { animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(30, 91, 184, 0.45); } 50% { box-shadow: 0 0 0 9px rgba(30, 91, 184, 0); } }
+    @media (max-width: 420px) {
+      .sort-top { flex-wrap: wrap; row-gap: 8px; }
+      .sort-prog { flex-direction: row; align-items: center; justify-content: space-between; width: 100%; }
+      .voice-row { width: 100%; justify-content: center; }
+    }
     .sound-btn:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
     .end { padding: 8px 4px 4px; }
     .end[hidden], .sort-body[hidden] { display: none; }
@@ -108,7 +119,7 @@
       .basket { min-height: 118px; padding: 8px 6px 6px; } .basket svg { width: 84px; height: 62px; }
       .say { min-height: 46px; margin-top: 8px; font-size: 18px; }
     }
-    @media (prefers-reduced-motion: reduce) { .pic, .basket, .inside img, .end-stars svg { animation: none !important; transition: none !important; } }
+    @media (prefers-reduced-motion: reduce) { .pic, .basket, .inside img, .end-stars svg, .voice-btn { animation: none !important; transition: none !important; } }
   </style>
 
   <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Colour Sort: Red and Yellow","item":"https://vidyaplay.in/play/colour-sort/"}]}</script>
@@ -168,7 +179,10 @@
             <p class="sort-count" id="count" aria-live="polite"></p>
             <div class="dots" id="dots" aria-hidden="true"></div>
           </div>
-          <button class="sound-btn" id="mute" type="button"><span id="mutetxt">Sound on</span></button>
+          <div class="voice-row">
+            <button class="voice-btn pulse" id="hear" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Listen</button>
+            <button class="sound-btn" id="mute" type="button"><span id="mutetxt">Sound on</span></button>
+          </div>
         </div>
         <h2 class="sort-q" id="q"><span class="r">Red</span> or <span class="y">yellow</span>?</h2>
         <div class="stage"><div class="pic" id="pic" role="img"><img id="picimg" alt="" width="130" height="130"></div></div>
@@ -201,7 +215,7 @@
       </div>
     </section>
 
-    <p class="kbd-hint">On a computer: press <kbd>1</kbd> for the red basket or <kbd>2</kbd> for the yellow basket, <kbd>M</kbd> for sound on or off.</p>
+    <p class="kbd-hint">On a computer: press <kbd>1</kbd> for the red basket or <kbd>2</kbd> for the yellow basket, <kbd>R</kbd> to hear it again, <kbd>M</kbd> for sound on or off.</p>
 
     <div class="game-help">
       <div class="buttons">
@@ -211,7 +225,7 @@
     </div>
 
     <p class="parent-note">
-      <strong>For parents:</strong> Say the picture's name and ask, "Is it red or yellow?" Your child taps the basket, or drags the picture into it. A wrong basket simply lets your child try again. Each game has 8 pictures. Nothing is collected; only your Sound on/off choice is remembered on this device.
+      <strong>For parents:</strong> Tap Listen, or say the picture's name and ask, "Is it red or yellow?" Your child taps the basket, or drags the picture into it. A wrong basket simply lets your child try again. Each game has 8 pictures. Nothing is collected; only your Sound on/off choice is remembered on this device. Voice made with AI.
     </p>
 
   </main>
@@ -228,10 +242,29 @@
   <script>
   (function () {
     var DATA = {"per_colour": 4, "red": [{"file": "apple", "name": "apple"}, {"file": "strawberry", "name": "strawberry"}, {"file": "rose", "name": "rose"}, {"file": "redballoon", "name": "balloon"}, {"file": "chilli", "name": "chilli"}, {"file": "crab", "name": "crab"}, {"file": "car", "name": "car"}, {"file": "heart", "name": "heart"}, {"file": "shoe", "name": "shoe"}], "yellow": [{"file": "banana", "name": "banana"}, {"file": "sun", "name": "sun"}, {"file": "duck", "name": "duck"}, {"file": "bus", "name": "bus"}, {"file": "lemon", "name": "lemon"}, {"file": "sunflower", "name": "sunflower"}, {"file": "star", "name": "star"}, {"file": "yellowballoon", "name": "balloon"}, {"file": "umbrella", "name": "umbrella"}, {"file": "chick", "name": "chick"}, {"file": "key", "name": "key"}]};
-    var P = "../../images/colour-sort/", TOTAL = DATA.per_colour * 2;
+    var P = "../../images/colour-sort/", A = "../../audio/colour-sort/", TOTAL = DATA.per_colour * 2;
     var $ = function (id) { return document.getElementById(id); };
     var STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.2 1.2-6.5L2.5 9.5l6.6-.9z" fill="#FFC107" stroke="#D98E00" stroke-width="2" stroke-linejoin="round"/></svg>';
-    var items = [], i = 0, busy = false, soundOn = true, actx = null, misses = 0, drag = null;
+    var items = [], i = 0, busy = false, soundOn = true, actx = null, misses = 0, drag = null, acted = false, first = true;
+    // her recorded voice (Vidya Teacher): clips are played one after another; a new line stops the old one
+    var cache = {}, run = 0, current = null;
+    function clip(p) { if (!cache[p]) { var a = new Audio(); a.preload = "auto"; a.src = p; cache[p] = a; } return cache[p]; }
+    function stopVoice() { run++; if (current) { try { current.pause(); current.currentTime = 0; } catch (e) {} current = null; } }
+    function speak(list, then) {
+      stopVoice(); var id = run, k = 0;
+      if (!soundOn || !list.length) { if (then) setTimeout(then, 900); return; }
+      (function next() {
+        if (id !== run) return;
+        if (k >= list.length) { if (then) setTimeout(then, 250); return; }
+        var a = clip(list[k++]); current = a;
+        try { a.currentTime = 0; } catch (e) {}
+        a.onended = function () { setTimeout(next, 120); }; a.onerror = function () { setTimeout(next, 0); };
+        var pr = a.play(); if (pr && pr.catch) pr.catch(function () { if (id === run && then) { run++; setTimeout(then, 900); } });
+      })();
+    }
+    function wordClip(it) { return A + "w-" + it.p.name.replace(/ /g, "-") + ".mp3"; }
+    function ask() { var it = items[i]; speak([wordClip(it), A + (first ? "q-full.mp3" : "q.mp3")]); first = false; }
+    ["pointerdown", "keydown", "touchstart"].forEach(function (ev) { document.addEventListener(ev, function () { acted = true; }, true); });
     try { if (localStorage.getItem("vp_quiz_sound") === "off") soundOn = false; } catch (e) {}
 
     // gentle tones made in the browser (no recordings)
@@ -248,7 +281,7 @@
       } catch (e) {}
     }
     function setSound(on) {
-      soundOn = on; $("mutetxt").textContent = on ? "Sound on" : "Sound off";
+      soundOn = on; if (!on) stopVoice(); $("mutetxt").textContent = on ? "Sound on" : "Sound off";
       try { localStorage.setItem("vp_quiz_sound", on ? "on" : "off"); } catch (e) {}
     }
     function shuffle(a) { a = a.slice(); for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; } return a; }
@@ -264,7 +297,7 @@
         if (!bad) break; items = shuffle(items);
       }
       i = 0; $("in-red").innerHTML = ""; $("in-yellow").innerHTML = "";
-      items.forEach(function (it) { var im = new Image(); im.src = P + it.p.file + ".webp"; });   // preload all 8
+      items.forEach(function (it) { var im = new Image(); im.src = P + it.p.file + ".webp"; clip(wordClip(it)); });   // preload all 8
     }
     function dots() {
       var h = ""; for (var k = 0; k < TOTAL; k++) h += '<i class="' + (k < i ? "on" : "") + '"></i>';
@@ -284,20 +317,22 @@
       $("picimg").src = P + it.p.file + ".webp";
       $("word").textContent = it.p.name;
       $("say").textContent = ""; $("say").className = "say";
+      if (acted) ask();
     }
     function choose(c) {
       if (busy || !$("end").hidden) return;
       var it = items[i], b = $("b-" + c), say = $("say");
       b.classList.remove("happy", "shake"); void b.offsetWidth;
       if (c === it.c) {
-        busy = true; stopDrag(); b.classList.remove("hint"); b.classList.add("happy"); tone([660, 880], 0.35);
+        busy = true; stopDrag(); b.classList.remove("hint"); b.classList.add("happy"); stopVoice(); tone([660, 880], 0.25);
         say.className = "say good"; say.textContent = "Yes! The " + it.p.name + " is " + it.c + ".";
         var im = document.createElement("img"); im.src = P + it.p.file + ".webp"; im.alt = ""; $("in-" + c).appendChild(im);
         $("pic").classList.add("gone");
-        setTimeout(function () { i++; if (i >= TOTAL) finish(); else show(); }, 1100);
+        var go = function () { i++; if (i >= TOTAL) finish(); else show(); };
+        setTimeout(function () { speak([A + "yes-" + c + ".mp3"], go); }, 280);
       } else {
         b.classList.add("shake"); $("pic").classList.remove("wiggle"); void $("pic").offsetWidth; $("pic").classList.add("wiggle");
-        tone([330], 0.25);
+        tone([330], 0.2); setTimeout(function () { speak([A + "again.mp3"]); }, 200);
         say.className = "say try"; say.textContent = "Look again! Is the " + it.p.name + " red or yellow?";
         misses++; if (misses >= 2) $("b-" + it.c).classList.add("hint");      // after 2 tries, gently show the right basket
       }
@@ -307,7 +342,7 @@
       $("endstars").innerHTML = STAR + STAR + STAR;
       $("endtext").textContent = "You sorted " + TOTAL + " things into the right baskets.";
       $("sum-red").innerHTML = $("in-red").innerHTML; $("sum-yellow").innerHTML = $("in-yellow").innerHTML;
-      tone([523, 659, 784, 1047], 0.4); $("again").focus();
+      tone([523, 659, 784, 1047], 0.4); $("again").focus(); setTimeout(function () { speak([A + "all.mp3"]); }, 700);
     }
 
     // tap a basket
@@ -347,7 +382,8 @@
     pic.addEventListener("pointerup", endDrag);
     pic.addEventListener("pointercancel", endDrag);
 
-    $("again").addEventListener("click", function () { newGame(); $("end").hidden = true; $("body").hidden = false; show(); $("b-red").focus(); });
+    $("again").addEventListener("click", function () { first = true; newGame(); $("end").hidden = true; $("body").hidden = false; show(); $("b-red").focus(); });
+    $("hear").addEventListener("click", function () { $("hear").classList.remove("pulse"); if (!soundOn) setSound(true); ask(); });
     $("mute").addEventListener("click", function () { setSound(!soundOn); });
     document.addEventListener("keydown", function (e) {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
@@ -356,6 +392,7 @@
       if (k === "1") { choose("red"); e.preventDefault(); }
       else if (k === "2") { choose("yellow"); e.preventDefault(); }
       else if (k === "m" || k === "M") { setSound(!soundOn); }
+      else if (k === "r" || k === "R") { if (!$("body").hidden) { $("hear").classList.remove("pulse"); ask(); } }
     });
     setSound(soundOn); newGame(); show();
     // small screens: bring the whole game into view so both baskets can be seen
