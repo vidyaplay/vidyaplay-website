@@ -329,7 +329,7 @@
       b.classList.remove("happy", "shake"); void b.offsetWidth;
       if (c === it.c) {
         busy = true; stopDrag(!!dropped); b.classList.remove("hint"); b.classList.add("happy"); stopVoice(); tone([660, 880], 0.25);
-        say.className = "say good"; say.textContent = "Yes! The " + it.p.name + " is " + it.c + ".";
+        say.className = "say good"; say.textContent = "Yes! It is " + it.c + "!";             // same words as her voice
         var im = document.createElement("img"); im.src = P + it.p.file + ".webp"; im.alt = ""; $("in-" + c).appendChild(im);
         var pc = $("pic");
         if (dropped) { pc.style.transform = dropped + " scale(0.3)"; pc.style.opacity = "0"; }   // shrink inside the basket
@@ -339,7 +339,7 @@
       } else {
         b.classList.add("shake"); $("pic").classList.remove("wiggle"); void $("pic").offsetWidth; $("pic").classList.add("wiggle");
         tone([330], 0.2); setTimeout(function () { speak([A + "again.mp3"]); }, 200);
-        say.className = "say try"; say.textContent = "Look again! Is the " + it.p.name + " red or yellow?";
+        say.className = "say try"; say.textContent = "Look again! Is it red or yellow?";      // same words as her voice
         misses++; if (misses >= 2) $("b-" + it.c).classList.add("hint");      // after 2 tries, gently show the right basket
       }
     }
