@@ -269,7 +269,7 @@
       if (o === r.n) {
         busy = true; if (misses === 0) firstTry++;
         b.classList.add("good"); $("tray").classList.add("happy"); numberAll(); tone([660, 880], 0.25);
-        say.className = "say good"; say.textContent = "Yes! " + r.n + " " + (r.n === 1 ? r.kind.one : r.kind.many) + "!";
+        say.className = "say good"; say.textContent = "Yes! " + r.n + "!";                 // same words as her voice
         var go = function () { i++; if (i >= TOTAL) finish(); else show(); };
         setTimeout(function () { speak([A + "yes.mp3", A + "n-" + r.n + ".mp3"], go); }, 250);
       } else {
