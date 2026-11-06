@@ -55,6 +55,14 @@
     .sound-btn { min-height: 44px; padding: 6px 14px; border: 2px solid #D9E1F0; border-radius: 14px; background: #FFFFFF;
       font-family: inherit; font-size: 15px; font-weight: 700; color: var(--navy); cursor: pointer; white-space: nowrap; }
     .sound-btn:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .voice-row { display: flex; gap: 6px; }
+    .voice-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 14px; border: 0; border-radius: 14px;
+      background: var(--blue); color: #FFFFFF; font-family: inherit; font-size: 17px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+    .voice-btn svg { width: 22px; height: 22px; }
+    .voice-btn:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .voice-btn.pulse { animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(30, 91, 184, 0.45); } 50% { box-shadow: 0 0 0 9px rgba(30, 91, 184, 0); } }
+    @media (max-width: 420px) { .ct-top { flex-wrap: wrap; row-gap: 8px; } .ct-prog { flex-direction: row; align-items: center; justify-content: space-between; width: 100%; } .voice-row { width: 100%; justify-content: center; } }
     .end { padding: 8px 4px 4px; }
     .end[hidden], .ct-body[hidden] { display: none; }
     .end-stars { display: flex; justify-content: center; gap: 6px; margin: 8px 0; }
@@ -136,7 +144,10 @@
             <p class="ct-count" id="count" aria-live="polite"></p>
             <div class="dots" id="dots" aria-hidden="true"></div>
           </div>
-          <button class="sound-btn" id="mute" type="button"><span id="mutetxt">Sound on</span></button>
+          <div class="voice-row">
+            <button class="voice-btn pulse" id="hear" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Listen</button>
+            <button class="sound-btn" id="mute" type="button"><span id="mutetxt">Sound on</span></button>
+          </div>
         </div>
         <h2 class="ct-q" id="q">How many?</h2>
         <div class="tray" id="tray" role="img"></div>
@@ -155,7 +166,7 @@
       </div>
     </section>
 
-    <p class="kbd-hint">On a computer: press <kbd>1</kbd>, <kbd>2</kbd> or <kbd>3</kbd> for the left, middle or right number, <kbd>M</kbd> for sound on or off.</p>
+    <p class="kbd-hint">On a computer: press <kbd>1</kbd>, <kbd>2</kbd> or <kbd>3</kbd> for the left, middle or right number, <kbd>R</kbd> to hear the question again, <kbd>M</kbd> for sound on or off.</p>
 
     <div class="game-help">
       <div class="buttons">
@@ -166,7 +177,7 @@
     </div>
 
     <p class="parent-note">
-      <strong>For parents:</strong> Ask "How many?" Your child touches each picture and counts out loud, then taps the number. The top row holds 5, so for bigger numbers your child can count on from 5. A wrong number simply lets your child count again; after two tries the pictures get little numbers to help. Each game has the numbers 1 to 10 once, in a mixed order. Nothing is collected; only your Sound on/off choice is remembered on this device.
+      <strong>For parents:</strong> Ask "How many?" Your child touches each picture and counts out loud, then taps the number. The top row holds 5, so for bigger numbers your child can count on from 5. A wrong number simply lets your child count again; after two tries the pictures get little numbers to help. Each game has the numbers 1 to 10 once, in a mixed order. Tap Listen to hear Vidya Teacher ask the question. Nothing is collected; only your Sound on/off choice is remembered on this device. Voice made with AI.
     </p>
 
   </main>
@@ -183,11 +194,29 @@
   <script>
   (function () {
     var DATA = {"kinds": [{"file": "apple", "one": "apple", "many": "apples"}, {"file": "banana", "one": "banana", "many": "bananas"}, {"file": "carrot", "one": "carrot", "many": "carrots"}, {"file": "duck", "one": "duck", "many": "ducks"}, {"file": "fish", "one": "fish", "many": "fish"}, {"file": "strawberry", "one": "strawberry", "many": "strawberries"}, {"file": "ball", "one": "ball", "many": "balls"}, {"file": "star", "one": "star", "many": "stars"}, {"file": "redballoon", "one": "balloon", "many": "balloons"}, {"file": "mango", "one": "mango", "many": "mangoes"}]};
-    var P = "../../images/count-and-tap/", TOTAL = 10;
+    var P = "../../images/count-and-tap/", A = "../../audio/count-and-tap/", TOTAL = 10;
     var $ = function (id) { return document.getElementById(id); };
     var STAR = '<svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.2 1.2-6.5L2.5 9.5l6.6-.9z" fill="#FFC107" stroke="#D98E00" stroke-width="2" stroke-linejoin="round"/></svg>';
     var rounds = [], i = 0, busy = false, soundOn = true, actx = null, misses = 0, firstTry = 0, opts = [];
     try { if (localStorage.getItem("vp_quiz_sound") === "off") soundOn = false; } catch (e) {}
+    // her recorded voice (Vidya Teacher): clips play one after another; a new line stops the old one
+    var cache = {}, run = 0, current = null, acted = false;
+    function clip(p) { if (!cache[p]) { var a = new Audio(); a.preload = "auto"; a.src = p; cache[p] = a; } return cache[p]; }
+    function stopVoice() { run++; if (current) { try { current.pause(); current.currentTime = 0; } catch (e) {} current = null; } }
+    function speak(list, then) {
+      stopVoice(); var id = run, k = 0;
+      if (!soundOn || !list.length) { if (then) setTimeout(then, 900); return; }
+      (function next() {
+        if (id !== run) return;
+        if (k >= list.length) { if (then) setTimeout(then, 300); return; }
+        var a = clip(list[k++]); current = a;
+        try { a.currentTime = 0; } catch (e) {}
+        a.onended = function () { setTimeout(next, 120); }; a.onerror = function () { setTimeout(next, 0); };
+        var pr = a.play(); if (pr && pr.catch) pr.catch(function () { if (id === run && then) { run++; setTimeout(then, 900); } });
+      })();
+    }
+    function ask() { speak([A + "q-" + rounds[i].kind.file + ".mp3"]); }
+    ["pointerdown", "keydown", "touchstart"].forEach(function (ev) { document.addEventListener(ev, function () { acted = true; }, true); });
     function tone(freqs, len) {
       if (!soundOn) return;
       try {
@@ -200,13 +229,13 @@
         });
       } catch (e) {}
     }
-    function setSound(on) { soundOn = on; $("mutetxt").textContent = on ? "Sound on" : "Sound off"; try { localStorage.setItem("vp_quiz_sound", on ? "on" : "off"); } catch (e) {} }
+    function setSound(on) { soundOn = on; if (!on) stopVoice(); $("mutetxt").textContent = on ? "Sound on" : "Sound off"; try { localStorage.setItem("vp_quiz_sound", on ? "on" : "off"); } catch (e) {} }
     function shuffle(a) { a = a.slice(); for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; } return a; }
     function newGame() {
       var nums = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]), kinds = shuffle(DATA.kinds);
       rounds = nums.map(function (n, k) { return { n: n, kind: kinds[k % kinds.length] }; });
       i = 0; firstTry = 0;
-      DATA.kinds.forEach(function (k) { var im = new Image(); im.src = P + k.file + ".webp"; });
+      DATA.kinds.forEach(function (k) { var im = new Image(); im.src = P + k.file + ".webp"; clip(A + "q-" + k.file + ".mp3"); });
     }
     function options(n) {          // the right number and two different numbers close to it, all 1 to 10, in a mixed order
       var near = [n - 2, n - 1, n + 1, n + 2].filter(function (x) { return x >= 1 && x <= 10; });
@@ -227,6 +256,7 @@
       opts = options(r.n);
       opts.forEach(function (o, k) { var b = $("n" + k); b.textContent = o; b.className = "num"; b.setAttribute("aria-label", String(o)); });
       $("say").textContent = ""; $("say").className = "say";
+      if (acted) setTimeout(ask, 250);
     }
     function numberAll() {        // help: put 1, 2, 3 ... on the pictures
       var its = $("tray").querySelectorAll(".it");
@@ -240,9 +270,10 @@
         busy = true; if (misses === 0) firstTry++;
         b.classList.add("good"); $("tray").classList.add("happy"); numberAll(); tone([660, 880], 0.25);
         say.className = "say good"; say.textContent = "Yes! " + r.n + " " + (r.n === 1 ? r.kind.one : r.kind.many) + "!";
-        setTimeout(function () { i++; if (i >= TOTAL) finish(); else show(); }, 1500);
+        var go = function () { i++; if (i >= TOTAL) finish(); else show(); };
+        setTimeout(function () { speak([A + "yes.mp3", A + "n-" + r.n + ".mp3"], go); }, 250);
       } else {
-        b.classList.add("shake"); tone([330], 0.2);
+        b.classList.add("shake"); tone([330], 0.2); setTimeout(function () { speak([A + "again.mp3", A + "touch.mp3"]); }, 200);
         say.className = "say try"; say.textContent = "Count again! Touch each one.";
         misses++;
         if (misses >= 2) { numberAll(); opts.forEach(function (x, j) { if (x === r.n) $("n" + j).classList.add("hint"); }); }
@@ -252,17 +283,19 @@
       $("body").hidden = true; $("end").hidden = false;
       $("endstars").innerHTML = STAR + STAR + STAR;
       $("endtext").textContent = "You counted from 1 to 10! " + firstTry + " of " + TOTAL + " right on the first try.";
-      tone([523, 659, 784, 1047], 0.4); $("again").focus();
+      tone([523, 659, 784, 1047], 0.4); $("again").focus(); setTimeout(function () { speak([A + "all.mp3"]); }, 700);
     }
     [0, 1, 2].forEach(function (k) { $("n" + k).addEventListener("click", function () { choose(k); }); });
     $("again").addEventListener("click", function () { newGame(); $("end").hidden = true; $("body").hidden = false; show(); $("n0").focus(); });
     $("mute").addEventListener("click", function () { setSound(!soundOn); });
+    $("hear").addEventListener("click", function () { $("hear").classList.remove("pulse"); if (!soundOn) setSound(true); if (!$("body").hidden) ask(); });
     document.addEventListener("keydown", function (e) {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (e.target && e.target.closest && e.target.closest(".site-header")) return;
       var k = e.key;
       if (k === "1" || k === "2" || k === "3") { choose(+k - 1); e.preventDefault(); }
       else if (k === "m" || k === "M") setSound(!soundOn);
+      else if ((k === "r" || k === "R") && !$("body").hidden) { $("hear").classList.remove("pulse"); ask(); }
     });
     setSound(soundOn); newGame(); show();
     setTimeout(function () { var r = $("n0").getBoundingClientRect(); if (r.bottom > window.innerHeight) $("body").closest(".ct-card").scrollIntoView({ block: "start" }); }, 60);
