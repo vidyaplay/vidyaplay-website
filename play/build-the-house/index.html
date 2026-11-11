@@ -35,7 +35,7 @@
     .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
     .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
     .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
-    .house { display: block; width: 100%; height: auto; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+    .house { display: block; width: 100%; height: auto; max-height: 78vh; touch-action: none; user-select: none; -webkit-user-select: none; }
     .slot * { fill: rgba(255, 255, 255, 0.45); stroke: #9AA3B2; stroke-width: 3; stroke-dasharray: 8 7; }
     .slot text, .slot line, .slot circle[r="4.5"] { display: none; }
     
@@ -51,6 +51,7 @@
       25% { transform: translate(calc(var(--x) - 7px), var(--y)) scale(var(--s)); }
       75% { transform: translate(calc(var(--x) + 7px), var(--y)) scale(var(--s)); } }
     .tray-bg { fill: #FFFFFF; }
+    .win { background: #FFFFFF !important; }
 
     .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
     .basket { display: flex; gap: 4px; }
@@ -305,7 +306,9 @@
       def.draw(it.slot);
       var g = el("g", { "class": "piece", tabindex: 0, role: "button", "aria-label": "Drag the " + def.label + " to the house" }, piecesBox);
       def.draw(g);
-      el("rect", { "class": "hit", x: def.box[0] - 8, y: def.box[1] - 8, width: def.box[2] + 16, height: def.box[3] + 16, rx: 10 }, g);
+      var ts = Math.min(1, 78 / def.box[2], 62 / def.box[3]);                       // tray size: keep the touch area at least 56 units wide and high
+      var hw = Math.max(def.box[2] + 16, 56 / ts), hh = Math.max(def.box[3] + 16, 56 / ts);
+      el("rect", { "class": "hit", x: it.cx - hw / 2, y: it.cy - hh / 2, width: hw, height: hh, rx: 10 }, g);
       it.g = g;
       items.push(it);
       attach(it);
@@ -335,7 +338,7 @@
         var wasMoved = down.moved; down = null;
         g.classList.remove("drag");
         var target = cancelled ? null : (wasMoved ? freeSlot(it, it.x, it.y + 14, 70) : freeSlot(it, it.cx, it.cy, 1));  // a simple tap puts it in its place
-        if (target) { lock(it, target); return; }
+        if (target) { lock(it, target); focusNext(); return; }
         var home = TRAY[it.tray];
         setPos(it, home[0], home[1], trayScale(it));
         g.classList.remove("nope"); void g.getBoundingClientRect(); g.classList.add("nope");
@@ -345,11 +348,15 @@
       g.addEventListener("keydown", function (e) {
         if ((e.key === "Enter" || e.key === " ") && !it.placed) {
           e.preventDefault();
-          var t = freeSlot(it, it.cx, it.cy, 1); if (t) lock(it, t);
+          var t = freeSlot(it, it.cx, it.cy, 1); if (t) { lock(it, t); focusNext(); }
         }
       });
     }
 
+    function focusNext() {
+      var n = piecesBox.querySelector(".piece:not(.placed)");
+      if (n && document.activeElement === document.body) n.focus();
+    }
     function shuffle(list) {
       for (var i = list.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t;

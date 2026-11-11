@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jam Jar Memory: Letter J Game for Kids | VidyaPlay</title>
-  <meta name="description" content="Free online letter J memory game for LKG kids: turn the jar lids and match jam, jellyfish, jet and jeans. Works on phones, no sign-up. Print the worksheet too.">
+  <meta name="description" content="Free online letter J memory game for LKG kids: turn the jar lids and match jam, jellyfish and jet. Works on phones, no sign-up. Print the worksheet too.">
 
   <link rel="icon" href="../../favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
@@ -19,7 +19,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="VidyaPlay">
   <meta property="og:title" content="Jam Jar Memory: Letter J Game for Kids | VidyaPlay">
-  <meta property="og:description" content="Free online letter J memory game for LKG kids: turn the jar lids and match jam, jellyfish, jet and jeans. Works on phones, no sign-up. Print the worksheet too.">
+  <meta property="og:description" content="Free online letter J memory game for LKG kids: turn the jar lids and match jam, jellyfish and jet. Works on phones, no sign-up. Print the worksheet too.">
   <meta property="og:url" content="https://vidyaplay.in/play/jam-jar-memory/">
   <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
   <meta property="og:image:width" content="1200">
@@ -35,7 +35,7 @@
     .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
     .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
     .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
-    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 8px 2px 8px; perspective: 700px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 8px 6px 8px; perspective: 700px; }
     .card-btn { position: relative; width: 100%; aspect-ratio: 3 / 4; border: 0; padding: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .card-in { position: absolute; inset: 0; transition: transform 0.45s; transform-style: preserve-3d; }
     .card-btn.open .card-in, .card-btn.matched .card-in { transform: rotateY(180deg); }
@@ -43,10 +43,10 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
     .face.back { background: #FB8C00; }
     .face.back::before { content: ""; position: absolute; top: -4px; left: 14%; right: 14%; height: 14px; border-radius: 6px 6px 0 0; background: #8A3B00; border: 3px solid #2C3550; border-bottom: 0; }
-    .face.back span { font-size: 40px; font-weight: 800; color: #FFFFFF; line-height: 1; }
+    .face.back span { font-size: 52px; font-weight: 800; color: #FFFFFF; line-height: 1; }
     .face.front { background: #FFFFFF; transform: rotateY(180deg); }
     .face.front img { width: 74%; height: 58%; object-fit: contain; }
-    .face.front b { font-size: 15px; color: var(--navy); }
+    .face.front b { font-size: 17px; color: var(--navy); }
     .card-btn.matched .face.front { background: #DFF5DC; border-color: #2E9B4F; }
     .card-btn:focus-visible .face { border-color: var(--blue); }
     .card-btn.matched { pointer-events: none; }
@@ -145,12 +145,12 @@
       <div class="grid" id="grid"></div>
       <div class="score">
         <div class="basket" id="basket" aria-hidden="true"></div>
-        <p class="score-text" id="score" aria-live="polite">0 of 4 pairs</p>
+        <p class="score-text" id="score" aria-live="polite">0 of 3 pairs</p>
       </div>
       <div class="win" id="win" hidden>
         <div class="win-icons" aria-hidden="true">🍓🎉🍓</div>
         <p class="win-big">All pairs found!</p>
-        <p class="win-text">jam, jellyfish, jet, jeans: all start with j.</p>
+        <p class="win-text">jam, jellyfish, jet: all start with j.</p>
         <button class="button btn-play" id="again" type="button">Play again</button>
       </div>
     </section>
@@ -175,7 +175,7 @@
 
   <script>
   (function () {
-    var WORDS = ["jam", "jellyfish", "jet", "jeans"];
+    var WORDS = ["jam", "jellyfish", "jet"];
     var grid = document.getElementById("grid"), basket = document.getElementById("basket"), scoreText = document.getElementById("score"), win = document.getElementById("win");
     var open = [], matched = 0, lock = false;
 
@@ -254,7 +254,7 @@
       WORDS.forEach(function () { basket.appendChild(document.createElement("span")); });
       win.hidden = true; update();
     }
-    document.getElementById("again").addEventListener("click", newRound);
+    document.getElementById("again").addEventListener("click", function () { newRound(); grid.firstChild.focus(); });
     newRound();
   })();
   </script>

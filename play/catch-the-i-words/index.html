@@ -43,7 +43,8 @@
     .balloon img { width: 68%; height: 62%; object-fit: contain; pointer-events: none; }
     .balloon .string { position: absolute; left: 50%; bottom: 0; width: 3px; height: 14%; background: #2C3550; transform: translateX(-50%); }
     .balloon:focus-visible .body { border-color: var(--blue); border-width: 6px; }
-    .balloon.nope { animation: wiggle 0.45s ease-in-out; }
+    .balloon.nope { animation: wiggle 0.45s ease-in-out, bob 3s ease-in-out infinite; }
+    .heard { margin: 6px 0 0; min-height: 30px; font-size: 24px; font-weight: 800; color: var(--navy); }
     .balloon.popped { animation: poof 0.5s ease-out forwards; pointer-events: none; }
     @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
@@ -140,6 +141,7 @@
         <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
       </div>
       <div class="grid" id="grid"></div>
+      <p class="heard" id="heard" aria-hidden="true">&nbsp;</p>
       <div class="score">
         <div class="basket" id="basket" aria-hidden="true"></div>
         <p class="score-text" id="score" aria-live="polite">0 of 3 found</p>
@@ -173,10 +175,10 @@
   <script>
   (function () {
     var TARGETS = [["igloo", "igloo"], ["iguana", "iguana"], ["ink", "ink"]];
-    var OTHERS = [["ball", "ball"], ["cat", "cat"], ["dog", "dog"], ["hat", "hat"], ["cup", "cup"], ["pen", "pen"], ["bus", "bus"], ["fish", "fish"], ["star", "star"], ["cow", "cow"], ["moon", "moon"]];
+    var OTHERS = [["ball", "ball"], ["cat", "cat"], ["dog", "dog"], ["hat", "hat"], ["cup", "cup"], ["bus", "bus"], ["sun", "sun"], ["bell", "bell"], ["star", "star"], ["cow", "cow"], ["moon", "moon"]];
     var COLOURS = ["#F8BBD0", "#BBDEFB", "#FFF59D", "#E1BEE7", "#B2EBF2", "#FFCCBC", "#C8E6C9", "#D1C4E9"];
     var grid = document.getElementById("grid"), basket = document.getElementById("basket"), scoreText = document.getElementById("score"), win = document.getElementById("win");
-    var found = 0;
+    var found = 0, heard = document.getElementById("heard");
 
     var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
     function tone(freq, endFreq, start, length, volume) {
@@ -233,15 +235,15 @@
         b.querySelector("img").setAttribute("src", p.f + ".webp");
         b.addEventListener("click", function () {
           if (b.classList.contains("popped")) return;
-          say(p.w);
-          if (p.hit) { b.classList.add("popped"); found++; play("pop"); update(); }
+          say(p.w); heard.textContent = p.w;
+          if (p.hit) { b.classList.add("popped"); b.disabled = true; b.setAttribute("aria-hidden", "true"); found++; play("pop"); update(); }
           else { b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); }
         });
         grid.appendChild(b);
       });
       basket.innerHTML = "";
       TARGETS.forEach(function () { basket.appendChild(document.createElement("span")); });
-      found = 0; win.hidden = true; update();
+      found = 0; heard.innerHTML = "&nbsp;"; win.hidden = true; update();
     }
     document.getElementById("again").addEventListener("click", newRound);
     newRound();
