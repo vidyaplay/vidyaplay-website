@@ -54,6 +54,7 @@
     @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
     @keyframes fly { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-190px) scale(0.5); opacity: 0; } }
     .btn-pair { display: flex; gap: 6px; flex: none; }
+    .win { background: #FFFFFF !important; }
 
     .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
     .basket { display: flex; gap: 4px; }
@@ -260,13 +261,20 @@
       return list;
     }
 
+    speak = function () {};                        // K uses recorded voice only (no phone voice)
     var EXTRA = ["instruction", "yes", "oops", "win"];    // recorded voice-overs; the three picture words are cut from her win recording
     loadClips(WORDS.concat(EXTRA));
     document.getElementById("hear").addEventListener("click", function () {
       if (hasClip("instruction")) say("instruction"); else speak("Look at the picture. Which letter does it start with? Tap the kite with that letter.");
     });
-    cloud.addEventListener("click", function () { say(order[round]); });
+    cloud.addEventListener("click", function () { if (locked || round >= WORDS.length) return; say(order[round]); });
 
+    var oopsTimer = null;
+    function sayAfter(prev, word) {                // let the praise clip finish before the next word
+      var p = clips[prev];
+      if (p && p._ok !== false && !p.paused && !p.ended) { p.onended = function () { p.onended = null; say(word); }; }
+      else say(word);
+    }
     var NS = "http://www.w3.org/2000/svg";
     function kiteSvg(letter, colour) {
       return '<svg viewBox="0 0 100 150" aria-hidden="true">' +
@@ -296,26 +304,30 @@
           if (locked) return;
           if (L === "K") {
             locked = true; b.classList.add("fly"); play("pop");
+            if (oopsTimer) { clearTimeout(oopsTimer); oopsTimer = null; }
             heard.textContent = w + " starts with k";
             round++; update();
             if (round === WORDS.length) {
               setTimeout(function () { play("win"); }, 400);
-              setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); if (hasClip("win")) say("win"); }, 1400);
+              setTimeout(function () { win.hidden = false; kites.setAttribute("inert", ""); document.getElementById("again").focus(); if (hasClip("win")) say("win"); }, 1400);
             } else {
               if (hasClip("yes")) setTimeout(function () { say("yes"); }, 300);
-              setTimeout(function () { showRound(); setTimeout(function () { say(order[round]); }, 150); }, 1900);
+              setTimeout(function () { showRound(); sayAfter("yes", order[round]); }, 1900);
             }
           } else {
             heard.innerHTML = w + ' starts with "k", <span class="no">not ' + L.toLowerCase() + '</span>';
             b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope");
             setTimeout(function () { b.classList.remove("nope"); }, 1400);
-            if (hasClip("oops")) setTimeout(function () { say("oops"); }, 700);
+            if (oopsTimer) clearTimeout(oopsTimer);
+            if (hasClip("oops")) oopsTimer = setTimeout(function () { oopsTimer = null; if (!locked) say("oops"); }, 700);
           }
         });
         kites.appendChild(b);
       });
     }
     function newGame() {
+      Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; });
+      kites.removeAttribute("inert");
       order = shuffle(WORDS.slice()); round = 0;
       basket.innerHTML = ""; WORDS.forEach(function () { basket.appendChild(document.createElement("span")); });
       win.hidden = true; update(); showRound();
