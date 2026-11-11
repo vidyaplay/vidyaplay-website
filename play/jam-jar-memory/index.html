@@ -51,6 +51,7 @@
     .card-btn:focus-visible .face { border-color: var(--blue); }
     .card-btn.matched { pointer-events: none; }
     .btn-pair { display: flex; gap: 6px; flex: none; }
+    .win { background: #FFFFFF !important; }
     .card-btn.wrong::after { content: "✕"; position: absolute; right: -6px; top: -6px; width: 30px; height: 30px; border-radius: 50%; z-index: 3;
       background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; text-align: center; }
     @media (prefers-reduced-motion: reduce) { .card-in { transition: none; } }
@@ -236,17 +237,23 @@
           c.currentTime = 0;
           if (then) c.onended = then;
           var pr = c.play();
-          if (pr && pr.catch) pr.catch(function () { speak(word); });
+          if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) speak(word); });   // a clip stopped by the next tap is not an error
           return;
         } catch (e) {}
       }
       speak(word);
     }
     function hasClip(name) { return !!(clips[name] && clips[name]._ok !== false); }
+    function stopClips() { Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    function afterWord(w, fn) {                   // run fn when the word clip ends; any new say() cancels it, so a late "yes" or "oops" never plays
+      var c = clips[w];
+      if (c && c._ok !== false && !c.paused && !c.ended) c.onended = function () { c.onended = null; fn(); };
+      else fn();
+    }
     soundBtn.addEventListener("click", function () {
       soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
-      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
     });
     function shuffle(list) {
       for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
@@ -267,6 +274,7 @@
       }
     }
     function newRound() {
+      stopClips();
       var deck = shuffle(WORDS.concat(WORDS));
       grid.innerHTML = ""; open = []; matched = 0; lock = false;
       deck.forEach(function (w) {
@@ -275,26 +283,29 @@
         b.setAttribute("aria-label", "Face-down jar lid, tap to turn over");
         b.innerHTML = '<span class="card-in"><span class="face back"><span>J</span></span><span class="face front"><img alt="" width="150" height="150"><b>' + w + '</b></span></span>';
         b.querySelector("img").setAttribute("src", w + ".webp");
-        b.addEventListener("pointerdown", function () { if (!lock && !b.classList.contains("open") && !b.classList.contains("matched")) say(w); });
+        b.addEventListener("pointerdown", function () { if (!lock && !b.classList.contains("open") && !b.classList.contains("matched")) { b._pd = true; say(w); } });
         b.addEventListener("click", function () {
           if (lock || b.classList.contains("open") || b.classList.contains("matched")) return;
+          if (!b._pd) say(w);                      // keyboard: Enter or Space
+          b._pd = false;
           b.classList.add("open"); b.setAttribute("aria-label", w); play("flip");
           open.push(b);
           if (open.length === 2) {
             lock = true;
             if (open[0].dataset.w === open[1].dataset.w) {
               setTimeout(function () {
-                open.forEach(function (c) { c.classList.remove("open"); c.classList.add("matched"); });
+                open.forEach(function (c) { c.classList.remove("open"); c.classList.add("matched"); c.disabled = true; });
+                var pairWord = w;
                 open = []; matched++; lock = false; play("pop"); update();
-                if (hasClip("yes") && matched < WORDS.length) setTimeout(function () { say("yes"); }, 250);
+                if (hasClip("yes") && matched < WORDS.length) afterWord(pairWord, function () { say("yes"); });
               }, 700);
             } else {
               open.forEach(function (c) { c.classList.add("wrong"); });          // red cross on both cards: not a pair
-              setTimeout(function () { play("nope"); if (hasClip("oops")) say("oops"); }, 900);
+              var badWord = w; setTimeout(function () { play("nope"); if (hasClip("oops")) afterWord(badWord, function () { say("oops"); }); }, 300);
               setTimeout(function () {
                 open.forEach(function (c) { c.classList.remove("wrong"); c.classList.remove("open"); c.setAttribute("aria-label", "Face-down jar lid, tap to turn over"); });
                 open = []; lock = false;
-              }, 2200);
+              }, 3000);
             }
           }
         });

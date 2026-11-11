@@ -238,6 +238,7 @@
       soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn);
       soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn) stopClips();
     });
 
     // ===== Voice-overs: her recordings (question, yes, oops, win); phone voice only for the question if a clip cannot load =====
@@ -248,10 +249,16 @@
       a.src = "audio/" + n + ".mp3"; clips[n] = a;
     });
     function hasClip(n) { return !!(clips[n] && clips[n]._ok !== false); }
+    function stopClips() { Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    function afterWord(n, fn) {                    // run fn when clip n ends (a new say() cancels it)
+      var c = clips[n];
+      if (c && c._ok !== false && !c.paused && !c.ended) c.onended = function () { c.onended = null; fn(); };
+      else fn();
+    }
     function say(n) {
       if (!soundOn || !hasClip(n)) return;
       try {
-        Object.keys(clips).forEach(function (k) { clips[k].pause(); });
+        stopClips();
         clips[n].currentTime = 0;
         var pr = clips[n].play(); if (pr && pr.catch) pr.catch(function () {});
       } catch (e) {}
@@ -376,7 +383,7 @@
         if (!down) return;
         var wasMoved = down.moved; down = null;
         g.classList.remove("drag");
-        var target = cancelled ? null : (wasMoved ? freeSlot(it, it.x, it.y + 14, 70) : freeSlot(it, it.cx, it.cy, 1));  // a simple tap puts it in its place
+        var target = cancelled ? null : (wasMoved ? freeSlot(it, it.x, it.y + 14, 70) : freeSlot(it, it.cx, it.cy, Infinity));  // a simple tap puts it in its place
         if (target) { lock(it, target); focusNext(); return; }
         var home = TRAY[it.tray];
         setPos(it, home[0], home[1], trayScale(it));
@@ -394,7 +401,7 @@
       g.addEventListener("keydown", function (e) {
         if ((e.key === "Enter" || e.key === " ") && !it.placed) {
           e.preventDefault();
-          var t = freeSlot(it, it.cx, it.cy, 1); if (t) { lock(it, t); focusNext(); }
+          var t = freeSlot(it, it.cx, it.cy, Infinity); if (t) { lock(it, t); focusNext(); }
         }
       });
     }
@@ -415,10 +422,11 @@
       scoreText.textContent = placed + " of " + DEFS.length + " placed";
       if (placed === DEFS.length) {
         setTimeout(function () { play("win"); }, 300);
-        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); say("win"); }, 1200);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); afterWord("yes", function () { say("win"); }); }, 1200);
       }
     }
     function newRound() {
+      stopClips();
       ["chimney", "wall", "roof", "door", "window", "sign"].forEach(function (n) {
         document.getElementById("L-" + n).innerHTML = ""; document.getElementById("S-" + n).innerHTML = "";
       });
@@ -434,7 +442,7 @@
       win.hidden = true;
       update();
     }
-    document.getElementById("again").addEventListener("click", newRound);
+    document.getElementById("again").addEventListener("click", function () { newRound(); var f = piecesBox.querySelector(".piece"); if (f) f.focus(); });
     newRound();
   })();
   </script>

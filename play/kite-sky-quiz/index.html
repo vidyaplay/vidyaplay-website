@@ -244,17 +244,23 @@
           c.currentTime = 0;
           if (then) c.onended = then;
           var pr = c.play();
-          if (pr && pr.catch) pr.catch(function () { speak(word); });
+          if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) speak(word); });   // a clip stopped by the next tap is not an error
           return;
         } catch (e) {}
       }
       speak(word);
     }
     function hasClip(name) { return !!(clips[name] && clips[name]._ok !== false); }
+    function stopClips() { Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    function afterWord(w, fn) {                   // run fn when the word clip ends; any new say() cancels it, so a late "yes" or "oops" never plays
+      var c = clips[w];
+      if (c && c._ok !== false && !c.paused && !c.ended) c.onended = function () { c.onended = null; fn(); };
+      else fn();
+    }
     soundBtn.addEventListener("click", function () {
       soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
-      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
     });
     function shuffle(list) {
       for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }

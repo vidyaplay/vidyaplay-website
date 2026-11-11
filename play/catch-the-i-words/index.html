@@ -46,6 +46,7 @@
     .balloon.nope { animation: wiggle 0.45s ease-in-out, bob 3s ease-in-out infinite; }
     .heard { margin: 6px 0 0; min-height: 30px; font-size: 22px; font-weight: 800; color: var(--navy); }
     .heard .no { color: #C0392B; }
+    .win { background: #FFFFFF !important; }
     .btn-pair { display: flex; gap: 6px; flex: none; }
     .balloon.nope .body::after { content: "✕"; position: absolute; right: -4px; top: -4px; width: 30px; height: 30px; border-radius: 50%;
       background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; text-align: center; }
@@ -240,17 +241,23 @@
           c.currentTime = 0;
           if (then) c.onended = then;
           var pr = c.play();
-          if (pr && pr.catch) pr.catch(function () { speak(word); });
+          if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) speak(word); });   // a clip stopped by the next tap is not an error
           return;
         } catch (e) {}
       }
       speak(word);
     }
     function hasClip(name) { return !!(clips[name] && clips[name]._ok !== false); }
+    function stopClips() { Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    function afterWord(w, fn) {                   // run fn when the word clip ends; any new say() cancels it, so a late "yes" or "oops" never plays
+      var c = clips[w];
+      if (c && c._ok !== false && !c.paused && !c.ended) c.onended = function () { c.onended = null; fn(); };
+      else fn();
+    }
     soundBtn.addEventListener("click", function () {
       soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
-      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
     });
     function shuffle(list) {
       for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
@@ -267,11 +274,13 @@
       for (var i = 0; i < dots.length; i++) dots[i].className = i < found ? "on" : "";
       scoreText.textContent = found + " of " + TARGETS.length + " found";
       if (found === TARGETS.length) {
+        grid.setAttribute("inert", "");
         setTimeout(function () { play("win"); }, 350);
         setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); if (hasClip("win")) say("win"); }, 1300);
       }
     }
     function newRound() {
+      stopClips(); grid.removeAttribute("inert");
       var picks = TARGETS.map(function (t) { return { w: t[0], f: t[1], hit: true }; })
         .concat(shuffle(OTHERS.slice()).slice(0, 5).map(function (t) { return { w: t[0], f: t[1], hit: false }; }));
       shuffle(picks);
@@ -283,18 +292,20 @@
         b.setAttribute("aria-label", "Balloon: " + p.w);
         b.innerHTML = '<span class="body"><img alt="" width="150" height="150"></span><span class="string"></span>';
         b.querySelector("img").setAttribute("src", p.f + ".webp");
-        b.addEventListener("pointerdown", function () { if (!b.classList.contains("popped")) say(p.w); });   // voice starts as the finger lands
+        b.addEventListener("pointerdown", function () { if (!b.classList.contains("popped")) { b._pd = true; say(p.w); } });   // voice starts as the finger lands
         b.addEventListener("click", function () {
           if (b.classList.contains("popped")) return;
+          if (!b._pd) say(p.w);                    // keyboard: Enter or Space
+          b._pd = false;
           if (p.hit) {
             heard.textContent = p.w;
             b.classList.add("popped"); b.disabled = true; b.setAttribute("aria-hidden", "true"); found++; play("pop"); update();
-            if (hasClip("yes") && found < TARGETS.length) setTimeout(function () { say("yes"); }, 700);
+            if (hasClip("yes") && found < TARGETS.length) afterWord(p.w, function () { say("yes"); });
           } else {
             heard.innerHTML = p.w + ' starts with "' + p.w.charAt(0) + '", <span class="no">not i</span>';   // shows why it is wrong
             b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope");
             setTimeout(function () { b.classList.remove("nope"); }, 1400);
-            if (hasClip("oops")) setTimeout(function () { say("oops"); }, 900);
+            if (hasClip("oops")) afterWord(p.w, function () { say("oops"); });
           }
         });
         grid.appendChild(b);
@@ -303,7 +314,7 @@
       TARGETS.forEach(function () { basket.appendChild(document.createElement("span")); });
       found = 0; heard.innerHTML = "&nbsp;"; win.hidden = true; update();
     }
-    document.getElementById("again").addEventListener("click", newRound);
+    document.getElementById("again").addEventListener("click", function () { newRound(); if (grid.firstChild) grid.firstChild.focus(); });
     newRound();
   })();
   </script>
