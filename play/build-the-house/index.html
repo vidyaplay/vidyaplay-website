@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build the House: Letter H Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online letter H game for LKG kids: drag the pieces to build a house. H is for house. Works on phones, no sign-up. Print the matching worksheet too.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=5">
+  <link rel="canonical" href="https://vidyaplay.in/play/build-the-house/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Build the House: Letter H Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online letter H game for LKG kids: drag the pieces to build a house. H is for house. Works on phones, no sign-up. Print the matching worksheet too.">
+  <meta property="og:url" content="https://vidyaplay.in/play/build-the-house/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Build the House (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px;
+      border-radius: 24px; background: #FFF1E6; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
+    .house { display: block; width: 100%; height: auto; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+    .slot * { fill: #EEF3F8; stroke: #9AA3B2; stroke-width: 3; stroke-dasharray: 8 7; opacity: 0.9; }
+    .slot text, .slot line, .slot circle[r="4.5"] { display: none; }
+    .slot circle[r="24"] { fill: #EEF3F8; }
+    .piece { cursor: grab; outline: none; touch-action: none; }
+    .piece.drag { cursor: grabbing; }
+    .piece:focus-visible .hit { stroke: var(--blue); stroke-width: 4; }
+    .piece .hit { fill: transparent; stroke: transparent; }
+    .piece.nope { animation: wiggle 0.45s ease-in-out; }
+    .piece.placed { cursor: default; pointer-events: none; animation: pop 0.35s ease-out; }
+    .piece.placed .hit { display: none; }
+    @keyframes pop { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+    @keyframes wiggle { 0%, 100% { transform: translate(var(--x), var(--y)) scale(var(--s)); }
+      25% { transform: translate(calc(var(--x) - 7px), var(--y)) scale(var(--s)); }
+      75% { transform: translate(calc(var(--x) + 7px), var(--y)) scale(var(--s)); } }
+    .tray-bg { fill: #FFFFFF; }
+
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF;
+      transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #FB8C00; border: 2.5px solid #8A3B00; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column;
+      align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .piece, .win-icons { animation: none !important; } }
+  </style>
+  <!-- Google Analytics (cookie-free) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+    gtag('js', new Date());
+    gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Build the House","item":"https://vidyaplay.in/play/build-the-house/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Q (more coming)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Build the House</span>
+    </nav>
+
+    <h1 class="page-title">Build the House</h1>
+    <p class="facts">LKG English · Letter H · Ages 3.5 to 5</p>
+
+    <section class="game-card" aria-label="Build the House game">
+      <div class="game-top">
+        <p class="game-ask">Drag each piece to build the <span class="orange">H</span>ouse</p>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+      </div>
+
+      <svg class="house" id="house" viewBox="0 0 400 590" role="group" aria-label="House with 7 pieces to place">
+        <rect width="400" height="360" rx="18" fill="#CDEBFA"/>
+        <circle cx="338" cy="52" r="26" fill="#FFE066"/>
+        <rect y="330" width="400" height="30" fill="#8CD17D"/>
+        <g id="layers">
+          <g id="L-chimney"></g><g id="L-wall"></g><g id="L-roof"></g><g id="L-door"></g><g id="L-window"></g><g id="L-sign"></g>
+        </g>
+        <g id="slots"></g>
+        <rect class="tray-bg" x="0" y="372" width="400" height="218" rx="18"/>
+        <g id="pieces"></g>
+      </svg>
+
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 7 placed</p>
+      </div>
+
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🏠🎉🏠</div>
+        <p class="win-big">You built the house!</p>
+        <p class="win-text">H is for house. Say "h, h, house"!</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-H3_Decorate_the_Hen.pdf" download>Print the Letter H worksheet (PDF)</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say "h as in house" each time
+      your child places a piece. Then print the Letter H worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    var NS = "http://www.w3.org/2000/svg";
+    var svg = document.getElementById("house");
+    var slotsBox = document.getElementById("slots");
+    var piecesBox = document.getElementById("pieces");
+    var basket = document.getElementById("basket");
+    var scoreText = document.getElementById("score");
+    var win = document.getElementById("win");
+    var soundBtn = document.getElementById("sound");
+    var soundOn = true, audio = null, placed = 0;
+
+    function el(name, attrs, parent) {
+      var n = document.createElementNS(NS, name);
+      for (var k in attrs) n.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(n);
+      return n;
+    }
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start;
+      var osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination);
+      osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn;
+      soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn);
+      soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+    });
+
+    // ===== The seven pieces: drawn where they belong on the house (box = x, y, w, h) =====
+    var DEFS = [
+      { id: "wall",   layer: "wall",   label: "walls",    box: [80, 190, 240, 150], draw: function (g) {
+          el("rect", { x: 80, y: 190, width: 240, height: 150, fill: "#FFD27F", stroke: "#8A5A00", "stroke-width": 5 }, g); } },
+      { id: "roof",   layer: "roof",   label: "roof",     box: [55, 90, 290, 105], draw: function (g) {
+          el("polygon", { points: "55,195 200,92 345,195", fill: "#E5533D", stroke: "#8A2A1C", "stroke-width": 5, "stroke-linejoin": "round" }, g); } },
+      { id: "chimney", layer: "chimney", label: "chimney", box: [262, 100, 34, 70], draw: function (g) {
+          el("rect", { x: 262, y: 100, width: 34, height: 70, fill: "#B05A3C", stroke: "#6E3220", "stroke-width": 5 }, g);
+          el("rect", { x: 256, y: 94, width: 46, height: 12, fill: "#8E4529", stroke: "#6E3220", "stroke-width": 4 }, g); } },
+      { id: "door",   layer: "door",   label: "door",     box: [172, 252, 56, 88], draw: function (g) {
+          el("rect", { x: 175, y: 255, width: 50, height: 85, rx: 5, fill: "#8B5A2B", stroke: "#4E2E10", "stroke-width": 4 }, g);
+          el("circle", { cx: 214, cy: 300, r: 4.5, fill: "#FFE066" }, g); } },
+      { id: "win1",   layer: "window", type: "win", label: "window", box: [100, 212, 56, 56], draw: function (g) { windowArt(g, 103, 215); } },
+      { id: "win2",   layer: "window", type: "win", label: "window", box: [244, 212, 56, 56], draw: function (g) { windowArt(g, 247, 215); } },
+      { id: "sign",   layer: "sign",   label: "H sign",   box: [174, 126, 52, 52], draw: function (g) {
+          el("circle", { cx: 200, cy: 152, r: 24, fill: "#FFFFFF", stroke: "#2C3550", "stroke-width": 4 }, g);
+          var t = el("text", { x: 200, y: 166, "text-anchor": "middle", "font-family": "'Baloo 2', system-ui, sans-serif",
+            "font-weight": 800, "font-size": 40, fill: "#FB8C00" }, g); t.textContent = "H"; } }
+    ];
+    function windowArt(g, x, y) {
+      el("rect", { x: x, y: y, width: 50, height: 50, fill: "#9FD8F5", stroke: "#2C3550", "stroke-width": 4 }, g);
+      el("line", { x1: x + 25, y1: y, x2: x + 25, y2: y + 50, stroke: "#2C3550", "stroke-width": 4 }, g);
+      el("line", { x1: x, y1: y + 25, x2: x + 50, y2: y + 25, stroke: "#2C3550", "stroke-width": 4 }, g);
+    }
+
+    // tray places: 4 on the top row, 3 on the bottom row
+    var TRAY = [[55, 425], [150, 425], [250, 425], [345, 425], [95, 520], [200, 520], [305, 520]];
+    var items = [];
+
+    function pt(e) {                               // pointer position in svg units
+      var p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+      return p.matrixTransform(svg.getScreenCTM().inverse());
+    }
+    function setPos(it, x, y, s) {                 // piece centre goes to (x, y)
+      it.x = x; it.y = y; it.s = s;
+      it.g.style.setProperty("--x", (x - it.cx * s) + "px");
+      it.g.style.setProperty("--y", (y - it.cy * s) + "px");
+      it.g.style.setProperty("--s", s);
+      it.g.setAttribute("transform", "translate(" + (x - it.cx * s) + " " + (y - it.cy * s) + ") scale(" + s + ")");
+    }
+    function trayScale(it) { return Math.min(1, 78 / it.w, 62 / it.h); }
+
+    function freeSlot(it, x, y, maxDist) {
+      var best = null, bd = maxDist;
+      items.forEach(function (o) {
+        if (o.slotTaken || (o.type || o.id) !== (it.type || it.id)) return;
+        var d = Math.hypot(o.cx - x, o.cy - y);
+        if (d < bd) { bd = d; best = o; }
+      });
+      return best;
+    }
+    function lock(it, slotItem) {
+      slotItem.slotTaken = true;
+      it.placed = true;
+      it.g.classList.remove("drag"); it.g.classList.add("placed");
+      it.g.removeAttribute("tabindex"); it.g.setAttribute("aria-hidden", "true");
+      it.g.removeAttribute("style");
+      it.g.setAttribute("transform", "translate(" + (slotItem.cx - it.cx) + " " + (slotItem.cy - it.cy) + ")");
+      document.getElementById("L-" + it.layer).appendChild(it.g);
+      slotItem.slot.style.display = "none";
+      placed++;
+      play("pop");
+      update();
+    }
+
+    function makePiece(def, trayIndex) {
+      var it = { id: def.id, type: def.type, layer: def.layer, w: def.box[2], h: def.box[3],
+                 cx: def.box[0] + def.box[2] / 2, cy: def.box[1] + def.box[3] / 2, placed: false, slotTaken: false };
+      it.slot = el("g", { "class": "slot" }, document.getElementById("S-" + def.layer));   // grey dashed ghost of the piece
+      def.draw(it.slot);
+      var g = el("g", { "class": "piece", tabindex: 0, role: "button", "aria-label": "Drag the " + def.label + " to the house" }, piecesBox);
+      def.draw(g);
+      el("rect", { "class": "hit", x: def.box[0] - 8, y: def.box[1] - 8, width: def.box[2] + 16, height: def.box[3] + 16, rx: 10 }, g);
+      it.g = g;
+      items.push(it);
+      attach(it);
+      return it;
+    }
+
+    function attach(it) {
+      var g = it.g, down = null;
+      g.addEventListener("pointerdown", function (e) {
+        if (it.placed) return;
+        e.preventDefault();
+        piecesBox.appendChild(g);                  // on top of the other pieces (before capture: moving a node drops it)
+        g.setPointerCapture(e.pointerId);
+        var p = pt(e);
+        down = { x: p.x, y: p.y, moved: false };
+        g.classList.add("drag");
+        setPos(it, p.x, p.y - 28, 1);              // lifted a little so the finger does not hide it
+      });
+      g.addEventListener("pointermove", function (e) {
+        if (!down) return;
+        var p = pt(e);
+        if (Math.hypot(p.x - down.x, p.y - down.y) > 6) down.moved = true;
+        setPos(it, p.x, p.y - 28, 1);
+      });
+      function finish(e, cancelled) {
+        if (!down) return;
+        var wasMoved = down.moved; down = null;
+        g.classList.remove("drag");
+        var target = cancelled ? null : (wasMoved ? freeSlot(it, it.x, it.y + 14, 70) : freeSlot(it, it.cx, it.cy, 1));  // a simple tap puts it in its place
+        if (target) { lock(it, target); return; }
+        var home = TRAY[it.tray];
+        setPos(it, home[0], home[1], trayScale(it));
+        g.classList.remove("nope"); void g.getBoundingClientRect(); g.classList.add("nope");
+      }
+      g.addEventListener("pointerup", function (e) { finish(e, false); });
+      g.addEventListener("pointercancel", function (e) { finish(e, true); });
+      g.addEventListener("keydown", function (e) {
+        if ((e.key === "Enter" || e.key === " ") && !it.placed) {
+          e.preventDefault();
+          var t = freeSlot(it, it.cx, it.cy, 1); if (t) lock(it, t);
+        }
+      });
+    }
+
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t;
+      }
+      return list;
+    }
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < placed ? "on" : "";
+      scoreText.textContent = placed + " of " + DEFS.length + " placed";
+      if (placed === DEFS.length) {
+        setTimeout(function () { play("win"); }, 300);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); }, 1200);
+      }
+    }
+    function newRound() {
+      ["L-chimney", "L-wall", "L-roof", "L-door", "L-window", "L-sign"].forEach(function (id) { document.getElementById(id).innerHTML = ""; });
+      slotsBox.innerHTML = ""; piecesBox.innerHTML = "";
+      ["chimney", "wall", "roof", "door", "window", "sign"].forEach(function (n) { el("g", { id: "S-" + n }, slotsBox); }); items = []; placed = 0;
+      var order = shuffle(DEFS.map(function (d, i) { return i; }));
+      var made = DEFS.map(function (d) { return makePiece(d); });
+      order.forEach(function (defIndex, trayIndex) {
+        var it = made[defIndex]; it.tray = trayIndex;
+        setPos(it, TRAY[trayIndex][0], TRAY[trayIndex][1], trayScale(it));
+      });
+      basket.innerHTML = "";
+      DEFS.forEach(function () { basket.appendChild(document.createElement("span")); });
+      win.hidden = true;
+      update();
+    }
+    document.getElementById("again").addEventListener("click", newRound);
+    newRound();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+</body>
+</html>
