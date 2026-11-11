@@ -179,6 +179,7 @@
     var COLOURS = ["#F8BBD0", "#BBDEFB", "#FFF59D", "#E1BEE7", "#B2EBF2", "#FFCCBC", "#C8E6C9", "#D1C4E9"];
     var grid = document.getElementById("grid"), basket = document.getElementById("basket"), scoreText = document.getElementById("score"), win = document.getElementById("win");
     var found = 0, heard = document.getElementById("heard");
+    var WORD_LIST = TARGETS.concat(OTHERS).map(function (t) { return t[0]; });
 
     var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
     function tone(freq, endFreq, start, length, volume) {
@@ -206,8 +207,26 @@
               vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
     }
     if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    var clips = {};                                // recorded voice clips (instant); the phone's own voice is the back-up
+    function loadClips(list) {
+      list.forEach(function (w) {
+        var a = new Audio(); a.preload = "auto";
+        a.addEventListener("canplaythrough", function () { a._ok = true; });
+        a.addEventListener("error", function () { a._ok = false; });
+        a.src = "audio/" + w + ".mp3"; clips[w] = a;
+      });
+    }
     function say(word) {                          // reads the word aloud when the device can
-      if (!soundOn || !window.speechSynthesis) return;
+      if (!soundOn) return;
+      var c = clips[word];
+      if (c && c._ok) {
+        try {
+          Object.keys(clips).forEach(function (k) { clips[k].pause(); });
+          c.currentTime = 0; var pr = c.play(); if (pr && pr.catch) pr.catch(function () {});
+          return;
+        } catch (e) {}
+      }
+      if (!window.speechSynthesis) return;
       try {
         if (window.speechSynthesis.speaking || window.speechSynthesis.pending) window.speechSynthesis.cancel();
         var u = new SpeechSynthesisUtterance(word); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
@@ -224,6 +243,7 @@
       return list;
     }
 
+    loadClips(WORD_LIST);
     function update() {
       var dots = basket.children;
       for (var i = 0; i < dots.length; i++) dots[i].className = i < found ? "on" : "";
