@@ -246,7 +246,7 @@
       return list;
     }
 
-    loadClips(WORDS);
+    // (recorded J clips come later; the phone voice is used until then)
     function update() {
       var dots = basket.children;
       for (var i = 0; i < dots.length; i++) dots[i].className = i < matched ? "on" : "";
