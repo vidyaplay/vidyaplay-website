@@ -54,6 +54,8 @@
       75% { transform: translate(calc(var(--x) + 7px), var(--y)) scale(var(--s)); } }
     .tray-bg { fill: #FFFFFF; }
     .win { background: #FFFFFF !important; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .badge-x { pointer-events: none; }
 
     .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
     .basket { display: flex; gap: 4px; }
@@ -143,7 +145,8 @@
     <section class="game-card" aria-label="Build the House game">
       <div class="game-top">
         <p class="game-ask">Drag each piece to build the <span class="orange">H</span>ouse</p>
-        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
       </div>
 
       <svg class="house" id="house" viewBox="0 0 400 590" role="group" aria-label="House with 7 pieces to place">
@@ -226,6 +229,7 @@
         if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
         if (audio.state === "suspended") audio.resume();
         if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
         if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
       } catch (e) { /* no sound: the game still works */ }
     }
@@ -234,6 +238,27 @@
       soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn);
       soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+    });
+
+    // ===== Voice-overs: her recordings (question, yes, oops, win); phone voice only for the question if a clip cannot load =====
+    var clips = {};
+    ["instruction", "yes", "oops", "win"].forEach(function (n) {
+      var a = new Audio(); a.preload = "auto";
+      a.addEventListener("error", function () { a._ok = false; });
+      a.src = "audio/" + n + ".mp3"; clips[n] = a;
+    });
+    function hasClip(n) { return !!(clips[n] && clips[n]._ok !== false); }
+    function say(n) {
+      if (!soundOn || !hasClip(n)) return;
+      try {
+        Object.keys(clips).forEach(function (k) { clips[k].pause(); });
+        clips[n].currentTime = 0;
+        var pr = clips[n].play(); if (pr && pr.catch) pr.catch(function () {});
+      } catch (e) {}
+    }
+    document.getElementById("hear").addEventListener("click", function () {
+      if (hasClip("instruction")) { say("instruction"); return; }
+      try { if (window.speechSynthesis && soundOn) { var u = new SpeechSynthesisUtterance("Build the house. Drag each piece to its place. H is for house."); u.lang = "en-IN"; u.rate = 0.85; window.speechSynthesis.speak(u); } } catch (e) {}
     });
 
     // ===== The seven pieces: drawn where they belong on the house (box = x, y, w, h) =====
@@ -310,6 +335,7 @@
       placed++;
       play("pop");
       update();
+      if (placed < DEFS.length) setTimeout(function () { say("yes"); }, 350);
     }
 
     function makePiece(def, trayIndex) {
@@ -355,6 +381,13 @@
         var home = TRAY[it.tray];
         setPos(it, home[0], home[1], trayScale(it));
         g.classList.remove("nope"); void g.getBoundingClientRect(); g.classList.add("nope");
+        if (wasMoved) {                              // dropped in the wrong place: red cross, low sound, "oops"
+          play("nope"); setTimeout(function () { say("oops"); }, 250);
+          var x = el("g", { "class": "badge-x", transform: "translate(" + (home[0] + it.w * trayScale(it) / 2) + " " + (home[1] - it.h * trayScale(it) / 2) + ")" }, svg);
+          el("circle", { r: 15, fill: "#E5533D", stroke: "#FFFFFF", "stroke-width": 3 }, x);
+          var xt = el("text", { y: 7, "text-anchor": "middle", "font-size": 20, "font-weight": 800, fill: "#FFFFFF", "font-family": "system-ui, sans-serif" }, x); xt.textContent = "\u2715";
+          setTimeout(function () { if (x.parentNode) x.parentNode.removeChild(x); }, 1300);
+        }
       }
       g.addEventListener("pointerup", function (e) { finish(e, false); });
       g.addEventListener("pointercancel", function (e) { finish(e, true); });
@@ -382,7 +415,7 @@
       scoreText.textContent = placed + " of " + DEFS.length + " placed";
       if (placed === DEFS.length) {
         setTimeout(function () { play("win"); }, 300);
-        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); }, 1200);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); say("win"); }, 1200);
       }
     }
     function newRound() {
