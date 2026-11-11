@@ -347,7 +347,7 @@
       placed++;
       play("pop");
       update();
-      if (placed < DEFS.length) later(function () { say("yes"); }, 350);
+      // a fitting piece only gets the "pop" sound; the spoken praise is kept for the win (it was repeated seven times)
     }
 
     function makePiece(def, trayIndex) {
@@ -427,7 +427,7 @@
       scoreText.textContent = placed + " of " + DEFS.length + " placed";
       if (placed === DEFS.length) {
         setTimeout(function () { play("win"); }, 300);
-        setTimeout(function () { svg.classList.add("done"); win.hidden = false; document.getElementById("again").focus(); afterWord("yes", function () { say("win"); }); }, 1200);
+        setTimeout(function () { svg.classList.add("done"); win.hidden = false; document.getElementById("again").focus(); say("win"); }, 1200);
       }
     }
     function newRound() {
