@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kite Sky Quiz: Letter K Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online letter K game for LKG kids: look at the picture and tap the kite with the letter it starts with. Works on phones, no sign-up. Print the worksheet too.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=5">
+  <link rel="canonical" href="https://vidyaplay.in/play/kite-sky-quiz/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Kite Sky Quiz: Letter K Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online letter K game for LKG kids: look at the picture and tap the kite with the letter it starts with. Works on phones, no sign-up. Print the worksheet too.">
+  <meta property="og:url" content="https://vidyaplay.in/play/kite-sky-quiz/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Kite Sky Quiz (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px;
+      border-radius: 24px; background: #FFF1E6; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
+    .sky { position: relative; border-radius: 18px; background: linear-gradient(#BFE6FA, #E8F6FD); padding: 10px 6px 8px; }
+    .cloud { display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; width: 62%; aspect-ratio: 1.5 / 1; border: 0; padding: 0; cursor: pointer;
+      background: #FFFFFF; border-radius: 60px; box-shadow: 0 0 0 6px rgba(255,255,255,0.55); -webkit-tap-highlight-color: transparent; }
+    .cloud img { width: 62%; height: 78%; object-fit: contain; pointer-events: none; }
+    .say-word { margin: 0; text-align: center; min-height: 28px; font-size: 22px; font-weight: 800; color: var(--navy); }
+    .say-word .no { color: #C0392B; }
+    .kites { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-top: 6px; }
+    .balloon { position: relative; width: 100%; aspect-ratio: 5 / 7; border: 0; padding: 0; background: none; cursor: pointer; animation: bob 3s ease-in-out infinite; -webkit-tap-highlight-color: transparent; }
+    .balloon:nth-child(2) { animation-delay: -1.2s; } .balloon:nth-child(3) { animation-delay: -2.1s; }
+    .balloon svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .balloon:focus-visible polygon { stroke: var(--blue); stroke-width: 6; }
+    .balloon.nope { animation: wiggle 0.45s ease-in-out, bob 3s ease-in-out infinite; }
+    .balloon.nope::after { content: "✕"; position: absolute; right: 2px; top: 0; width: 30px; height: 30px; border-radius: 50%; background: #E5533D; color: #FFFFFF;
+      border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; text-align: center; }
+    .balloon.fly { animation: fly 0.9s ease-in forwards; pointer-events: none; }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
+    @keyframes fly { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-190px) scale(0.5); opacity: 0; } }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF;
+      transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #FB8C00; border: 2.5px solid #8A3B00; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column;
+      align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .balloon, .card-in, .win-icons { animation: none !important; } }
+  </style>
+  <!-- Google Analytics (cookie-free) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+    gtag('js', new Date());
+    gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Kite Sky Quiz","item":"https://vidyaplay.in/play/kite-sky-quiz/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Q (more coming)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Kite Sky Quiz</span>
+    </nav>
+
+    <h1 class="page-title">Kite Sky Quiz</h1>
+    <p class="facts">LKG English · Letter K · Ages 3.5 to 5</p>
+
+    <section class="game-card" aria-label="Kite Sky Quiz game">
+      <div class="game-top">
+        <p class="game-ask">Which kite has the letter the picture starts with?</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <div class="sky">
+        <button class="cloud" id="cloud" type="button" aria-label="Tap to hear the word"><img id="pic" alt="" width="150" height="150"></button>
+        <p class="say-word" id="heard" aria-live="polite">&nbsp;</p>
+        <div class="kites" id="kites"></div>
+      </div>
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 3 done</p>
+      </div>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🪁🎉🪁</div>
+        <p class="win-big">Great kite flying!</p>
+        <p class="win-text">kite, key, kangaroo: all start with k.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-K3_Colour_the_Patchwork_Kite.pdf" download>Print the Letter K worksheet (PDF)</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say each picture word out loud and listen for the "k" at the start: k-k-kite. Then print the Letter K worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    var WORDS = ["kite", "key", "kangaroo"];
+    var OTHER = ["M", "S", "T", "B", "O", "P"];                  // capital letters that do not look like K
+    var COLOURS = ["#F8BBD0", "#FFF59D", "#B2EBF2", "#E1BEE7", "#FFCCBC", "#C8E6C9"];
+    var kites = document.getElementById("kites"), basket = document.getElementById("basket"), scoreText = document.getElementById("score");
+    var win = document.getElementById("win"), pic = document.getElementById("pic"), heard = document.getElementById("heard"), cloud = document.getElementById("cloud");
+    var order = [], round = 0, locked = false;
+
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
+        if (kind === "flip") tone(500, 700, 0, 0.08, 0.2);
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    var voice = null;                               // a voice that lives on the phone answers fastest
+    function pickVoice() {
+      if (!window.speechSynthesis) return;
+      var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return v.localService && /^en[-_](IN|GB|US)/i.test(v.lang); })[0] ||
+              vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
+    }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    var clips = {};                                // recorded voice clips (instant); the phone's own voice is the back-up
+    function loadClips(list) {
+      list.forEach(function (w) {
+        var a = new Audio(); a.preload = "auto";
+        a.addEventListener("canplaythrough", function () { a._ok = true; });
+        a.addEventListener("error", function () { a._ok = false; });
+        a.src = "audio/" + w + ".mp3"; clips[w] = a;
+      });
+    }
+    function speak(word) {                        // the phone's own voice (back-up)
+      if (!window.speechSynthesis) return;
+      try {
+        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(word); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+    function say(word, then) {                    // recorded clip first (played straight away on the touch), phone voice if that fails
+      if (!soundOn) return;
+      var c = clips[word];
+      if (c && c._ok !== false) {
+        try {
+          Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; });
+          c.currentTime = 0;
+          if (then) c.onended = then;
+          var pr = c.play();
+          if (pr && pr.catch) pr.catch(function () { speak(word); });
+          return;
+        } catch (e) {}
+      }
+      speak(word);
+    }
+    function hasClip(name) { return !!(clips[name] && clips[name]._ok !== false); }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+    });
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
+      return list;
+    }
+
+    var EXTRA = [];                                // "instruction", "yes", "oops", "win" go here when their recordings are added
+    loadClips(WORDS.concat(EXTRA));
+    document.getElementById("hear").addEventListener("click", function () {
+      if (hasClip("instruction")) say("instruction"); else speak("Look at the picture. Which letter does it start with? Tap the kite with that letter.");
+    });
+    cloud.addEventListener("click", function () { say(order[round]); });
+
+    var NS = "http://www.w3.org/2000/svg";
+    function kiteSvg(letter, colour) {
+      return '<svg viewBox="0 0 100 150" aria-hidden="true">' +
+        '<path d="M50 108 C40 120 62 124 50 138 C42 146 58 148 54 150" fill="none" stroke="#2C3550" stroke-width="3"/>' +
+        '<polygon points="50,4 94,50 50,112 6,50" fill="' + colour + '" stroke="#2C3550" stroke-width="4" stroke-linejoin="round"/>' +
+        '<line x1="50" y1="4" x2="50" y2="112" stroke="#2C3550" stroke-width="2.5" opacity="0.35"/><line x1="6" y1="50" x2="94" y2="50" stroke="#2C3550" stroke-width="2.5" opacity="0.35"/>' +
+        '<text x="50" y="72" text-anchor="middle" font-family="\'Baloo 2\', system-ui, sans-serif" font-weight="800" font-size="46" fill="#2C3550">' + letter + '</text></svg>';
+    }
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < round ? "on" : "";
+      scoreText.textContent = round + " of " + WORDS.length + " done";
+    }
+    function showRound() {
+      var w = order[round];
+      pic.setAttribute("src", w + ".webp"); pic.setAttribute("alt", w);
+      heard.innerHTML = "&nbsp;";
+      var letters = shuffle(["K"].concat(shuffle(OTHER.slice()).slice(0, 2)));
+      var cols = shuffle(COLOURS.slice());
+      kites.innerHTML = ""; locked = false;
+      letters.forEach(function (L, i) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "balloon"; b.setAttribute("aria-label", "Kite with the letter " + L);
+        b.innerHTML = kiteSvg(L, cols[i]);
+        b.addEventListener("pointerdown", function () { /* the letter sound is not read out: the picture word is the hint */ });
+        b.addEventListener("click", function () {
+          if (locked) return;
+          if (L === "K") {
+            locked = true; b.classList.add("fly"); play("pop");
+            heard.textContent = w + " starts with k";
+            round++; update();
+            if (round === WORDS.length) {
+              setTimeout(function () { play("win"); }, 400);
+              setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); if (hasClip("win")) say("win"); }, 1400);
+            } else {
+              if (hasClip("yes")) setTimeout(function () { say("yes"); }, 300);
+              setTimeout(function () { showRound(); setTimeout(function () { say(order[round]); }, 150); }, 1900);
+            }
+          } else {
+            heard.innerHTML = w + ' starts with "k", <span class="no">not ' + L.toLowerCase() + '</span>';
+            b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope");
+            setTimeout(function () { b.classList.remove("nope"); }, 1400);
+            if (hasClip("oops")) setTimeout(function () { say("oops"); }, 700);
+          }
+        });
+        kites.appendChild(b);
+      });
+    }
+    function newGame() {
+      order = shuffle(WORDS.slice()); round = 0;
+      basket.innerHTML = ""; WORDS.forEach(function () { basket.appendChild(document.createElement("span")); });
+      win.hidden = true; update(); showRound();
+    }
+    document.getElementById("again").addEventListener("click", newGame);
+    newGame();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+</body>
+</html>
