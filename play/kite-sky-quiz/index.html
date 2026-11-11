@@ -260,8 +260,8 @@
       return list;
     }
 
-    var EXTRA = ["instruction", "yes", "oops", "win"];    // recorded voice-overs; the three picture words use the phone voice until they are recorded
-    loadClips(EXTRA);
+    var EXTRA = ["instruction", "yes", "oops", "win"];    // recorded voice-overs; the three picture words are cut from her win recording
+    loadClips(WORDS.concat(EXTRA));
     document.getElementById("hear").addEventListener("click", function () {
       if (hasClip("instruction")) say("instruction"); else speak("Look at the picture. Which letter does it start with? Tap the kite with that letter.");
     });
