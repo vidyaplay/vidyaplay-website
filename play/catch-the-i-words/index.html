@@ -257,7 +257,7 @@
       return list;
     }
 
-    var EXTRA = [];                                // "instruction", "yes", "oops", "win" go here when their recordings are added
+    var EXTRA = ["instruction", "yes", "oops", "win"];    // voice-overs for the question, a right pop, a wrong pop and the win
     loadClips(WORD_LIST.concat(EXTRA));
     document.getElementById("hear").addEventListener("click", function () {
       if (hasClip("instruction")) say("instruction"); else speak("Pop the balloons that start with i, as in igloo.");
@@ -268,7 +268,7 @@
       scoreText.textContent = found + " of " + TARGETS.length + " found";
       if (found === TARGETS.length) {
         setTimeout(function () { play("win"); }, 350);
-        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); }, 1300);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); if (hasClip("win")) say("win"); }, 1300);
       }
     }
     function newRound() {
@@ -289,7 +289,7 @@
           if (p.hit) {
             heard.textContent = p.w;
             b.classList.add("popped"); b.disabled = true; b.setAttribute("aria-hidden", "true"); found++; play("pop"); update();
-            if (hasClip("yes")) setTimeout(function () { say("yes"); }, 700);
+            if (hasClip("yes") && found < TARGETS.length) setTimeout(function () { say("yes"); }, 700);
           } else {
             heard.innerHTML = p.w + ' starts with "' + p.w.charAt(0) + '", <span class="no">not i</span>';   // shows why it is wrong
             b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope");
