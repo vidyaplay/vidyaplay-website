@@ -50,6 +50,9 @@
     .card-btn.matched .face.front { background: #DFF5DC; border-color: #2E9B4F; }
     .card-btn:focus-visible .face { border-color: var(--blue); }
     .card-btn.matched { pointer-events: none; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .card-btn.wrong::after { content: "✕"; position: absolute; right: -6px; top: -6px; width: 30px; height: 30px; border-radius: 50%; z-index: 3;
+      background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; text-align: center; }
     @media (prefers-reduced-motion: reduce) { .card-in { transition: none; } }
 
     .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
@@ -140,7 +143,8 @@
     <section class="game-card" aria-label="Jam Jar Memory game">
       <div class="game-top">
         <p class="game-ask">Find the pairs. All of them start with <span class="orange">J</span></p>
-        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
       </div>
       <div class="grid" id="grid"></div>
       <div class="score">
@@ -249,14 +253,17 @@
       return list;
     }
 
-    loadClips(WORDS);
+    loadClips(WORDS.concat(["instruction", "yes", "oops", "win"]));
+    document.getElementById("hear").addEventListener("click", function () {
+      if (hasClip("instruction")) say("instruction"); else speak("Find the pairs. All of them start with j, as in jam.");
+    });
     function update() {
       var dots = basket.children;
       for (var i = 0; i < dots.length; i++) dots[i].className = i < matched ? "on" : "";
       scoreText.textContent = matched + " of " + WORDS.length + " pairs";
       if (matched === WORDS.length) {
         setTimeout(function () { play("win"); }, 400);
-        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); }, 1400);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); if (hasClip("win")) say("win"); }, 1400);
       }
     }
     function newRound() {
@@ -279,12 +286,15 @@
               setTimeout(function () {
                 open.forEach(function (c) { c.classList.remove("open"); c.classList.add("matched"); });
                 open = []; matched++; lock = false; play("pop"); update();
+                if (hasClip("yes") && matched < WORDS.length) setTimeout(function () { say("yes"); }, 250);
               }, 700);
             } else {
+              open.forEach(function (c) { c.classList.add("wrong"); });          // red cross on both cards: not a pair
+              setTimeout(function () { play("nope"); if (hasClip("oops")) say("oops"); }, 900);
               setTimeout(function () {
-                open.forEach(function (c) { c.classList.remove("open"); c.setAttribute("aria-label", "Face-down jar lid, tap to turn over"); });
+                open.forEach(function (c) { c.classList.remove("wrong"); c.classList.remove("open"); c.setAttribute("aria-label", "Face-down jar lid, tap to turn over"); });
                 open = []; lock = false;
-              }, 1100);
+              }, 2200);
             }
           }
         });
