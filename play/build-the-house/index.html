@@ -56,6 +56,7 @@
     .win { background: #FFFFFF !important; }
     .btn-pair { display: flex; gap: 6px; flex: none; }
     .badge-x { pointer-events: none; }
+    .house.done .tray-bg { fill: transparent; }
 
     .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
     .basket { display: flex; gap: 4px; }
@@ -249,6 +250,9 @@
       a.src = "audio/" + n + ".mp3"; clips[n] = a;
     });
     function hasClip(n) { return !!(clips[n] && clips[n]._ok !== false); }
+    var pendingT = [];
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
     function stopClips() { Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
     function afterWord(n, fn) {                    // run fn when clip n ends (a new say() cancels it)
       var c = clips[n];
@@ -256,6 +260,7 @@
       else fn();
     }
     function say(n) {
+      cancelLater();
       if (!soundOn || !hasClip(n)) return;
       try {
         stopClips();
@@ -342,7 +347,7 @@
       placed++;
       play("pop");
       update();
-      if (placed < DEFS.length) setTimeout(function () { say("yes"); }, 350);
+      if (placed < DEFS.length) later(function () { say("yes"); }, 350);
     }
 
     function makePiece(def, trayIndex) {
@@ -389,7 +394,7 @@
         setPos(it, home[0], home[1], trayScale(it));
         g.classList.remove("nope"); void g.getBoundingClientRect(); g.classList.add("nope");
         if (wasMoved) {                              // dropped in the wrong place: red cross, low sound, "oops"
-          play("nope"); setTimeout(function () { say("oops"); }, 250);
+          play("nope"); later(function () { say("oops"); }, 250);
           var x = el("g", { "class": "badge-x", transform: "translate(" + (home[0] + it.w * trayScale(it) / 2) + " " + (home[1] - it.h * trayScale(it) / 2) + ")" }, svg);
           el("circle", { r: 15, fill: "#E5533D", stroke: "#FFFFFF", "stroke-width": 3 }, x);
           var xt = el("text", { y: 7, "text-anchor": "middle", "font-size": 20, "font-weight": 800, fill: "#FFFFFF", "font-family": "system-ui, sans-serif" }, x); xt.textContent = "\u2715";
@@ -422,11 +427,11 @@
       scoreText.textContent = placed + " of " + DEFS.length + " placed";
       if (placed === DEFS.length) {
         setTimeout(function () { play("win"); }, 300);
-        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); afterWord("yes", function () { say("win"); }); }, 1200);
+        setTimeout(function () { svg.classList.add("done"); win.hidden = false; document.getElementById("again").focus(); afterWord("yes", function () { say("win"); }); }, 1200);
       }
     }
     function newRound() {
-      stopClips();
+      stopClips(); cancelLater(); svg.classList.remove("done");
       ["chimney", "wall", "roof", "door", "window", "sign"].forEach(function (n) {
         document.getElementById("L-" + n).innerHTML = ""; document.getElementById("S-" + n).innerHTML = "";
       });

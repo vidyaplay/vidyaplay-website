@@ -232,7 +232,11 @@
         window.speechSynthesis.speak(u);
       } catch (e) {}
     }
+    var pendingT = [];                             // delayed voice lines ("oops" ...): any new voice cancels them
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
     function say(word, then) {                    // recorded clip first (played straight away on the touch), phone voice if that fails
+      cancelLater();
       if (!soundOn) return;
       var c = clips[word];
       if (c && c._ok !== false) {
@@ -280,7 +284,7 @@
       }
     }
     function newRound() {
-      stopClips(); grid.removeAttribute("inert");
+      stopClips(); cancelLater(); grid.removeAttribute("inert");
       var picks = TARGETS.map(function (t) { return { w: t[0], f: t[1], hit: true }; })
         .concat(shuffle(OTHERS.slice()).slice(0, 5).map(function (t) { return { w: t[0], f: t[1], hit: false }; }));
       shuffle(picks);

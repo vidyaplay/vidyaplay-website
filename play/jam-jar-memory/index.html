@@ -228,7 +228,11 @@
         window.speechSynthesis.speak(u);
       } catch (e) {}
     }
+    var pendingT = [];                             // delayed voice lines ("oops" ...): any new voice cancels them
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
     function say(word, then) {                    // recorded clip first (played straight away on the touch), phone voice if that fails
+      cancelLater();
       if (!soundOn) return;
       var c = clips[word];
       if (c && c._ok !== false) {
@@ -274,7 +278,7 @@
       }
     }
     function newRound() {
-      stopClips();
+      stopClips(); cancelLater();
       var deck = shuffle(WORDS.concat(WORDS));
       grid.innerHTML = ""; open = []; matched = 0; lock = false;
       deck.forEach(function (w) {
@@ -301,7 +305,7 @@
               }, 700);
             } else {
               open.forEach(function (c) { c.classList.add("wrong"); });          // red cross on both cards: not a pair
-              var badWord = w; setTimeout(function () { play("nope"); if (hasClip("oops")) afterWord(badWord, function () { say("oops"); }); }, 300);
+              var badWord = w; later(function () { play("nope"); if (hasClip("oops")) afterWord(badWord, function () { say("oops"); }); }, 300);
               setTimeout(function () {
                 open.forEach(function (c) { c.classList.remove("wrong"); c.classList.remove("open"); c.setAttribute("aria-label", "Face-down jar lid, tap to turn over"); });
                 open = []; lock = false;
