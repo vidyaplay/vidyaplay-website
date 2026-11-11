@@ -197,9 +197,21 @@
         if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
       } catch (e) { /* no sound: the game still works */ }
     }
+    var voice = null;                               // a voice that lives on the phone answers fastest
+    function pickVoice() {
+      if (!window.speechSynthesis) return;
+      var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return v.localService && /^en[-_](IN|GB|US)/i.test(v.lang); })[0] ||
+              vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
+    }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
     function say(word) {                          // reads the word aloud when the device can
       if (!soundOn || !window.speechSynthesis) return;
-      try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(word); u.lang = "en-IN"; u.rate = 0.8; window.speechSynthesis.speak(u); } catch (e) {}
+      try {
+        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(word); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
     }
     soundBtn.addEventListener("click", function () {
       soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
@@ -229,9 +241,10 @@
         b.setAttribute("aria-label", "Face-down jar lid, tap to turn over");
         b.innerHTML = '<span class="card-in"><span class="face back"><span>J</span></span><span class="face front"><img alt="" width="150" height="150"><b>' + w + '</b></span></span>';
         b.querySelector("img").setAttribute("src", w + ".webp");
+        b.addEventListener("pointerdown", function () { if (!lock && !b.classList.contains("open") && !b.classList.contains("matched")) say(w); });
         b.addEventListener("click", function () {
           if (lock || b.classList.contains("open") || b.classList.contains("matched")) return;
-          b.classList.add("open"); b.setAttribute("aria-label", w); play("flip"); say(w);
+          b.classList.add("open"); b.setAttribute("aria-label", w); play("flip");
           open.push(b);
           if (open.length === 2) {
             lock = true;

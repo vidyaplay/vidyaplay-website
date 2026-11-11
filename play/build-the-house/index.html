@@ -37,6 +37,8 @@
     .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
     .house { display: block; width: 100%; height: auto; max-height: 78vh; touch-action: none; user-select: none; -webkit-user-select: none; }
     .slot * { fill: rgba(255, 255, 255, 0.45); stroke: #9AA3B2; stroke-width: 3; stroke-dasharray: 8 7; }
+    .slot .f { stroke: none; }
+    .slot .l { fill: none; }
     .slot text, .slot line, .slot circle[r="4.5"] { display: none; }
     
     .piece { cursor: grab; outline: none; touch-action: none; }
@@ -253,6 +255,17 @@
           var t = el("text", { x: 200, y: 166, "text-anchor": "middle", "font-family": "'Baloo 2', system-ui, sans-serif",
             "font-weight": 800, "font-size": 40, fill: "#FB8C00" }, g); t.textContent = "H"; } }
     ];
+    // Ghost outlines: one clean line where two pieces meet (no double lines)
+    function ghostFill(g, tag, attrs) { attrs["class"] = "f"; el(tag, attrs, g); }
+    function ghostLine(g, d) { el("path", { "class": "l", d: d }, g); }
+    var GHOST = {
+      wall: function (g) { ghostFill(g, "rect", { x: 80, y: 195, width: 240, height: 145 }); ghostLine(g, "M80,195 V340 H320 V195"); },
+      roof: function (g) { ghostFill(g, "polygon", { points: "55,195 200,92 345,195" }); ghostLine(g, "M55,195 L200,92 L345,195 Z"); },
+      chimney: function (g) {
+        ghostFill(g, "polygon", { points: "262,100 296,100 296,160 262,136" });
+        ghostLine(g, "M262,136 V106 H256 V94 H302 V106 H296 V160"); },
+      door: function (g) { ghostFill(g, "rect", { x: 175, y: 255, width: 50, height: 85 }); ghostLine(g, "M175,340 V260 Q175,255 180,255 H220 Q225,255 225,260 V340"); }
+    };
     function windowArt(g, x, y) {
       el("rect", { x: x, y: y, width: 50, height: 50, fill: "#9FD8F5", stroke: "#2C3550", "stroke-width": 4 }, g);
       el("line", { x1: x + 25, y1: y, x2: x + 25, y2: y + 50, stroke: "#2C3550", "stroke-width": 4 }, g);
@@ -303,7 +316,7 @@
       var it = { id: def.id, type: def.type, layer: def.layer, w: def.box[2], h: def.box[3],
                  cx: def.box[0] + def.box[2] / 2, cy: def.box[1] + def.box[3] / 2, placed: false, slotTaken: false };
       it.slot = el("g", { "class": "slot" }, document.getElementById("S-" + def.layer));   // grey dashed ghost of the piece
-      def.draw(it.slot);
+      (GHOST[def.id] || def.draw)(it.slot);
       var g = el("g", { "class": "piece", tabindex: 0, role: "button", "aria-label": "Drag the " + def.label + " to the house" }, piecesBox);
       def.draw(g);
       var ts = Math.min(1, 78 / def.box[2], 62 / def.box[3]);                       // tray size: keep the touch area at least 56 units wide and high
