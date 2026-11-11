@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jam Jar Memory: Letter J Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online letter J memory game for LKG kids: turn the jar lids and match jam, jellyfish, jet and jeans. Works on phones, no sign-up. Print the worksheet too.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=5">
+  <link rel="canonical" href="https://vidyaplay.in/play/jam-jar-memory/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Jam Jar Memory: Letter J Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online letter J memory game for LKG kids: turn the jar lids and match jam, jellyfish, jet and jeans. Works on phones, no sign-up. Print the worksheet too.">
+  <meta property="og:url" content="https://vidyaplay.in/play/jam-jar-memory/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Jam Jar Memory (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px;
+      border-radius: 24px; background: #FFF1E6; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 8px 2px 8px; perspective: 700px; }
+    .card-btn { position: relative; width: 100%; aspect-ratio: 3 / 4; border: 0; padding: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .card-in { position: absolute; inset: 0; transition: transform 0.45s; transform-style: preserve-3d; }
+    .card-btn.open .card-in, .card-btn.matched .card-in { transform: rotateY(180deg); }
+    .face { position: absolute; inset: 0; border-radius: 14px; border: 4px solid #2C3550; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+    .face.back { background: #FB8C00; }
+    .face.back::before { content: ""; position: absolute; top: -4px; left: 14%; right: 14%; height: 14px; border-radius: 6px 6px 0 0; background: #8A3B00; border: 3px solid #2C3550; border-bottom: 0; }
+    .face.back span { font-size: 40px; font-weight: 800; color: #FFFFFF; line-height: 1; }
+    .face.front { background: #FFFFFF; transform: rotateY(180deg); }
+    .face.front img { width: 74%; height: 58%; object-fit: contain; }
+    .face.front b { font-size: 15px; color: var(--navy); }
+    .card-btn.matched .face.front { background: #DFF5DC; border-color: #2E9B4F; }
+    .card-btn:focus-visible .face { border-color: var(--blue); }
+    .card-btn.matched { pointer-events: none; }
+    @media (prefers-reduced-motion: reduce) { .card-in { transition: none; } }
+
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF;
+      transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #FB8C00; border: 2.5px solid #8A3B00; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column;
+      align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .balloon, .card-in, .win-icons { animation: none !important; } }
+  </style>
+  <!-- Google Analytics (cookie-free) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+    gtag('js', new Date());
+    gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Jam Jar Memory","item":"https://vidyaplay.in/play/jam-jar-memory/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Q (more coming)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Jam Jar Memory</span>
+    </nav>
+
+    <h1 class="page-title">Jam Jar Memory</h1>
+    <p class="facts">LKG English · Letter J · Ages 3.5 to 5</p>
+
+    <section class="game-card" aria-label="Jam Jar Memory game">
+      <div class="game-top">
+        <p class="game-ask">Find the pairs. All of them start with <span class="orange">J</span></p>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 4 pairs</p>
+      </div>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🍓🎉🍓</div>
+        <p class="win-big">All pairs found!</p>
+        <p class="win-text">jam, jellyfish, jet, jeans: all start with j.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-J3_Finish_the_Jigsaw.pdf" download>Print the Letter J worksheet (PDF)</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say each word out loud when a card turns over, and stress the "j": j-j-jam. Then print the Letter J worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    var WORDS = ["jam", "jellyfish", "jet", "jeans"];
+    var grid = document.getElementById("grid"), basket = document.getElementById("basket"), scoreText = document.getElementById("score"), win = document.getElementById("win");
+    var open = [], matched = 0, lock = false;
+
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
+        if (kind === "flip") tone(500, 700, 0, 0.08, 0.2);
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    function say(word) {                          // reads the word aloud when the device can
+      if (!soundOn || !window.speechSynthesis) return;
+      try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(word); u.lang = "en-IN"; u.rate = 0.8; window.speechSynthesis.speak(u); } catch (e) {}
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+    });
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
+      return list;
+    }
+
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < matched ? "on" : "";
+      scoreText.textContent = matched + " of " + WORDS.length + " pairs";
+      if (matched === WORDS.length) {
+        setTimeout(function () { play("win"); }, 400);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); }, 1400);
+      }
+    }
+    function newRound() {
+      var deck = shuffle(WORDS.concat(WORDS));
+      grid.innerHTML = ""; open = []; matched = 0; lock = false;
+      deck.forEach(function (w) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "card-btn"; b.dataset.w = w;
+        b.setAttribute("aria-label", "Face-down jar lid, tap to turn over");
+        b.innerHTML = '<span class="card-in"><span class="face back"><span>J</span></span><span class="face front"><img alt="" width="150" height="150"><b>' + w + '</b></span></span>';
+        b.querySelector("img").setAttribute("src", w + ".webp");
+        b.addEventListener("click", function () {
+          if (lock || b.classList.contains("open") || b.classList.contains("matched")) return;
+          b.classList.add("open"); b.setAttribute("aria-label", w); play("flip"); say(w);
+          open.push(b);
+          if (open.length === 2) {
+            lock = true;
+            if (open[0].dataset.w === open[1].dataset.w) {
+              setTimeout(function () {
+                open.forEach(function (c) { c.classList.remove("open"); c.classList.add("matched"); });
+                open = []; matched++; lock = false; play("pop"); update();
+              }, 700);
+            } else {
+              setTimeout(function () {
+                open.forEach(function (c) { c.classList.remove("open"); c.setAttribute("aria-label", "Face-down jar lid, tap to turn over"); });
+                open = []; lock = false;
+              }, 1100);
+            }
+          }
+        });
+        grid.appendChild(b);
+      });
+      basket.innerHTML = "";
+      WORDS.forEach(function () { basket.appendChild(document.createElement("span")); });
+      win.hidden = true; update();
+    }
+    document.getElementById("again").addEventListener("click", newRound);
+    newRound();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+</body>
+</html>

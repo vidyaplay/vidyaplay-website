@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catch the I Words: Letter I Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online letter I game for LKG kids: pop the balloons with igloo, iguana and ink. Works on phones, no sign-up. Print the matching worksheet too.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=5">
+  <link rel="canonical" href="https://vidyaplay.in/play/catch-the-i-words/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Catch the I Words: Letter I Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online letter I game for LKG kids: pop the balloons with igloo, iguana and ink. Works on phones, no sign-up. Print the matching worksheet too.">
+  <meta property="og:url" content="https://vidyaplay.in/play/catch-the-i-words/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Catch the I Words (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px;
+      border-radius: 24px; background: #FFF1E6; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 8px; padding: 10px 2px 8px; background: linear-gradient(#CDEBFA, #E8F6FD); border-radius: 18px; }
+    .balloon { position: relative; width: 100%; aspect-ratio: 3 / 4.2; border: 0; padding: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; animation: bob 3s ease-in-out infinite; }
+    .balloon:nth-child(2n) { animation-delay: -1.1s; } .balloon:nth-child(3n) { animation-delay: -2s; }
+    .balloon .body { position: absolute; inset: 0 0 14% 0; border-radius: 50% 50% 46% 46% / 56% 56% 44% 44%; border: 4px solid #2C3550;
+      background: var(--c); display: flex; align-items: center; justify-content: center; }
+    .balloon img { width: 68%; height: 62%; object-fit: contain; pointer-events: none; }
+    .balloon .string { position: absolute; left: 50%; bottom: 0; width: 3px; height: 14%; background: #2C3550; transform: translateX(-50%); }
+    .balloon:focus-visible .body { border-color: var(--blue); border-width: 6px; }
+    .balloon.nope { animation: wiggle 0.45s ease-in-out; }
+    .balloon.popped { animation: poof 0.5s ease-out forwards; pointer-events: none; }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
+    @keyframes poof { 0% { transform: scale(1); opacity: 1; } 40% { transform: scale(1.25); opacity: 1; } 100% { transform: scale(0.2); opacity: 0; } }
+
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF;
+      transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #FB8C00; border: 2.5px solid #8A3B00; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column;
+      align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .balloon, .card-in, .win-icons { animation: none !important; } }
+  </style>
+  <!-- Google Analytics (cookie-free) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+    gtag('js', new Date());
+    gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Catch the I Words","item":"https://vidyaplay.in/play/catch-the-i-words/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Q (more coming)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Catch the I Words</span>
+    </nav>
+
+    <h1 class="page-title">Catch the I Words</h1>
+    <p class="facts">LKG English · Letter I · Ages 3.5 to 5</p>
+
+    <section class="game-card" aria-label="Catch the I Words game">
+      <div class="game-top">
+        <p class="game-ask">Pop the balloons that start with <span class="orange">i</span> as in igloo</p>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 3 found</p>
+      </div>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🎈🎉🎈</div>
+        <p class="win-big">You found them all!</p>
+        <p class="win-text">igloo, iguana, ink: all start with i.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-I3_Build_the_Igloo.pdf" download>Print the Letter I worksheet (PDF)</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say each word out loud and listen for the "i" at the start: i-i-igloo. Then print the Letter I worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    var TARGETS = [["igloo", "igloo"], ["iguana", "iguana"], ["ink", "ink"]];
+    var OTHERS = [["ball", "ball"], ["cat", "cat"], ["dog", "dog"], ["hat", "hat"], ["cup", "cup"], ["pen", "pen"], ["bus", "bus"], ["fish", "fish"], ["star", "star"], ["cow", "cow"], ["moon", "moon"]];
+    var COLOURS = ["#F8BBD0", "#BBDEFB", "#FFF59D", "#E1BEE7", "#B2EBF2", "#FFCCBC", "#C8E6C9", "#D1C4E9"];
+    var grid = document.getElementById("grid"), basket = document.getElementById("basket"), scoreText = document.getElementById("score"), win = document.getElementById("win");
+    var found = 0;
+
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
+        if (kind === "flip") tone(500, 700, 0, 0.08, 0.2);
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    function say(word) {                          // reads the word aloud when the device can
+      if (!soundOn || !window.speechSynthesis) return;
+      try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(word); u.lang = "en-IN"; u.rate = 0.8; window.speechSynthesis.speak(u); } catch (e) {}
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+    });
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
+      return list;
+    }
+
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < found ? "on" : "";
+      scoreText.textContent = found + " of " + TARGETS.length + " found";
+      if (found === TARGETS.length) {
+        setTimeout(function () { play("win"); }, 350);
+        setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); }, 1300);
+      }
+    }
+    function newRound() {
+      var picks = TARGETS.map(function (t) { return { w: t[0], f: t[1], hit: true }; })
+        .concat(shuffle(OTHERS.slice()).slice(0, 5).map(function (t) { return { w: t[0], f: t[1], hit: false }; }));
+      shuffle(picks);
+      grid.innerHTML = "";
+      var cols = shuffle(COLOURS.slice());
+      picks.forEach(function (p, i) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "balloon"; b.style.setProperty("--c", cols[i % cols.length]);
+        b.setAttribute("aria-label", "Balloon: " + p.w);
+        b.innerHTML = '<span class="body"><img alt="" width="150" height="150"></span><span class="string"></span>';
+        b.querySelector("img").setAttribute("src", p.f + ".webp");
+        b.addEventListener("click", function () {
+          if (b.classList.contains("popped")) return;
+          say(p.w);
+          if (p.hit) { b.classList.add("popped"); found++; play("pop"); update(); }
+          else { b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); }
+        });
+        grid.appendChild(b);
+      });
+      basket.innerHTML = "";
+      TARGETS.forEach(function () { basket.appendChild(document.createElement("span")); });
+      found = 0; win.hidden = true; update();
+    }
+    document.getElementById("again").addEventListener("click", newRound);
+    newRound();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+</body>
+</html>
