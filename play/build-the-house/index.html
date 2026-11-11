@@ -286,9 +286,9 @@
     var GHOST = {
       wall: function (g) { ghostFill(g, "rect", { x: 80, y: 195, width: 240, height: 145 }); ghostLine(g, "M80,195 V340 H320 V195"); },
       roof: function (g) { ghostFill(g, "polygon", { points: "55,195 200,92 345,195" }); ghostLine(g, "M55,195 L200,92 L345,195 Z"); },
-      chimney: function (g) {
-        ghostFill(g, "polygon", { points: "262,94 296,94 296,160 262,136" });
-        ghostLine(g, "M262,137 V94 H296 V160"); },
+      chimney: function (g) {                       // same outline as the piece: cap on top, body down to the roof line
+        ghostFill(g, "polygon", { points: "262,137 262,106 256,106 256,94 302,94 302,106 296,106 296,160" });
+        ghostLine(g, "M262,137 V106 H256 V94 H302 V106 H296 V160"); },
       door: function (g) { ghostFill(g, "rect", { x: 175, y: 255, width: 50, height: 85 }); ghostLine(g, "M175,340 V260 Q175,255 180,255 H220 Q225,255 225,260 V340"); }
     };
     function windowArt(g, x, y) {
