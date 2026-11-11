@@ -216,22 +216,27 @@
         a.src = "audio/" + w + ".mp3"; clips[w] = a;
       });
     }
-    function say(word) {                          // reads the word aloud when the device can
-      if (!soundOn) return;
-      var c = clips[word];
-      if (c && c._ok) {
-        try {
-          Object.keys(clips).forEach(function (k) { clips[k].pause(); });
-          c.currentTime = 0; var pr = c.play(); if (pr && pr.catch) pr.catch(function () {});
-          return;
-        } catch (e) {}
-      }
+    function speak(word) {                        // the phone's own voice (back-up)
       if (!window.speechSynthesis) return;
       try {
         if (window.speechSynthesis.speaking || window.speechSynthesis.pending) window.speechSynthesis.cancel();
         var u = new SpeechSynthesisUtterance(word); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
         window.speechSynthesis.speak(u);
       } catch (e) {}
+    }
+    function say(word) {                          // recorded clip first (played straight away on the touch), phone voice if that fails
+      if (!soundOn) return;
+      var c = clips[word];
+      if (c && c._ok !== false) {
+        try {
+          Object.keys(clips).forEach(function (k) { clips[k].pause(); });
+          c.currentTime = 0;
+          var pr = c.play();
+          if (pr && pr.catch) pr.catch(function () { speak(word); });
+          return;
+        } catch (e) {}
+      }
+      speak(word);
     }
     soundBtn.addEventListener("click", function () {
       soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
