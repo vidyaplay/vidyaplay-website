@@ -36,9 +36,9 @@
     .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
     .meadow { display: block; width: 100%; height: auto; touch-action: manipulation; }
     .house { display: block; width: 100%; height: auto; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
-    .slot * { fill: #EEF3F8; stroke: #9AA3B2; stroke-width: 3; stroke-dasharray: 8 7; opacity: 0.9; }
+    .slot * { fill: rgba(255, 255, 255, 0.45); stroke: #9AA3B2; stroke-width: 3; stroke-dasharray: 8 7; }
     .slot text, .slot line, .slot circle[r="4.5"] { display: none; }
-    .slot circle[r="24"] { fill: #EEF3F8; }
+    
     .piece { cursor: grab; outline: none; touch-action: none; }
     .piece.drag { cursor: grabbing; }
     .piece:focus-visible .hit { stroke: var(--blue); stroke-width: 4; }
@@ -148,9 +148,9 @@
         <circle cx="338" cy="52" r="26" fill="#FFE066"/>
         <rect y="330" width="400" height="30" fill="#8CD17D"/>
         <g id="layers">
-          <g id="L-chimney"></g><g id="L-wall"></g><g id="L-roof"></g><g id="L-door"></g><g id="L-window"></g><g id="L-sign"></g>
+          <g id="S-chimney"></g><g id="L-chimney"></g><g id="S-wall"></g><g id="L-wall"></g><g id="S-roof"></g><g id="L-roof"></g>
+          <g id="S-door"></g><g id="L-door"></g><g id="S-window"></g><g id="L-window"></g><g id="S-sign"></g><g id="L-sign"></g>
         </g>
-        <g id="slots"></g>
         <rect class="tray-bg" x="0" y="372" width="400" height="218" rx="18"/>
         <g id="pieces"></g>
       </svg>
@@ -192,7 +192,6 @@
   (function () {
     var NS = "http://www.w3.org/2000/svg";
     var svg = document.getElementById("house");
-    var slotsBox = document.getElementById("slots");
     var piecesBox = document.getElementById("pieces");
     var basket = document.getElementById("basket");
     var scoreText = document.getElementById("score");
@@ -367,9 +366,10 @@
       }
     }
     function newRound() {
-      ["L-chimney", "L-wall", "L-roof", "L-door", "L-window", "L-sign"].forEach(function (id) { document.getElementById(id).innerHTML = ""; });
-      slotsBox.innerHTML = ""; piecesBox.innerHTML = "";
-      ["chimney", "wall", "roof", "door", "window", "sign"].forEach(function (n) { el("g", { id: "S-" + n }, slotsBox); }); items = []; placed = 0;
+      ["chimney", "wall", "roof", "door", "window", "sign"].forEach(function (n) {
+        document.getElementById("L-" + n).innerHTML = ""; document.getElementById("S-" + n).innerHTML = "";
+      });
+      piecesBox.innerHTML = ""; items = []; placed = 0;
       var order = shuffle(DEFS.map(function (d, i) { return i; }));
       var made = DEFS.map(function (d) { return makePiece(d); });
       order.forEach(function (defIndex, trayIndex) {
