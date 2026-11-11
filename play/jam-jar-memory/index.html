@@ -194,6 +194,7 @@
         if (audio.state === "suspended") audio.resume();
         if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
         if (kind === "flip") tone(500, 700, 0, 0.08, 0.2);
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
         if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
       } catch (e) { /* no sound: the game still works */ }
     }
@@ -222,13 +223,14 @@
         window.speechSynthesis.speak(u);
       } catch (e) {}
     }
-    function say(word) {                          // recorded clip first (played straight away on the touch), phone voice if that fails
+    function say(word, then) {                    // recorded clip first (played straight away on the touch), phone voice if that fails
       if (!soundOn) return;
       var c = clips[word];
       if (c && c._ok !== false) {
         try {
-          Object.keys(clips).forEach(function (k) { clips[k].pause(); });
+          Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; });
           c.currentTime = 0;
+          if (then) c.onended = then;
           var pr = c.play();
           if (pr && pr.catch) pr.catch(function () { speak(word); });
           return;
@@ -236,6 +238,7 @@
       }
       speak(word);
     }
+    function hasClip(name) { return !!(clips[name] && clips[name]._ok !== false); }
     soundBtn.addEventListener("click", function () {
       soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");

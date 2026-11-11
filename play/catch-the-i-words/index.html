@@ -44,7 +44,12 @@
     .balloon .string { position: absolute; left: 50%; bottom: 0; width: 3px; height: 14%; background: #2C3550; transform: translateX(-50%); }
     .balloon:focus-visible .body { border-color: var(--blue); border-width: 6px; }
     .balloon.nope { animation: wiggle 0.45s ease-in-out, bob 3s ease-in-out infinite; }
-    .heard { margin: 6px 0 0; min-height: 30px; font-size: 24px; font-weight: 800; color: var(--navy); }
+    .heard { margin: 6px 0 0; min-height: 30px; font-size: 22px; font-weight: 800; color: var(--navy); }
+    .heard .no { color: #C0392B; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .balloon.nope .body::after { content: "✕"; position: absolute; right: -4px; top: -4px; width: 30px; height: 30px; border-radius: 50%;
+      background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; text-align: center; }
+    .balloon .body { position: absolute; }
     .balloon.popped { animation: poof 0.5s ease-out forwards; pointer-events: none; }
     @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
@@ -138,7 +143,8 @@
     <section class="game-card" aria-label="Catch the I Words game">
       <div class="game-top">
         <p class="game-ask">Pop the balloons that start with <span class="orange">i</span> as in igloo</p>
-        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
       </div>
       <div class="grid" id="grid"></div>
       <p class="heard" id="heard" aria-hidden="true">&nbsp;</p>
@@ -196,6 +202,7 @@
         if (audio.state === "suspended") audio.resume();
         if (kind === "pop") tone(420, 1100, 0, 0.12, 0.35);
         if (kind === "flip") tone(500, 700, 0, 0.08, 0.2);
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
         if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
       } catch (e) { /* no sound: the game still works */ }
     }
@@ -224,13 +231,14 @@
         window.speechSynthesis.speak(u);
       } catch (e) {}
     }
-    function say(word) {                          // recorded clip first (played straight away on the touch), phone voice if that fails
+    function say(word, then) {                    // recorded clip first (played straight away on the touch), phone voice if that fails
       if (!soundOn) return;
       var c = clips[word];
       if (c && c._ok !== false) {
         try {
-          Object.keys(clips).forEach(function (k) { clips[k].pause(); });
+          Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; });
           c.currentTime = 0;
+          if (then) c.onended = then;
           var pr = c.play();
           if (pr && pr.catch) pr.catch(function () { speak(word); });
           return;
@@ -238,6 +246,7 @@
       }
       speak(word);
     }
+    function hasClip(name) { return !!(clips[name] && clips[name]._ok !== false); }
     soundBtn.addEventListener("click", function () {
       soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
@@ -248,7 +257,11 @@
       return list;
     }
 
-    loadClips(WORD_LIST);
+    var EXTRA = [];                                // "instruction", "yes", "oops", "win" go here when their recordings are added
+    loadClips(WORD_LIST.concat(EXTRA));
+    document.getElementById("hear").addEventListener("click", function () {
+      if (hasClip("instruction")) say("instruction"); else speak("Pop the balloons that start with i, as in igloo.");
+    });
     function update() {
       var dots = basket.children;
       for (var i = 0; i < dots.length; i++) dots[i].className = i < found ? "on" : "";
@@ -273,9 +286,16 @@
         b.addEventListener("pointerdown", function () { if (!b.classList.contains("popped")) say(p.w); });   // voice starts as the finger lands
         b.addEventListener("click", function () {
           if (b.classList.contains("popped")) return;
-          heard.textContent = p.w;
-          if (p.hit) { b.classList.add("popped"); b.disabled = true; b.setAttribute("aria-hidden", "true"); found++; play("pop"); update(); }
-          else { b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); }
+          if (p.hit) {
+            heard.textContent = p.w;
+            b.classList.add("popped"); b.disabled = true; b.setAttribute("aria-hidden", "true"); found++; play("pop"); update();
+            if (hasClip("yes")) setTimeout(function () { say("yes"); }, 700);
+          } else {
+            heard.innerHTML = p.w + ' starts with "' + p.w.charAt(0) + '", <span class="no">not i</span>';   // shows why it is wrong
+            b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope");
+            setTimeout(function () { b.classList.remove("nope"); }, 1400);
+            if (hasClip("oops")) setTimeout(function () { say("oops"); }, 900);
+          }
         });
         grid.appendChild(b);
       });
