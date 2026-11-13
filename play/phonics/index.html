@@ -130,10 +130,15 @@
     steps(1);
     card.innerHTML = '<h1>Meet Sunny the Sun</h1><img class="ph-sunny" src="sunny.webp" alt="Sunny the Sun, smiling">' +
       '<p>Sunny wants to shine on things that start with <b>sss</b>. Can you help?</p><div class="ph-big">s</div>';
+    var hear = btn("🔊 Hear sss", function () { sss(); next.disabled = false; }, "alt");
     var next = btn("Next", function () { go(step2); }); next.disabled = true;
-    card.appendChild(btn("🔊 Hear sss", function () { sss(); next.disabled = false; }, "alt"));
+    var start = btn("▶ Start", function () {
+      start.style.display = "none"; hear.style.display = ""; next.style.display = "";
+      say("intro", function () { next.disabled = false; });
+    });
+    hear.style.display = "none"; next.style.display = "none";
+    card.appendChild(start); card.appendChild(hear);
     card.appendChild(document.createElement("br")); card.appendChild(next);
-    later(function () { say("intro"); }, 400);
   }
   // 2. Action
   function step2() {
@@ -220,7 +225,7 @@
           say("letter_yes"); later(function () { go(step5); }, 2600);
         } else {
           tried = true; b.className = "ph-letter wrong"; msg.className = "ph-msg bad"; msg.textContent = "Not that one. Listen again: sss.";
-          say("letter_no", function () { sss(); });
+          say("letter_no");
         }
       };
       row.appendChild(b);
@@ -272,7 +277,7 @@
       '<p>S says <b>sss</b>, like sun, star and sock.</p><p class="ph-cap">Next lesson: <b>a</b> (coming soon).</p>' +
       '<a class="ph-link" href="../../lkg/english/letter-s/">Print the free Letter S worksheets</a><br>';
     card.appendChild(btn("Play again", function () { go(step1); }, "alt"));
-    say("done");
+    say("done", function () { say("next"); });
   }
   drawMap(); step1();
 })();
