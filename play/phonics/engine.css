@@ -116,3 +116,11 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 .ph-msg.tip { color: #8A5A00; background: #FFF1C2; }
 .ph-skip { min-height: 44px; padding: 8px 14px; }
 @media (prefers-reduced-motion: reduce) { .ph-choice.hint, .ph-choice.wrong, .ph-letter.wrong, .ph-basket { animation: none; transition: none; } }
+/* picture cards: size never depends on the picture file (iPhone Safari let big pictures push the cards off the screen, 14 Nov) */
+.ph-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ph-choice { position: relative; padding: 0; aspect-ratio: auto; min-width: 0; min-height: 0; overflow: hidden; }
+.ph-choice::before { content: ""; display: block; padding-top: 100%; }
+.ph-choice img { position: absolute; left: 10px; top: 10px; width: calc(100% - 20px); height: calc(100% - 20px); object-fit: contain; }
+@media (min-width: 900px) { .ph-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } .ph-grid .ph-choice { justify-self: center; width: 100%; max-width: clamp(130px, 22vh, 190px); } }
+.ph-grid { width: 100%; } .ph-row { width: 100%; }
+.ph-row .ph-choice { flex: 0 0 auto; }
