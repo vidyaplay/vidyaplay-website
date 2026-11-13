@@ -222,7 +222,8 @@
         if (L === "s") {
           b.className = "ph-letter right"; msg.className = "ph-msg good"; msg.textContent = "Yes! The letter s says sss.";
           [].forEach.call(row.children, function (x) { x.onclick = null; });
-          say("letter_yes"); later(function () { go(step5); }, 2600);
+          var moved = false; function toTrace() { if (!moved) { moved = true; go(step5); } }
+          say("letter_yes", function () { later(toTrace, 700); }); later(toTrace, 6000);
         } else {
           tried = true; b.className = "ph-letter wrong"; msg.className = "ph-msg bad"; msg.textContent = "Not that one. Listen again: sss.";
           say("letter_no");
@@ -260,7 +261,8 @@
       var q = pos(e);
       while (hit < pts.length - 1) { var n = pts[hit + 1]; if (Math.hypot(n[0] - q[0], n[1] - q[1]) < 30) hit++; else break; }
       paint();
-      if (hit >= pts.length - 1) { drawing = false; msg.className = "ph-msg good"; msg.textContent = "Great writing!"; say("great"); later(function () { go(step6); }, 2200); }
+      if (hit >= pts.length - 1) { drawing = false; msg.className = "ph-msg good"; msg.textContent = "Great writing!"; var moved6 = false; function toDone() { if (!moved6) { moved6 = true; go(step6); } }
+        say("great", function () { later(toDone, 500); }); later(toDone, 4000); }
     }
     cv.addEventListener("pointerdown", function (e) { var q = pos(e), s = pts[hit]; if (Math.hypot(s[0] - q[0], s[1] - q[1]) < 34) { drawing = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {} } });
     cv.addEventListener("pointermove", move);
