@@ -109,6 +109,28 @@
       </div>
     </div>
 
+    <section class="story-video" aria-labelledby="story-title">
+      <h2 id="story-title" class="pack-title">Watch the Letter A story</h2>
+      <p class="pack-text">Ant and the Apple: the sound of A, picture words, how to write A and a, and a quick quiz. 2 minutes.</p>
+      <div class="video-box" id="vbox">
+        <button class="video-play" type="button" aria-label="Play the video: Ant and the Apple, Letter A for kids">
+          <img src="../../../images/letter-a-story.webp" width="960" height="540" loading="lazy" alt="Letter A story video: Ant and the Apple">
+          <span class="video-icon" aria-hidden="true">&#9654;</span>
+        </button>
+      </div>
+      <p class="video-note">Plays from YouTube when you press play.</p>
+    </section>
+    <script>
+      (function () {
+        var box = document.getElementById("vbox");
+        if (!box) return;
+        var btn = box.querySelector(".video-play");
+        btn.addEventListener("click", function () {
+          box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/5r8VdCb0cSI?autoplay=1&rel=0" title="Letter A for Kids: Ant and the Apple" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+        });
+      })();
+    </script>
+
     <ul class="sheet-grid">
       <li class="sheet-card">
         <img src="../../../images/worksheets/L-EN-A1.webp" width="480" height="679" loading="lazy" alt="Learn the Letter A worksheet preview">

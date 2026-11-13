@@ -486,3 +486,13 @@ body {
 /* ===== end dropdown menu ===== */
 
 .alpha-strip-words .alpha-letter { width: auto; min-width: 44px; padding: 0 16px; border-radius: 999px; font-size: 16px; }
+
+/* ===== Story video (click to play) ===== */
+.story-video { margin: 22px 0; }
+.video-box { position: relative; width: 100%; max-width: 720px; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #13234A; }
+.video-box iframe, .video-play { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-play { padding: 0; border: 0; background: none; cursor: pointer; }
+.video-play img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-icon { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px; border-radius: 50%; background: #7B4CC9; color: #fff; font-size: 38px; line-height: 84px; text-align: center; padding-left: 6px; box-sizing: border-box; box-shadow: 0 4px 14px rgba(19,35,74,.35); }
+.video-play:focus-visible { outline: 4px solid #F39A1E; outline-offset: -4px; }
+.video-note { font-size: 14px; color: #5A6580; margin: 6px 0 0; }
