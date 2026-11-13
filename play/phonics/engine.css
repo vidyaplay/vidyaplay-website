@@ -112,3 +112,7 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 .ph-row .ph-choice:nth-child(4n+3) { background: #DDF1FF; } .ph-row .ph-choice:nth-child(4n+4) { background: #E2F6DC; }
 .ph-drag { position: fixed; z-index: 30; width: 84px; height: 84px; pointer-events: none; opacity: .9; }
 .ph-card.has-repeat > h1, .ph-card.has-repeat > p { padding-left: 46px; padding-right: 46px; }
+.ph-new .ph-choice { touch-action: none; }             /* lets drag work on phones (taps still work) */
+.ph-msg.tip { color: #8A5A00; background: #FFF1C2; }
+.ph-skip { min-height: 44px; padding: 8px 14px; }
+@media (prefers-reduced-motion: reduce) { .ph-choice.hint, .ph-choice.wrong, .ph-letter.wrong, .ph-basket { animation: none; transition: none; } }

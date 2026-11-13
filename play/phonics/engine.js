@@ -16,8 +16,9 @@
   // ---------- progress ----------
   var KEY = "vp_phonics_v1", prog = { done: {} };
   try { var raw = localStorage.getItem(KEY); if (raw) prog = JSON.parse(raw) || prog; } catch (e) {}
-  if (!prog.done) prog.done = {};
-  if (!prog.history) prog.history = {};
+  if (!prog || typeof prog !== "object") prog = { done: {} };
+  if (!prog.done || typeof prog.done !== "object") prog.done = {};
+  if (!prog.history || typeof prog.history !== "object") prog.history = {};
   prog.v = 2;
   function save() { try { localStorage.setItem(KEY, JSON.stringify(prog)); } catch (e) {} }
   function today() { var d = new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
@@ -53,13 +54,14 @@
   function clipUrl(name) { return base + "audio/" + name + ".mp3"; }
   function audioFor(name) { return cache[name] || (cache[name] = new Audio(clipUrl(name))); }
   function preload(names) { if (!FEAT.preload) return; (names || []).forEach(function (n) { if (n && !cache[n]) { var a = audioFor(n); a.preload = "auto"; try { a.load(); } catch (e) {} } }); }
-  function stopVoice() { if (current) { try { current.pause(); } catch (e) {} current.onended = null; current = null; } }
+  var screenId = 0;                                        // increases on every screen change; old sound callbacks are ignored
+  function stopVoice() { if (current) { current.onended = null; current.onerror = null; try { current.pause(); } catch (e) {} current = null; } }
   function say(name, then) {                                // plays a recorded clip; if missing or blocked, carries on silently
-    if (Array.isArray(name)) { var list = name.slice(); var nx = function () { if (!list.length) { if (then) then(); return; } say(list.shift(), nx); }; return nx(); }
+    if (Array.isArray(name)) { var list = name.slice(), scr = screenId; var nx = function () { if (scr !== screenId) return; if (!list.length) { if (then) then(); return; } say(list.shift(), nx); }; return nx(); }
     stopVoice();
     if (!name) { if (then) then(); return; }
-    var a = audioFor(name);
-    var done = false; function fin() { if (!done) { done = true; if (then) then(); } }
+    var a = audioFor(name), myScreen = screenId;
+    var done = false; function fin() { if (!done) { done = true; if (myScreen !== screenId) return; if (then) then(); } }
     a.onerror = function () { haveVoice[name] = false; fin(); };
     a.onended = fin; current = a;
     try { a.currentTime = 0; var p = a.play(); if (p && p.catch) p.catch(function () { fin(); }); } catch (e) { fin(); }
@@ -79,9 +81,10 @@
     var m = document.getElementById("map"); m.innerHTML = "";
     order.forEach(function (o, i) {
       var open = isOpen(i) && (!FEAT.unlock || registry[o.id] || o.id === L.id), cur = o.id === L.id;
-      var t = el(FEAT.unlock && open && !cur && registry[o.id] ? "a" : "div", "ph-tile" + (open ? " open" : (FEAT.unlock ? " locked" : "")) + (prog.done[o.id] ? " done" : ""));
+      var built = !!registry[o.id];
+      var t = el(FEAT.unlock && open && !cur && built ? "a" : "div", "ph-tile" + (open ? " open" : (FEAT.unlock && built ? " locked" : "")) + (prog.done[o.id] ? " done" : ""));
       t.textContent = o.id;
-      t.title = open ? "Lesson " + (i + 1) : "Coming soon";
+      t.title = open ? "Lesson " + (i + 1) : (built ? "Locked: finish the lesson before" : "Coming soon");
       if (t.tagName === "A") t.href = "?l=" + o.id;
       if (cur) t.setAttribute("aria-current", "page");
       m.appendChild(t);
@@ -103,7 +106,9 @@
   }
   var stepIdx = 0, missedAny = 0, missedWords = [];
   function go(i) {
-    clearTimers(); stopVoice();
+    if (!L.steps[i]) return;
+    screenId++; clearTimers(); stopVoice();
+    if (!LEGACY) { card.style.pointerEvents = "none"; setTimeout(function () { card.style.pointerEvents = ""; }, 400); }   // a quick double tap cannot press the next screen's button
     [].forEach.call(document.querySelectorAll(".ph-confetti,.ph-fly,.ph-drag"), function (c) { c.parentNode.removeChild(c); });
     stepIdx = i; var s = L.steps[i]; card.classList.remove("has-repeat");
     steps(i + 1);
@@ -114,7 +119,7 @@
   function next() { go(stepIdx + 1); }
   function clipsOf(s) {
     var c = [].concat(s.audio || []);
-    if (s.type === "pictures") { (s.rounds || []).forEach(function (r) { (r.items || r).forEach(function (n) { var v = L.vocab[n]; if (v) c.push(v.yes || v.no); }); }); if (s.finish) c.push(s.finish.audio); }
+    if (s.type === "pictures") { (s.rounds || []).concat(s.oddRounds || []).forEach(function (r) { (r.items || r).forEach(function (n) { var v = L.vocab[n]; if (v) c.push(v.yes || v.no); }); }); if (s.finish) c.push(s.finish.audio); }
     if (s.yes) c.push(s.yes.audio); if (s.no) c.push(s.no.audio); if (s.great) c.push(s.great.audio);
     return c;
   }
@@ -206,11 +211,12 @@
     }
     cv.addEventListener("pointerdown", function (e) {
       var q = pos(e), st = pts[hit]; demo = -1;
-      if (Math.hypot(st[0] - q[0], st[1] - q[1]) < START) { drawing = true; try { cv.setPointerCapture(e.pointerId); } catch (x) {} }
-      else if (FEAT.gentleTrace) { msg.className = "ph-msg bad"; msg.textContent = "Start from the green dot."; }
+      if (Math.hypot(st[0] - q[0], st[1] - q[1]) < START) { drawing = true; if (FEAT.gentleTrace && !finished) { msg.className = "ph-msg"; msg.textContent = ""; } try { cv.setPointerCapture(e.pointerId); } catch (x) {} }
+      else if (FEAT.gentleTrace) { msg.className = "ph-msg tip"; msg.textContent = "Start from the green dot."; }
     });
     cv.addEventListener("pointermove", move);
     cv.addEventListener("pointerup", function () { drawing = false; });
+    cv.addEventListener("pointercancel", function () { drawing = false; });
     paint();
     if (FEAT.gentleTrace) {                               // show the stroke once: a yellow dot runs along the letter
       var k = 0; (function run() { if (finished || drawing) { demo = -1; paint(); return; } demo = k; paint(); k++; if (k < pts.length) later(run, 45); else { demo = -1; paint(); } })();
@@ -266,6 +272,8 @@
       }
       if (ghost) { ghost.style.left = e.clientX - 42 + "px"; ghost.style.top = e.clientY - 42 + "px"; }
     });
+    function drop() { if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost); ghost = null; }
+    b.addEventListener("pointercancel", drop); b.addEventListener("lostpointercapture", function () { setTimeout(drop, 0); });
     b.addEventListener("pointerup", function (e) {
       if (!ghost) return;
       var r = target.getBoundingClientRect(); if (ghost.parentNode) ghost.parentNode.removeChild(ghost); ghost = null;
@@ -285,6 +293,7 @@
     }
     function round() {
       var list = rounds[r], left = list.filter(function (n) { return L.vocab[n].first === L.letter; }).length, wrongHere = 0;
+      [].forEach.call(document.querySelectorAll(".ph-drag,.ph-fly"), function (c) { c.parentNode.removeChild(c); });
       card.innerHTML = (basket ? '<div class="ph-basket" id="target" aria-hidden="true">🧺</div>'
         : '<img class="ph-sunny" id="target" src="' + base + L.character.img + '" alt="' + L.character.alt + '">') + '<h1>' + s.title + '</h1>';
       var target = document.getElementById("target");
@@ -294,11 +303,12 @@
       shuffled(list).forEach(function (name) {
         var v = L.vocab[name], b = choiceButton(name);
         function choose() {
-          if (b.__used) return;
+          if (b.__used || grid.__closed) return;
           if (v.first === L.letter) {
             b.className = "ph-choice right used"; b.__used = true; fed++; left--; shine();
             msg.className = "ph-msg good"; msg.textContent = v.yesText;
             flyTo(target, b); if (basket) { target.classList.add("got"); setTimeout(function () { target.classList.remove("got"); }, 350); }
+            if (left === 0) grid.__closed = true;
             say(v.yes, function () { if (left === 0) later(nextRound, 1400); });
             if (left === 0) later(nextRound, 3500);
           } else {
@@ -306,7 +316,7 @@
             b.className = "ph-choice wrong used"; b.__used = true; msg.className = "ph-msg bad";
             msg.textContent = fill(s.wrongText, { Word: cap(name), first: v.first });
             say(v.no);
-            if (FEAT.hints && wrongHere >= 2) {           // two wrong taps: gently show one right picture
+            if (FEAT.hints && wrongHere >= 1) {           // after a wrong tap: gently show one right picture
               var right = [].filter.call(grid.children, function (x) { return x.className.indexOf("used") < 0 && L.vocab[x.getAttribute("aria-label")].first === L.letter; })[0];
               if (right) { right.classList.add("hint"); setTimeout(function () { right.classList.remove("hint"); }, 2600); }
             }
@@ -363,7 +373,7 @@
 
   // ---------- start ----------
   function start() {
-    card = document.getElementById("card");
+    card = document.getElementById("card"); if (!LEGACY) document.body.classList.add("ph-new");
     var want = params.get("l"), first = order[0] && order[0].id, id = want && registry[want] ? want : first;
     var wi = -1; order.forEach(function (o, i) { if (o.id === id) wi = i; });
     if (want && registry[want] && FEAT.unlock && !isOpen(wi)) id = first;    // a locked lesson opens lesson 1 instead
