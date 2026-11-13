@@ -73,6 +73,40 @@
     .ph-confetti { position: fixed; top: -20px; width: 10px; height: 16px; border-radius: 3px; z-index: 20; pointer-events: none; animation: fall linear forwards; }
     @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
     @media (prefers-reduced-motion: reduce) { .ph-sunny, .ph-slide, .ph-stars { animation: none; } .ph-confetti { display: none; } }
+    /* fit every screen on a phone without scrolling (her request 14 Nov) */
+    .site-header { padding-top: 4px; padding-bottom: 4px; }
+    .ph-wrap { padding-top: 4px; }
+    .ph-map { margin: 2px 0 6px; gap: 6px; } .ph-tile { width: 38px; height: 38px; font-size: 22px; border-radius: 12px; }
+    .ph-steps { margin-bottom: 8px; } .ph-steps span { height: 8px; }
+    .ph-card { min-height: 0; padding: 16px 12px 12px; }
+    .ph-card h1 { font-size: clamp(21px, 3.4vh, 28px); }
+    .ph-card p { font-size: clamp(16px, 2.5vh, 19px); margin: 4px 0; }
+    .ph-big { font-size: clamp(70px, 12vh, 130px); }
+    .ph-sunny { width: clamp(80px, 15vh, 150px); height: clamp(80px, 15vh, 150px); margin: 2px 0 8px; }
+    .ph-grid { max-width: min(340px, 40vh); gap: 10px; margin: 6px auto; }
+    .ph-msg { min-height: 40px; font-size: clamp(16px, 2.4vh, 20px); margin: 4px 0; }
+    .ph-btn { min-height: 50px; padding: 8px 24px; margin: 6px 4px; font-size: 21px; }
+    .ph-letter { width: clamp(70px, 11vh, 94px); height: clamp(70px, 11vh, 94px); font-size: clamp(44px, 7vh, 60px); }
+    .ph-letters { margin: 10px 0; }
+    .ph-slide { font-size: clamp(56px, 9vh, 84px); margin: 4px 0; }
+    #trace { width: auto; height: min(300px, 40vh); aspect-ratio: 280 / 300; }
+    .ph-stars { font-size: clamp(44px, 7vh, 60px); }
+    /* desktop / laptop: use the whole screen (her request 14 Nov) */
+    @media (min-width: 900px) {
+      .ph-wrap { max-width: 980px; }
+      .ph-card { min-height: calc(100vh - 175px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 32px 20px; }
+      .ph-card h1 { font-size: clamp(26px, 4vh, 40px); }
+      .ph-card p { font-size: clamp(18px, 2.6vh, 24px); max-width: 680px; }
+      .ph-sunny { width: clamp(110px, 19vh, 210px); height: clamp(110px, 19vh, 210px); }
+      .ph-grid { grid-template-columns: repeat(4, 1fr); max-width: min(820px, 100%); }
+      .ph-grid .ph-choice { width: clamp(130px, 22vh, 190px); }
+      .ph-letter { width: clamp(90px, 14vh, 130px); height: clamp(90px, 14vh, 130px); font-size: clamp(56px, 9vh, 84px); }
+      .ph-btn { font-size: 24px; min-height: 58px; padding: 10px 34px; }
+      #trace { height: min(380px, 46vh); }
+      .ph-big { font-size: clamp(90px, 15vh, 160px); }
+      .ph-msg { font-size: 22px; }
+      .ph-note { max-width: 980px; }
+    }
   </style>
 </head>
 <body>
@@ -137,7 +171,9 @@
   var card = document.getElementById("card"), timers = [];
   function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
   function clearTimers() { timers.forEach(clearTimeout); timers = []; }
-  function steps(k) { [].forEach.call(document.querySelectorAll("#steps span"), function (s, i) { s.className = i < k ? "on" : ""; }); }
+  function steps(k) { try { window.scrollTo(0, Math.max(0, card.getBoundingClientRect().top + window.pageYOffset - 70)); } catch (e) {}
+    steps2(k); }
+  function steps2(k) { [].forEach.call(document.querySelectorAll("#steps span"), function (s, i) { s.className = i < k ? "on" : ""; }); }
   function btn(label, fn, cls) { var b = document.createElement("button"); b.type = "button"; b.className = "ph-btn" + (cls ? " " + cls : ""); b.textContent = label; b.onclick = fn; return b; }
   function confetti() {
     var C = ["#E8456B", "#F39A1E", "#F5C518", "#2E9E4F", "#1E5BB8", "#7B4CC9"];
@@ -185,7 +221,7 @@
   function step3() { steps(3); r = 0; fed = 0; missedAny = 0; round(); }
   function shine() {
     var s = document.getElementById("sunny"); if (!s) return;
-    var k = fed / TOTAL; s.style.transform = "scale(" + (1 + 0.45 * k) + ")";
+    var k = fed / TOTAL; s.style.transform = "scale(" + (1 + 0.18 * k) + ")";
     s.style.filter = "drop-shadow(0 0 " + Math.round(34 * k) + "px rgba(255,193,7," + (0.3 + 0.7 * k) + "))";
   }
   function round() {
@@ -229,7 +265,7 @@
     } catch (e) {}
   }
   function allFed() {
-    card.innerHTML = '<img class="ph-sunny" id="sunny" src="sunny.webp" alt="Sunny the Sun shining bright" style="margin:34px 0 64px"><h1>Hooray!</h1><p>Sunny is shining bright! You found all the sss pictures!</p>';
+    card.innerHTML = '<img class="ph-sunny" id="sunny" src="sunny.webp" alt="Sunny the Sun shining bright" style="margin:10px 0 14px"><h1>Hooray!</h1><p>Sunny is shining bright! You found all the sss pictures!</p>';
     fed = TOTAL; shine();
     card.appendChild(btn("Next", function () { go(step4); }));
     say("hooray"); confetti();
@@ -300,7 +336,7 @@
     steps(6);
     var stars = missedAny === 0 ? 3 : missedAny <= 2 ? 2 : 1;
     prog.done.s = Math.max(prog.done.s || 0, stars); save(); drawMap();
-    card.innerHTML = '<img class="ph-sunny" src="sunny.webp" alt="Sunny the Sun" style="transform:scale(1.3)"><h1>Well done!</h1><div class="ph-stars">' + "★".repeat(stars) + '</div>' +
+    card.innerHTML = '<img class="ph-sunny" src="sunny.webp" alt="Sunny the Sun"><h1>Well done!</h1><div class="ph-stars">' + "★".repeat(stars) + '</div>' +
       '<p>S says <b>sss</b>, like sun, star and sock.</p><p class="ph-cap">Next lesson: <b>a</b> (coming soon).</p>' +
       '<a class="ph-link" href="../../lkg/english/letter-s/">Print the free Letter S worksheets</a><br>';
     card.appendChild(btn("Play again", function () { go(step1); }, "alt"));
