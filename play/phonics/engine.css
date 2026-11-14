@@ -124,3 +124,17 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 @media (min-width: 900px) { .ph-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } .ph-grid .ph-choice { justify-self: center; width: 100%; max-width: clamp(130px, 22vh, 190px); } }
 .ph-grid { width: 100%; } .ph-row { width: 100%; }
 .ph-row .ph-choice { flex: 0 0 auto; }
+/* Hidden Sound Safari */
+.ph-scene { position: relative; width: min(100%, calc((100vh - 330px) * 1.777)); margin: 4px auto 2px; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 0 rgba(19,35,74,.12); }
+.ph-scene img { display: block; width: 100%; height: auto; }
+.ph-spot { position: absolute; border: 0; background: transparent; border-radius: 18px; cursor: pointer; padding: 0; touch-action: manipulation; }
+.ph-spot.found { box-shadow: 0 0 0 4px #2E9E4F inset, 0 0 18px 4px rgba(46,158,79,.55); background: rgba(46,158,79,.12); }
+.ph-spot.found::after { content: "✓"; position: absolute; right: -2px; top: -6px; width: 26px; height: 26px; border-radius: 50%; background: #2E9E4F; color: #fff; font: 800 18px/26px "Baloo 2", sans-serif; text-align: center; }
+.ph-spot.nope { box-shadow: 0 0 0 4px #E8456B inset; animation: shake .35s; }
+.ph-spot.hint { box-shadow: 0 0 0 4px #F5C518 inset, 0 0 22px 6px rgba(245,197,24,.7); animation: hint .8s ease-in-out 3; }
+.ph-count { font-size: clamp(26px, 4.5vh, 38px); color: #FFC107; letter-spacing: 4px; text-shadow: 0 2px 0 #C98F00; line-height: 1.1; }
+@media (max-width: 600px) { .ph-scene { width: calc(100% + 16px); margin-left: -8px; margin-right: -8px; border-radius: 12px; } }
+.ph-steps span.on:nth-child(7) { background: #E8456B; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { .ph-spot.nope, .ph-spot.hint { animation: none; } }
+.ph-count .off { color: #D6DEEC; text-shadow: none; }
+@media (min-width: 900px) { .ph-scene { width: min(100%, calc((100vh - 290px) * 1.777)); } }

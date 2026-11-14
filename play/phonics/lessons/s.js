@@ -16,7 +16,8 @@ VP.lesson({
     dog:   { img: "dog.webp",   first: "d", no: "n_dog" },
     hat:   { img: "hat.webp",   first: "h", no: "n_hat" },
     moon:  { img: "moon.webp",  first: "m", no: "n_moon" },
-    cup:   { img: "cup.webp",   first: "c", no: "n_cup" }
+    cup:   { img: "cup.webp",   first: "c", no: "n_cup" },
+    sun:   { img: "sunny.webp", first: "s", yesText: "Yes! Sss, sun!" }        // no own clip: the "sss" clip plays
   },
   steps: [
     { type: "intro", title: "Meet Sunny the Sun", audio: "intro", hearLabel: "🔊 Hear sss",
@@ -28,6 +29,17 @@ VP.lesson({
       rounds: [["star", "ball", "sock", "cat"], ["dog", "spoon", "hat", "snail"], ["moon", "sofa", "cup"]],
       oddRounds: [["star", "sock", "ball", "spoon"], ["snail", "cat", "sofa", "star"]],   // used only if game is set to oddOneOut
       finish: { title: "Hooray!", text: "Sunny is shining bright! You found all the sss pictures!", audio: "hooray", alt: "Sunny the Sun shining bright" } },
+    { type: "scene", title: "Find the sss things in the garden", audio: "feed", img: "scene_garden.webp",
+      alt: "A sunny garden with a house, a picnic mat, a cat, a dog and many things to find",
+      wrongText: "Oh no! {Word} starts with {first}. Sunny wants sss.",
+      finish: { text: "Wow! You found all the sss things in the garden!" },
+      spots: [                                              // box = left, top, width, height in % of the picture (checked on the picture 14 Nov)
+        { word: "star",  box: [29.9, 12.8, 9.9, 21.3] }, { word: "sock",  box: [58.3, 25.0, 7.5, 18.6] },
+        { word: "spoon", box: [28.1, 83.4, 18.5, 10.1] }, { word: "sofa", box: [16.4, 36.7, 23.0, 23.4] },
+        { word: "snail", box: [6.9, 53.7, 12.6, 15.9] },  { word: "sun",  box: [77.2, 6.4, 14.4, 23.4] },
+        { word: "moon",  box: [12.9, 14.9, 11.4, 20.2] }, { word: "cat",  box: [37.7, 54.7, 13.8, 26.0] },
+        { word: "dog",   box: [56.8, 51.0, 14.7, 26.6] }, { word: "hat",  box: [80.4, 38.8, 16.1, 13.3] },
+        { word: "ball",  box: [76.0, 62.7, 14.4, 23.4] }, { word: "cup",  box: [52.9, 79.7, 11.7, 14.9] } ] },
     { type: "letters", title: "Which letter says sss?", text: "Press the speaker, then tap the letter.", audio: "which", hearLabel: "🔊 Hear it",
       choices: ["t", "s", "m"], answer: "s",
       yes: { text: "Yes! The letter s says sss.", audio: "letter_yes" },

@@ -11,7 +11,7 @@
 
   var params = new URLSearchParams(location.search);
   var LEGACY = params.get("legacy") === "1";
-  var FEAT = { shuffle: !LEGACY, repeat: !LEGACY, hints: !LEGACY, gentleTrace: !LEGACY, preload: !LEGACY, unlock: !LEGACY, skip: !LEGACY };
+  var FEAT = { wand: !LEGACY, shuffle: !LEGACY, repeat: !LEGACY, hints: !LEGACY, gentleTrace: !LEGACY, preload: !LEGACY, unlock: !LEGACY, skip: !LEGACY };
 
   // ---------- progress ----------
   var KEY = "vp_phonics_v1", prog = { done: {} };
@@ -36,19 +36,27 @@
 
   // ---------- audio ----------
   var ctx = null, cache = {}, current = null, haveVoice = {};
-  function hiss() {                                         // browser-made "sss" (filtered noise, no vowel): fallback only
+  function hiss(dur, vol) {                                 // browser-made "sss" (filtered noise, no vowel): fallback + magic-wand pulses
     try {
       ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
       if (ctx.state === "suspended") ctx.resume();
-      var d = 0.9, n = Math.floor(ctx.sampleRate * d), buf = ctx.createBuffer(1, n, ctx.sampleRate), ch = buf.getChannelData(0);
+      var d = dur || 0.9, V = vol || 0.35, n = Math.floor(ctx.sampleRate * d), buf = ctx.createBuffer(1, n, ctx.sampleRate), ch = buf.getChannelData(0);
       for (var i = 0; i < n; i++) ch[i] = Math.random() * 2 - 1;
       var src = ctx.createBufferSource(); src.buffer = buf;
       var hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 3800;
       var bp = ctx.createBiquadFilter(); bp.type = "peaking"; bp.frequency.value = 6500; bp.Q.value = 1.2; bp.gain.value = 8;
       var g = ctx.createGain(), t0 = ctx.currentTime;
-      g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.35, t0 + 0.08);
-      g.gain.setValueAtTime(0.35, t0 + d - 0.15); g.gain.linearRampToValueAtTime(0, t0 + d);
+      g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(V, t0 + Math.min(0.08, d / 3));
+      g.gain.setValueAtTime(V, t0 + d - Math.min(0.15, d / 3)); g.gain.linearRampToValueAtTime(0, t0 + d);
       src.connect(hp); hp.connect(bp); bp.connect(g); g.connect(ctx.destination); src.start();
+    } catch (e) {}
+  }
+  function chime() {                                        // short happy notes (no voice needed)
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === "suspended") ctx.resume();
+      [523, 659, 784, 1047].forEach(function (f, i) { var o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime + i * 0.12;
+        o.type = "triangle"; o.frequency.value = f; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.18, t + 0.02); g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+        o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 0.55); });
     } catch (e) {}
   }
   function clipUrl(name) { return base + "audio/" + name + ".mp3"; }
@@ -120,6 +128,7 @@
   function clipsOf(s) {
     var c = [].concat(s.audio || []);
     if (s.type === "pictures") { (s.rounds || []).concat(s.oddRounds || []).forEach(function (r) { (r.items || r).forEach(function (n) { var v = L.vocab[n]; if (v) c.push(v.yes || v.no); }); }); if (s.finish) c.push(s.finish.audio); }
+    if (s.type === "scene") (s.spots || []).forEach(function (sp) { var v = L.vocab[sp.word]; if (v) c.push(v.yes || v.no); });
     if (s.yes) c.push(s.yes.audio); if (s.no) c.push(s.no.audio); if (s.great) c.push(s.great.audio);
     return c;
   }
@@ -184,7 +193,11 @@
     var len = path.getTotalLength(), pts = [];
     for (var i = 0; i <= 40; i++) { var p = path.getPointAtLength(len * i / 40); pts.push([p.x, p.y]); }
     var NEAR = FEAT.gentleTrace ? 38 : 30, START = FEAT.gentleTrace ? 44 : 34;
-    var hit = 0, drawing = false, finished = false, demo = -1;
+    var hit = 0, drawing = false, finished = false, demo = -1, sparks = [], raf = 0, lastPulse = 0;
+    function star(x, y, r, a) { g.save(); g.globalAlpha = a; g.fillStyle = "#F5C518"; g.strokeStyle = "#E8456B"; g.lineWidth = 1; g.beginPath();
+      for (var k = 0; k < 10; k++) { var ang = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * 0.45 : r; g.lineTo(x + rr * Math.cos(ang), y + rr * Math.sin(ang)); }
+      g.closePath(); g.fill(); g.stroke(); g.restore(); }
+    function animate() { raf = 0; var now = Date.now(); sparks = sparks.filter(function (k) { return now - k.t < 900; }); paint(); if (sparks.length) raf = requestAnimationFrame(animate); }
     function line(upto, color, width) { g.strokeStyle = color; g.lineWidth = width; g.beginPath(); pts.slice(0, upto + 1).forEach(function (q, j) { j ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); }); }
     function paint() {
       g.clearRect(0, 0, W, H); g.lineCap = "round"; g.lineJoin = "round";
@@ -193,6 +206,7 @@
       line(hit, "#7B4CC9", 16); if (hit > 0) g.stroke();
       var q = pts[hit < pts.length - 1 ? hit : pts.length - 1];
       g.fillStyle = "#2E9E4F"; g.beginPath(); g.arc(q[0], q[1], 12, 0, 7); g.fill();
+      var now = Date.now(); sparks.forEach(function (k) { var age = (now - k.t) / 900; star(k.x, k.y - age * 14, 7 + 5 * (1 - age), 1 - age); });
       if (demo >= 0) { var d = pts[demo]; g.fillStyle = "rgba(245,197,24,.95)"; g.beginPath(); g.arc(d[0], d[1], 10, 0, 7); g.fill(); }
     }
     function pos(e) { var b = cv.getBoundingClientRect(); return [(e.clientX - b.left) * W / b.width, (e.clientY - b.top) * H / b.height]; }
@@ -205,7 +219,13 @@
     function move(e) {
       if (!drawing) return; e.preventDefault();
       var q = pos(e);
+      var before = hit;
       while (hit < pts.length - 1) { var n = pts[hit + 1]; if (Math.hypot(n[0] - q[0], n[1] - q[1]) < NEAR) hit++; else break; }
+      if (FEAT.wand && hit > before) {                    // magic wand: stars follow the finger, short sound pulses
+        for (var j = before + 1; j <= hit; j++) sparks.push({ x: pts[j][0] + (Math.random() - .5) * 14, y: pts[j][1] + (Math.random() - .5) * 14, t: Date.now() });
+        if (L.synth === "hiss" && Date.now() - lastPulse > 380) { lastPulse = Date.now(); hiss(0.28, 0.22); }
+        if (!raf) raf = requestAnimationFrame(animate);
+      }
       paint();
       if (hit >= pts.length - 1) finish();
     }
@@ -225,6 +245,43 @@
       var sk = el("button", "ph-skip"); sk.type = "button"; sk.textContent = "Skip writing"; sk.onclick = function () { next(); }; card.appendChild(sk);
     }
     repeatButton(s.audio && s.audio[0]);
+    later(function () { say(s.audio); }, 300);
+  };
+  // Hidden Sound Safari: one big picture; tap the things that start with the sound
+  TYPES.scene = function (s) {
+    card.innerHTML = '<h1>' + s.title + '</h1>';
+    var targets = s.spots.filter(function (sp) { return L.vocab[sp.word].first === L.letter; }), found = 0, wrongHere = 0, closed = false;
+    var count = el("div", "ph-count"); card.appendChild(count);
+    function showCount() { var t = ""; for (var i = 0; i < targets.length; i++) t += '<span class="' + (i < found ? "on" : "off") + '">★</span>'; count.innerHTML = t; count.setAttribute("aria-label", "Found " + found + " of " + targets.length); }
+    var wrap = el("div", "ph-scene"), img = el("img"); img.src = base + s.img; img.alt = s.alt || ""; wrap.appendChild(img);
+    var msg = el("div", "ph-msg");
+    s.spots.forEach(function (sp) {
+      var v = L.vocab[sp.word], b = el("button", "ph-spot"); b.type = "button"; b.setAttribute("aria-label", sp.word);
+      b.style.left = sp.box[0] + "%"; b.style.top = sp.box[1] + "%"; b.style.width = sp.box[2] + "%"; b.style.height = sp.box[3] + "%";
+      b.onclick = function () {
+        if (closed || b.__used) return; b.__used = true;
+        if (v.first === L.letter) {
+          b.classList.add("found"); found++; showCount();
+          msg.className = "ph-msg good"; msg.textContent = v.yesText;
+          if (found === targets.length) closed = true;
+          say(v.yes || L.soundClip, function () { if (closed) later(finishAll, 900); });
+          if (closed) later(finishAll, 4500);
+        } else {
+          missedAny++; wrongHere++; if (missedWords.indexOf(sp.word) < 0) missedWords.push(sp.word);
+          b.classList.add("nope"); msg.className = "ph-msg bad";
+          msg.textContent = fill(s.wrongText, { Word: cap(sp.word), first: v.first }); say(v.no);
+          if (FEAT.hints) { var r = [].filter.call(wrap.querySelectorAll(".ph-spot"), function (x) { return !x.__used && L.vocab[x.getAttribute("aria-label")].first === L.letter; })[0];
+            if (r) { r.classList.add("hint"); setTimeout(function () { r.classList.remove("hint"); }, 2600); } }
+        }
+      };
+      wrap.appendChild(b);
+    });
+    card.appendChild(wrap); card.appendChild(msg); showCount();
+    var done = false;
+    function finishAll() { if (done) return; done = true; clearTimers();
+      msg.className = "ph-msg good"; msg.textContent = s.finish.text; chime(); confetti();
+      card.appendChild(btn("Next", next)); }
+    repeatButton(s.audio);
     later(function () { say(s.audio); }, 300);
   };
   TYPES.done = function (s) {
@@ -378,6 +435,7 @@
     var wi = -1; order.forEach(function (o, i) { if (o.id === id) wi = i; });
     if (want && registry[want] && FEAT.unlock && !isOpen(wi)) id = first;    // a locked lesson opens lesson 1 instead
     L = registry[id]; base = L.base || "";
+    if (LEGACY) L.steps = L.steps.filter(function (st) { return st.type !== "scene"; });   // legacy = the page before Phase 1
     if (!LEGACY && params.get("dev") === "1" && params.get("game")) L.steps.forEach(function (st) { if (st.type === "pictures") st.game = params.get("game"); });
     var bar = document.getElementById("steps"); bar.innerHTML = ""; L.steps.forEach(function () { bar.appendChild(el("span")); });
     if (L.parentNote) document.getElementById("note").innerHTML = L.parentNote;
