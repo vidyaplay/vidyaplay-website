@@ -17,7 +17,7 @@ VP.lesson({
     hat:   { img: "hat.webp",   first: "h", no: "n_hat" },
     moon:  { img: "moon.webp",  first: "m", no: "n_moon" },
     cup:   { img: "cup.webp",   first: "c", no: "n_cup" },
-    sun:   { img: "sunny.webp", first: "s", yesText: "Yes! Sss, sun!" }        // no own clip: the "sss" clip plays
+    sun:   { img: "sunny.webp", first: "s", yes: "y_sun", yesText: "Yes! Sss, sun!" }     // her extra line, 14 Nov
   },
   steps: [
     { type: "intro", title: "Meet Sunny the Sun", audio: "intro", hearLabel: "🔊 Hear sss",
