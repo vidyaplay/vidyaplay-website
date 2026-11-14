@@ -74,6 +74,11 @@
     a.onended = fin; current = a;
     try { a.currentTime = 0; var p = a.play(); if (p && p.catch) p.catch(function () { fin(); }); } catch (e) { fin(); }
   }
+  function replay(name) {                                  // "Again" button: always starts the clip from the beginning
+    stopVoice(); if (!name) return;
+    var a = new Audio(clipUrl(name)); current = a;
+    try { var p = a.play(); if (p && p.catch) p.catch(function () { say(name); }); } catch (e) { say(name); }
+  }
   function sound() {                                        // the lesson's pure sound, e.g. "sss"
     var n = L.soundClip;
     if (L.synth !== "hiss") { say(n); return; }
@@ -109,8 +114,8 @@
   }
   function repeatButton(clip) {                             // 🔁 hear the instruction again
     if (!FEAT.repeat || !clip) return;
-    var b = el("button", "ph-repeat"); b.type = "button"; b.textContent = "🔁"; b.setAttribute("aria-label", "Hear the instruction again");
-    b.onclick = function () { say(clip); }; card.appendChild(b); card.classList.add("has-repeat");
+    var b = el("button", "ph-repeat"); b.type = "button"; b.innerHTML = '<span aria-hidden="true">🔊</span> Again'; b.setAttribute("aria-label", "Hear the instruction again");
+    b.onclick = function () { replay(clip); }; card.appendChild(b); card.classList.add("has-repeat");
   }
   var stepIdx = 0, missedAny = 0, missedWords = [];
   function go(i) {

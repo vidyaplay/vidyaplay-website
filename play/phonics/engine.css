@@ -138,3 +138,7 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { .ph-spot.nope, .ph-spot.hint { animation: none; } }
 .ph-count .off { color: #D6DEEC; text-shadow: none; }
 @media (min-width: 900px) { .ph-scene { width: min(100%, calc((100vh - 290px) * 1.777)); } }
+/* "Again" button: a clear speaker pill, not a refresh icon (her note 14 Nov) */
+.ph-repeat { width: auto; height: 44px; padding: 0 14px 0 10px; border-radius: 22px; font: 800 17px "Baloo 2", sans-serif; color: #8A5A00; display: flex; align-items: center; gap: 4px; }
+.ph-card.has-repeat > h1, .ph-card.has-repeat > p { padding-left: 0; padding-right: 92px; }
+@media (max-width: 600px) { .ph-card.has-repeat > h1, .ph-card.has-repeat > p { padding-right: 86px; text-align: left; } .ph-card.has-repeat > h1 { font-size: clamp(20px, 3.2vh, 26px); } }
