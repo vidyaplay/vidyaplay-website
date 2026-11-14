@@ -285,7 +285,10 @@
     var done = false;
     function finishAll() { if (done) return; done = true; clearTimers();
       msg.className = "ph-msg good"; msg.textContent = s.finish.text; chime(); confetti();
-      card.appendChild(btn("Next", next)); }
+      var me = stepIdx;
+      var row = el("div", "ph-actions"); card.appendChild(row);
+      row.appendChild(btn("🔄 Play again", function () { go(me); }, "alt"));   // the child can play the garden again
+      row.appendChild(btn("Next", next)); }
     repeatButton(s.audio);
     later(function () { say(s.audio); }, 300);
   };

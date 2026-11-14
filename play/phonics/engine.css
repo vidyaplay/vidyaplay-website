@@ -142,3 +142,5 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 .ph-repeat { width: auto; height: 44px; padding: 0 14px 0 10px; border-radius: 22px; font: 800 17px "Baloo 2", sans-serif; color: #8A5A00; display: flex; align-items: center; gap: 4px; }
 .ph-card.has-repeat > h1, .ph-card.has-repeat > p { padding-left: 0; padding-right: 92px; }
 @media (max-width: 600px) { .ph-card.has-repeat > h1, .ph-card.has-repeat > p { padding-right: 86px; text-align: left; } .ph-card.has-repeat > h1 { font-size: clamp(20px, 3.2vh, 26px); } }
+@media (min-width: 900px) { .ph-scene { width: min(100%, calc((100vh - 345px) * 1.777)); } }
+.ph-actions { display: flex; flex-wrap: wrap; gap: 4px 10px; justify-content: center; }
