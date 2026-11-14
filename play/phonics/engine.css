@@ -144,3 +144,9 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 @media (max-width: 600px) { .ph-card.has-repeat > h1, .ph-card.has-repeat > p { padding-right: 86px; text-align: left; } .ph-card.has-repeat > h1 { font-size: clamp(20px, 3.2vh, 26px); } }
 @media (min-width: 900px) { .ph-scene { width: min(100%, calc((100vh - 345px) * 1.777)); } }
 .ph-actions { display: flex; flex-wrap: wrap; gap: 4px 10px; justify-content: center; }
+/* page intro above the lesson map */
+.ph-intro { text-align: center; margin: 2px 0 2px; }
+.ph-intro h1 { font: 800 clamp(22px, 3.6vh, 32px) "Baloo 2", sans-serif; color: var(--navy); margin: 0; line-height: 1.1; }
+.ph-intro p { margin: 0; font-size: clamp(14px, 2.1vh, 17px); color: #3D4A6B; }
+@media (min-width: 900px) { .ph-card { min-height: calc(100vh - 250px); } }
+@media (max-width: 600px) and (max-height: 700px) { #trace { height: min(300px, 36vh); } }

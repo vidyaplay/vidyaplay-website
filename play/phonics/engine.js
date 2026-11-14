@@ -86,8 +86,10 @@
   }
 
   // ---------- page parts ----------
+  var firstScreen = true;
   function steps(k) {
-    try { window.scrollTo(0, Math.max(0, card.getBoundingClientRect().top + window.pageYOffset - 70)); } catch (e) {}
+    if (!firstScreen) { try { window.scrollTo(0, Math.max(0, card.getBoundingClientRect().top + window.pageYOffset - 70)); } catch (e) {} }
+    firstScreen = false;
     [].forEach.call(document.querySelectorAll("#steps span"), function (s, i) { s.className = i < k ? "on" : ""; });
   }
   function drawMap() {
@@ -147,13 +149,14 @@
     var nextB = btn("Next", next); nextB.disabled = true;
     var start = btn("▶ Start", function () {
       start.style.display = "none"; hear.style.display = ""; nextB.style.display = "";
-      if (FEAT.repeat && rep) rep.style.display = "";
+      try { window.scrollTo(0, Math.max(0, card.getBoundingClientRect().top + window.pageYOffset - 70)); } catch (e) {}
+      if (FEAT.repeat && rep) { rep.style.display = ""; card.classList.add("has-repeat"); }
       say(s.audio, function () { nextB.disabled = false; });
     });
     hear.style.display = "none"; nextB.style.display = "none";
     card.appendChild(start); card.appendChild(hear);
     card.appendChild(document.createElement("br")); card.appendChild(nextB);
-    repeatButton(s.audio); var rep = card.querySelector(".ph-repeat"); if (rep) rep.style.display = "none";
+    repeatButton(s.audio); var rep = card.querySelector(".ph-repeat"); if (rep) { rep.style.display = "none"; card.classList.remove("has-repeat"); }
   };
   TYPES.listen = function (s) {
     card.innerHTML = '<h1>' + s.title + '</h1><div class="ph-slide" aria-hidden="true">' + (s.icon || "✋") + '</div><p>' + s.text + '</p>';
