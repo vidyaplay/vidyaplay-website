@@ -15,15 +15,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css?v=8">
   <meta name="robots" content="noindex">
-  <!-- Google Analytics (analytics cookies, no ads) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG"></script>
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads) -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
-    gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
-    gtag('js', new Date());
-    gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+    if (location.hostname === 'vidyaplay.in' || location.hostname === 'www.vidyaplay.in') {
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+    }
   </script>
 </head>
 <body>
