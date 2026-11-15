@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../../style.css?v=8">
+  <link rel="stylesheet" href="../../../style.css?v=9">
   <link rel="canonical" href="https://vidyaplay.in/lkg/english/letter-a/">
   <!-- Share preview (WhatsApp, Facebook and others) -->
   <meta property="og:type" content="website">
@@ -113,6 +113,27 @@
         <a class="button play-btn" href="../../../play/sound-match/">Play Sound Match (letter sounds)</a>
       </div>
     </div>
+
+    <section class="story-video" aria-labelledby="story-title">
+      <h2 id="story-title" class="pack-title">Watch the Letter A story</h2>
+      <p class="pack-text">Ant and the Apple: the sound of A, picture words, how to write A and a, and a quick quiz. 2 minutes.</p>
+      <div class="video-box" id="vbox">
+        <button class="video-play" type="button" aria-label="Play the video: Letter A for Kids: Ant and the Apple">
+          <img src="../../../images/letter-a-story.webp" width="960" height="540" loading="lazy" alt="Letter A story video: Ant and the Apple">
+          <span class="video-icon" aria-hidden="true">&#9654;</span>
+        </button>
+      </div>
+      <p class="video-note">Plays from YouTube when you press play.</p>
+    </section>
+    <script>
+      (function () {
+        var box = document.getElementById("vbox");
+        if (!box) return;
+        box.querySelector(".video-play").addEventListener("click", function () {
+          box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/5r8VdCb0cSI?autoplay=1&rel=0" title="Letter A for Kids: Ant and the Apple" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+        });
+      })();
+    </script>
 
     <ul class="sheet-grid">
       <li class="sheet-card">
