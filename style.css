@@ -462,6 +462,7 @@ html { scroll-padding-top: 64px; }
 .nav-menu { display: none; position: absolute; top: 100%; left: 0; min-width: 240px; margin: 4px 0 0; padding: 8px;
   list-style: none; background: #FFFFFF; border: 1px solid #E6EAF2; border-radius: 16px; box-shadow: 0 10px 28px rgba(19, 35, 74, .14); }
 .nav-item.open .nav-menu { display: block; }
+.nav-menu { max-height: calc(100vh - 70px); max-height: calc(100dvh - 70px); overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
 .nav-menu li { margin: 0; }
 .site-nav .nav-menu a { display: block; padding: 10px 12px; font-size: 16px; border-radius: 10px; white-space: nowrap; }
 .site-nav .nav-menu a.sub { padding-left: 26px; font-weight: 600; }
