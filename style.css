@@ -452,7 +452,8 @@ body {
 .tab-buttons { justify-content: flex-start; margin: 8px 0 14px; }
 
 /* ===== Dropdown menu (nav_menu.py) ===== */
-.site-header { position: relative; z-index: 20; }
+.site-header { position: sticky; top: 0; z-index: 50; }
+html { scroll-padding-top: 64px; }
 .nav-item { position: relative; display: flex; align-items: center; }
 .nav-toggle { border: 0; background: none; color: var(--navy); font: inherit; font-size: 14px; font-weight: 700;
   min-width: 28px; min-height: 40px; padding: 10px 7px; margin-left: -6px; cursor: pointer; border-radius: 10px; line-height: 1; }
