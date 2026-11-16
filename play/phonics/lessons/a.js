@@ -1,0 +1,61 @@
+/* Lesson 2: the short a sound, with Andy the Ant. Data only. Audio: her Lauren recording (16 Nov 2026), cut into a/audio/<name>.mp3.
+   Sound spelling used for the recording: see phonics/lesson2_a_script_groups.md. */
+VP.lesson({
+  id: "a", letter: "a", soundText: "a", soundClip: "a_sound", synth: "voice",
+  base: "a/",
+  character: { name: "Andy the Ant", img: "andy.webp", alt: "Andy the Ant, smiling and waving" },
+  parentNote: '<b>For parents:</b> Sit with your child. This is the short <b>a</b> sound, like the start of apple and ant (not the letter name "ay"). Progress is saved only on this device, nothing is sent to us. No sign-up needed.',
+  vocab: {
+    apple:     { first: "a", yes: "y_apple",     yesText: "Yes! Apple starts with a." },
+    ant:       { first: "a", yes: "y_ant",       yesText: "Yes! Ant starts with a." },
+    anchor:    { first: "a", yes: "y_anchor",    yesText: "Yes! Anchor starts with a." },
+    ambulance: { first: "a", yes: "y_ambulance", yesText: "Yes! Ambulance starts with a." },
+    alligator: { first: "a", yes: "y_alligator", yesText: "Yes! Alligator starts with a." },
+    ball: { first: "b", no: "n_ball" }, cat: { first: "c", no: "n_cat" }, dog: { first: "d", no: "n_dog" },
+    hat:  { first: "h", no: "n_hat" },  moon: { first: "m", no: "n_moon" }, cup: { first: "c", no: "n_cup" }
+  },
+  steps: [
+    { type: "intro", title: "Meet Andy the Ant", audio: ["a_hello_ant", "a_hello"], hearLabel: "🔊 Hear the a sound",
+      text: "Andy loves the <b>a</b> sound, like <b>a</b>pple. Can you help Andy?" },
+    { type: "discover", title: "Andy makes an a!", audio: "a_trail", hearLabel: "🔊 Say the a sound", seconds: 4.5,
+      text: "Watch Andy walk and make the letter <b>a</b>. Say the sound with Andy!",
+      path: "M 196 112 C 160 80 90 102 88 160 C 86 216 156 242 196 198 L 196 112 L 196 246" },
+    { type: "scene", title: "Andy's picnic", audio: "a_picnic", img: "scene_picnic.webp",
+      alt: "A picnic blanket with a basket, an apple, an ant, an anchor, an ambulance, an alligator, a ball, a cat, a dog, a hat, a cup and a moon cushion",
+      wrongText: "Oh no! {Word} does not start with the a sound. Andy wants a.",
+      finish: { text: "Hooray! Andy has a full picnic basket!", audio: "a_picnic_done" },
+      spots: [
+        { word: "apple", box: [9.9, 10.1, 14.1, 25.5] }, { word: "ant", box: [28.1, 2.7, 12.6, 35.6] },
+        { word: "anchor", box: [44.9, 8.5, 13.8, 27.1] }, { word: "ambulance", box: [62.2, 7.4, 18.8, 24.4] },
+        { word: "alligator", box: [76.0, 30.3, 21.5, 26.0] }, { word: "ball", box: [1.2, 37.2, 15.0, 25.5] },
+        { word: "cat", box: [17.6, 35.1, 14.4, 32.9] }, { word: "dog", box: [58.9, 34.5, 15.5, 34.0] },
+        { word: "hat", box: [6.9, 68.0, 24.2, 23.9] }, { word: "cup", box: [59.5, 71.7, 14.4, 19.7] },
+        { word: "moon", box: [75.7, 59.5, 19.1, 27.1] } ] },
+    { type: "scene", title: "Andy lost three things", audio: "a_safari", img: "scene_safari.webp",
+      alt: "A sunny garden with an apple tree, an ant on a leaf, an anchor on the wall, an ambulance, an alligator by the pond and other things",
+      wrongText: "Oh no! {Word} does not start with the a sound. Andy wants a.",
+      foundAudio: ["found1", "found2", "found3"],
+      finish: { text: "You found all three! Andy is so happy!" },
+      spots: [
+        { word: "apple", box: [13.5, 4.8, 9.9, 18.1] }, { word: "ant", box: [20.3, 19.7, 8.4, 13.8] },
+        { word: "anchor", box: [61.0, 25.5, 10.2, 21.8] },
+        { word: "ambulance", box: [70.0, 42.0, 18.9, 23.9], bonus: true }, { word: "alligator", box: [76.9, 66.4, 20.6, 25.5], bonus: true },
+        { word: "moon", box: [39.2, 18.6, 10.2, 17.0] }, { word: "cat", box: [6.3, 57.9, 17.3, 34.0] },
+        { word: "dog", box: [24.5, 57.9, 16.4, 34.0] }, { word: "ball", box: [43.1, 66.9, 15.3, 25.5] },
+        { word: "hat", box: [10.8, 41.5, 15.6, 14.4] }, { word: "cup", box: [42.2, 42.0, 7.5, 9.0] } ] },
+    { type: "speak", title: "Say it slowly",
+      items: [ { word: "ant", img: "ant.webp", text: "Ant… a-nt", audio: "say_ant" },
+               { word: "apple", img: "apple.webp", text: "Apple… a-pple", audio: "say_apple" },
+               { word: "anchor", img: "anchor.webp", text: "Anchor… a-nchor", audio: "say_anchor" } ],
+      finish: { title: "Great talking!", text: "Now you try it. Say it slowly: a, a.", audio: "say_try" } },
+    { type: "letters", title: "Which letter says a?", text: "Press the speaker, then tap the letter.", audio: "which", hearLabel: "🔊 Hear it",
+      choices: ["t", "a", "m"], answer: "a",
+      yes: { text: "Yes! The letter a says a.", audio: "letter_yes" },
+      no:  { text: "Not that one. Listen again.", audio: "letter_no" } },
+    { type: "trace", title: "Write the a", text: "Put your finger on the green dot. Go round, then down.",
+      path: "M 196 112 C 160 80 90 102 88 160 C 86 216 156 242 196 198 L 196 112 L 196 246",
+      audio: ["trace1", "trace2"], great: { text: "Great writing!", audio: "great" } },
+    { type: "done", title: "Well done!", text: "A says <b>a</b>, like apple, ant and anchor.", audio: ["done", "next"],
+      link: { text: "Print the free Letter A worksheets", href: "../../lkg/english/letter-a/" } }
+  ]
+});

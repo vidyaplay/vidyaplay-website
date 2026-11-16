@@ -258,7 +258,7 @@
   // Hidden Sound Safari: one big picture; tap the things that start with the sound
   TYPES.scene = function (s) {
     card.innerHTML = '<h1>' + s.title + '</h1>';
-    var targets = s.spots.filter(function (sp) { return L.vocab[sp.word].first === L.letter; }), found = 0, wrongHere = 0, closed = false;
+    var targets = s.spots.filter(function (sp) { return L.vocab[sp.word].first === L.letter && !sp.bonus; }), found = 0, wrongHere = 0, closed = false;
     var count = el("div", "ph-count"); card.appendChild(count);
     function showCount() { var t = ""; for (var i = 0; i < targets.length; i++) t += '<span class="' + (i < found ? "on" : "off") + '">★</span>'; count.innerHTML = t; count.setAttribute("aria-label", "Found " + found + " of " + targets.length); }
     var wrap = el("div", "ph-scene"), img = el("img"); img.src = base + s.img; img.alt = s.alt || ""; wrap.appendChild(img);
@@ -269,11 +269,14 @@
       b.onclick = function () {
         if (closed || b.__used) return; b.__used = true;
         if (v.first === L.letter) {
-          b.classList.add("found"); found++; showCount();
+          b.classList.add("found");
+          if (sp.bonus) { msg.className = "ph-msg good"; msg.textContent = v.yesText; say(v.yes || L.soundClip); return; }   // bonus find: praised, not counted
+          found++; showCount();
           msg.className = "ph-msg good"; msg.textContent = v.yesText;
           if (found === targets.length) closed = true;
-          say(v.yes || L.soundClip, function () { if (closed) later(finishAll, 900); });
-          if (closed) later(finishAll, 4500);
+          var fa = s.foundAudio && s.foundAudio[found - 1];
+          say(fa ? [v.yes || L.soundClip, fa] : (v.yes || L.soundClip), function () { if (closed) later(finishAll, 900); });
+          if (closed) later(finishAll, fa ? 9000 : 4500);
         } else {
           missedAny++; wrongHere++; if (missedWords.indexOf(sp.word) < 0) missedWords.push(sp.word);
           b.classList.add("nope"); msg.className = "ph-msg bad";
@@ -294,6 +297,56 @@
       row.appendChild(btn("Next", next)); }
     repeatButton(s.audio);
     later(function () { say(s.audio); }, 300);
+  };
+  TYPES.discover = function (s) {                           // the character walks across and leaves a dotted letter trail (Lesson A)
+    card.innerHTML = '<h1>' + s.title + '</h1><p>' + s.text + '</p>';
+    var stage = el("div", "ph-stage"), NS = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", "0 0 280 300"); svg.setAttribute("aria-hidden", "true");
+    var path = document.createElementNS(NS, "path"); path.setAttribute("d", s.path); path.setAttribute("fill", "none"); path.setAttribute("stroke", "none"); svg.appendChild(path);
+    stage.appendChild(svg);
+    var walker = el("img", "ph-walker"); walker.src = base + (s.walker || L.character.img); walker.alt = ""; stage.appendChild(walker);
+    card.appendChild(stage);
+    var hear = btn(s.hearLabel, function () { sound(); }, "alt"), nextB = btn("Next", next); nextB.disabled = true;
+    card.appendChild(hear); card.appendChild(document.createElement("br")); card.appendChild(nextB);
+    repeatButton(s.audio);
+    var len = path.getTotalLength(), t0 = null, dots = 0, scr = screenId, fin = false, step = 15, W = 64;
+    function place(x, y) { walker.style.left = (x / 280 * 100) + "%"; walker.style.top = (y / 300 * 100) + "%"; }
+    function done() { if (fin) return; fin = true; nextB.disabled = false; }
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function frame(ts) {
+      if (scr !== screenId) return;
+      if (t0 === null) t0 = ts;
+      var el_ = (ts - t0) / 1000, walkIn = 1.0, dur = s.seconds || 4.5;
+      var p0 = path.getPointAtLength(0);
+      if (el_ < walkIn) { var k = el_ / walkIn; place(-40 + (p0.x + 40) * k, p0.y); requestAnimationFrame(frame); return; }
+      var L2 = Math.min(1, (el_ - walkIn) / dur) * len, pt = path.getPointAtLength(L2);
+      place(pt.x, pt.y);
+      while (dots * step <= L2) { var q = path.getPointAtLength(dots * step), c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", q.x); c.setAttribute("cy", q.y); c.setAttribute("r", 5); c.setAttribute("fill", "#7B4CC9"); svg.appendChild(c); dots++; }
+      if (L2 < len) requestAnimationFrame(frame); else { later(done, 400); }
+    }
+    walker.style.setProperty("--w", W + "px");
+    if (reduce) { for (var d = 0; d * step <= len; d++) { var q = path.getPointAtLength(d * step), c = document.createElementNS(NS, "circle"); c.setAttribute("cx", q.x); c.setAttribute("cy", q.y); c.setAttribute("r", 5); c.setAttribute("fill", "#7B4CC9"); svg.appendChild(c); }
+      var e = path.getPointAtLength(len); place(e.x, e.y); done(); } else { later(function () { requestAnimationFrame(frame); }, 300); }
+    later(function () { say(s.audio); }, 300);
+    later(done, 12000);
+  };
+  TYPES.speak = function (s) {                              // say the word slowly: picture, listen, "I said it!" (no microphone, nothing is recorded)
+    var i = 0;
+    function show() {
+      var it = s.items[i];
+      card.innerHTML = '<h1>' + s.title + '</h1><div class="ph-word"><img src="' + base + it.img + '" alt="' + it.word + '"></div><p class="ph-say">' + it.text + '</p>';
+      var listen = btn("🔊 Listen", function () { replay(it.audio); }, "alt"), said = btn("I said it!", function () {
+        i++; if (i < s.items.length) { show(); } else { fin(); } });
+      card.appendChild(listen); card.appendChild(document.createElement("br")); card.appendChild(said);
+      later(function () { say(it.audio); }, 300);
+    }
+    function fin() {
+      card.innerHTML = '<h1>' + s.finish.title + '</h1><p>' + s.finish.text + '</p>';
+      var nb = btn("Next", next); nb.disabled = true; card.appendChild(nb);
+      var open = function () { nb.disabled = false; }; say(s.finish.audio, open); later(open, 8000); confetti();
+    }
+    show();
   };
   TYPES.done = function (s) {
     var stars = missedAny === 0 ? 3 : missedAny <= 2 ? 2 : 1;
