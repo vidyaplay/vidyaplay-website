@@ -2,7 +2,7 @@
    Sound spelling used for the recording: see phonics/lesson2_a_script_groups.md. */
 VP.lesson({
   id: "a", letter: "a", bigLetter: "Aa", center: true, soundText: "a", soundClip: "a_sound", synth: "voice",
-  base: "a/", audioV: 2,
+  base: "a/", audioV: 3,
   character: { name: "Andy the Ant", img: "andy.webp", alt: "Andy the Ant, smiling and waving" },
   parentNote: '<b>For parents:</b> Sit with your child. This is the short <b>a</b> sound, like the start of apple and ant (not the letter name "ay"). Progress is saved only on this device, nothing is sent to us. No sign-up needed.',
   vocab: {
@@ -29,10 +29,10 @@ VP.lesson({
       wrongText: "Not that one. Listen again: a.", wrongAudio: "letter_no",
       rounds: [ { word: "ant", choices: ["ant", "apple", "anchor"] }, { word: "apple", choices: ["anchor", "apple", "ant"] }, { word: "anchor", choices: ["ant", "anchor", "apple"] } ],
       finish: { title: "You found all three!", text: "Andy is so happy!", audio: "found3" } },
-    { type: "speak", title: "Say it slowly",
-      items: [ { word: "ant", img: "ant.webp", text: "Ant… a-nt", audio: "say_ant" },
-               { word: "apple", img: "apple.webp", text: "Apple… a-pple", audio: "say_apple" },
-               { word: "anchor", img: "anchor.webp", text: "Anchor… a-nchor", audio: "say_anchor" } ],
+    { type: "speak", title: "Say it slowly with me",
+      items: [ { word: "ant", img: "ant.webp", text: "a… a… ant", audio: "say_ant" },
+               { word: "apple", img: "apple.webp", text: "a… a… apple", audio: "say_apple" },
+               { word: "anchor", img: "anchor.webp", text: "a… a… anchor", audio: "say_anchor" } ],
       finish: { title: "Great talking!", text: "Now you try it. Say it slowly: a, a.", audio: "say_try" } },
     { type: "letters", title: "Which letter says a?", text: "Now listen. Press the speaker, then tap the letter.", audio: "which", hearLabel: "🔊 Hear it",
       choices: ["Tt", "Aa", "Mm"], answer: "Aa",
