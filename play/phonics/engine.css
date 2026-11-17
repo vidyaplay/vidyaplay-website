@@ -158,3 +158,9 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 .ph-word img { width: 150px; height: 150px; object-fit: contain; }
 .ph-say { font-size: 32px; font-weight: 800; color: #7B4CC9; margin: 4px 0 12px; }
 @media (max-height: 700px) { .ph-word img { width: 100px; height: 100px; } .ph-say { font-size: 26px; } }
+
+/* Mystery shadows (Lesson A) */
+.ph-shadow { margin: 4px auto 10px; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; }
+.ph-shadow img { max-width: 100%; max-height: 100%; object-fit: contain; filter: brightness(0) opacity(.8); transition: filter .6s, transform .6s; }
+.ph-shadow.lit img { filter: none; transform: scale(1.08); }
+@media (max-height: 700px) { .ph-shadow { width: 100px; height: 100px; } }

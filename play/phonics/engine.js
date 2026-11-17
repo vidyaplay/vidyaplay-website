@@ -135,6 +135,7 @@
   function clipsOf(s) {
     var c = [].concat(s.audio || []);
     if (s.type === "pictures") { (s.rounds || []).concat(s.oddRounds || []).forEach(function (r) { (r.items || r).forEach(function (n) { var v = L.vocab[n]; if (v) c.push(v.yes || v.no); }); }); if (s.finish) c.push(s.finish.audio); }
+    if (s.type === "shadow") (s.rounds || []).forEach(function (r) { var v = L.vocab[r.word]; if (v) c.push(v.yes); c.push(s.wrongAudio); });
     if (s.type === "scene") (s.spots || []).forEach(function (sp) { var v = L.vocab[sp.word]; if (v) c.push(v.yes || v.no); });
     if (s.yes) c.push(s.yes.audio); if (s.no) c.push(s.no.audio); if (s.great) c.push(s.great.audio);
     return c;
@@ -347,6 +348,40 @@
       var open = function () { nb.disabled = false; }; say(s.finish.audio, open); later(open, 8000); confetti();
     }
     show();
+  };
+  TYPES.shadow = function (s) {                             // Mystery shadows: a dark shadow, pick the matching picture; it lights up and says the word (Lesson A)
+    var r = 0;
+    function round() {
+      var word = s.rounds[r].word, choices = s.rounds[r].choices, v = L.vocab[word], closed = false, wrongHere = 0;
+      card.innerHTML = '<h1>' + s.title + '</h1><p>' + s.text + '</p>';
+      var sh = el("div", "ph-shadow"), im = el("img"); im.src = base + v.img; im.alt = "A dark shadow"; sh.appendChild(im);
+      var grid = el("div", "ph-grid"), msg = el("div", "ph-msg");
+      shuffled(choices).forEach(function (name) {
+        var b = choiceButton(name);
+        b.onclick = function () {
+          if (closed || b.__used) return;
+          if (name === word) {
+            closed = true; b.className = "ph-choice right used"; sh.classList.add("lit");
+            msg.className = "ph-msg good"; msg.textContent = v.yesText;
+            var go = function () { r++; if (r < s.rounds.length) round(); else finishAll(); };
+            say(v.yes, function () { later(go, 900); }); later(go, 5000);
+          } else {
+            missedAny++; wrongHere++; b.className = "ph-choice wrong used"; b.__used = true;
+            msg.className = "ph-msg bad"; msg.textContent = s.wrongText; say(s.wrongAudio);
+          }
+        };
+        grid.appendChild(b);
+      });
+      card.appendChild(sh); card.appendChild(grid); card.appendChild(msg);
+      repeatButton(s.audio);
+      if (r === 0 && s.audio) later(function () { say(s.audio); }, 300);
+    }
+    function finishAll() {
+      clearTimers(); stopVoice();
+      card.innerHTML = '<img class="ph-sunny" src="' + base + L.character.img + '" alt="' + L.character.alt + '"><h1>' + s.finish.title + '</h1><p>' + s.finish.text + '</p>';
+      card.appendChild(btn("Next", next)); say(s.finish.audio); confetti();
+    }
+    round();
   };
   TYPES.done = function (s) {
     var stars = missedAny === 0 ? 3 : missedAny <= 2 ? 2 : 1;
