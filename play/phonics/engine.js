@@ -373,7 +373,7 @@
       var word = s.rounds[r].word, choices = s.rounds[r].choices, v = L.vocab[word], closed = false, wrongHere = 0;
       card.innerHTML = '<h1>' + s.title + '</h1><p>' + s.text + '</p>';
       var sh = el("div", "ph-shadow"), im = el("img"); im.src = base + v.img; im.alt = "A dark shadow"; sh.appendChild(im);
-      var grid = el("div", "ph-grid"), msg = el("div", "ph-msg");
+      var grid = el("div", "ph-grid" + (L.center ? " n" + choices.length : "")), msg = el("div", "ph-msg");
       shuffled(choices).forEach(function (name) {
         var b = choiceButton(name);
         b.onclick = function () {
@@ -381,7 +381,7 @@
           if (name === word) {
             closed = true; b.className = "ph-choice right used"; sh.classList.add("lit");
             msg.className = "ph-msg good"; msg.textContent = v.yesText;
-            var go = function () { r++; if (r < s.rounds.length) round(); else finishAll(); };
+            var moved = false, go = function () { if (moved) return; moved = true; clearTimers(); r++; if (r < s.rounds.length) round(); else finishAll(); };
             say(v.yes, function () { later(go, 900); }); later(go, 5000);
           } else {
             missedAny++; wrongHere++; b.className = "ph-choice wrong used"; b.__used = true;
@@ -471,7 +471,7 @@
       card.innerHTML = (basket ? '<div class="ph-basket" id="target" aria-hidden="true">🧺</div>'
         : '<img class="ph-sunny" id="target" src="' + base + L.character.img + '" alt="' + L.character.alt + '">') + '<h1>' + s.title + '</h1>' + (s.text ? '<p>' + s.text + '</p>' : '');
       var target = document.getElementById("target");
-      var grid = el("div", "ph-grid"), msg = el("div", "ph-msg");
+      var grid = el("div", "ph-grid" + (L.center ? " n" + list.length : "")), msg = el("div", "ph-msg");
       var done = false;
       function nextRound() { if (done) return; done = true; clearTimers(); r++; r < rounds.length ? round() : finishAll(); }
       shuffled(list).forEach(function (name) {

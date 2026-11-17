@@ -170,3 +170,7 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 .ph-letter.two { width: auto; min-width: 94px; padding: 0 12px; font-size: 52px; letter-spacing: -1px; }
 @media (max-width: 600px) { .ph-card.ph-center.has-repeat > h1 { padding-left: 86px; padding-right: 86px; text-align: center; }
   .ph-card.ph-center.has-repeat > p { padding-left: 0; padding-right: 0; text-align: center; } }
+/* centred picture grids with 3 pictures (Lesson A) */
+.ph-grid.n3 .ph-choice:nth-child(3) { grid-column: 1 / span 2; justify-self: center; width: calc(50% - 5px); }
+@media (min-width: 900px) { .ph-grid.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: min(620px, 100%); }
+  .ph-grid.n3 .ph-choice:nth-child(3) { grid-column: auto; width: 100%; } }
