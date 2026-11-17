@@ -2,7 +2,7 @@
    Sound spelling used for the recording: see phonics/lesson2_a_script_groups.md. */
 VP.lesson({
   id: "a", letter: "a", bigLetter: "Aa", center: true, soundText: "a", soundClip: "a_sound", synth: "voice",
-  base: "a/",
+  base: "a/", audioV: 2,
   character: { name: "Andy the Ant", img: "andy.webp", alt: "Andy the Ant, smiling and waving" },
   parentNote: '<b>For parents:</b> Sit with your child. This is the short <b>a</b> sound, like the start of apple and ant (not the letter name "ay"). Progress is saved only on this device, nothing is sent to us. No sign-up needed.',
   vocab: {

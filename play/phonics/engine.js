@@ -59,7 +59,7 @@
         o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 0.55); });
     } catch (e) {}
   }
-  function clipUrl(name) { return base + "audio/" + name + ".mp3"; }
+  function clipUrl(name) { return base + "audio/" + name + ".mp3" + (L && L.audioV ? "?v=" + L.audioV : ""); }   // audioV: new recordings bypass old cached clips
   function audioFor(name) { return cache[name] || (cache[name] = new Audio(clipUrl(name))); }
   function preload(names) { if (!FEAT.preload) return; (names || []).forEach(function (n) { if (n && !cache[n]) { var a = audioFor(n); a.preload = "auto"; try { a.load(); } catch (e) {} } }); }
   var screenId = 0;                                        // increases on every screen change; old sound callbacks are ignored
