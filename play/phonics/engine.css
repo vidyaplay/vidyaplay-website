@@ -164,3 +164,9 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 .ph-shadow img { max-width: 100%; max-height: 100%; object-fit: contain; filter: brightness(0) opacity(.8); transition: filter .6s, transform .6s; }
 .ph-shadow.lit img { filter: none; transform: scale(1.08); }
 @media (max-height: 700px) { .ph-shadow { width: 100px; height: 100px; } }
+
+/* centred text next to the Again button (Lesson A) */
+@media (min-width: 601px) { .ph-card.ph-center.has-repeat > h1, .ph-card.ph-center.has-repeat > p { padding-left: 92px; padding-right: 92px; text-align: center; } }
+.ph-letter.two { width: auto; min-width: 94px; padding: 0 12px; font-size: 52px; letter-spacing: -1px; }
+@media (max-width: 600px) { .ph-card.ph-center.has-repeat > h1 { padding-left: 86px; padding-right: 86px; text-align: center; }
+  .ph-card.ph-center.has-repeat > p { padding-left: 0; padding-right: 0; text-align: center; } }

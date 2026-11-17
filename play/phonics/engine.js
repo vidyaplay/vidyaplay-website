@@ -145,7 +145,7 @@
   var TYPES = {};
   TYPES.intro = function (s) {
     card.innerHTML = '<h1>' + s.title + '</h1><img class="ph-sunny" src="' + base + L.character.img + '" alt="' + L.character.alt + '">' +
-      '<p>' + s.text + '</p><div class="ph-big">' + L.letter + '</div>';
+      '<p>' + s.text + '</p><div class="ph-big">' + (L.bigLetter || L.letter) + '</div>';
     var hear = btn(s.hearLabel, function () { sound(); nextB.disabled = false; }, "alt");
     var nextB = btn("Next", next); nextB.disabled = true;
     var start = btn("▶ Start", function () {
@@ -173,7 +173,7 @@
     card.appendChild(btn(s.hearLabel || "🔊 Hear it", sound, "alt"));
     var row = el("div", "ph-letters"), msg = el("div", "ph-msg");
     shuffled(s.choices).forEach(function (ch) {
-      var b = el("button", "ph-letter"); b.type = "button"; b.textContent = ch; b.setAttribute("aria-label", "letter " + ch);
+      var b = el("button", "ph-letter" + (ch.length > 1 ? " two" : "")); b.type = "button"; b.textContent = ch; b.setAttribute("aria-label", "letter " + ch);
       b.onclick = function () {
         if (ch === s.answer) {
           b.className = "ph-letter right"; msg.className = "ph-msg good"; msg.textContent = s.yes.text;
@@ -451,7 +451,7 @@
       var list = rounds[r], left = list.filter(function (n) { return L.vocab[n].first === L.letter; }).length, wrongHere = 0;
       [].forEach.call(document.querySelectorAll(".ph-drag,.ph-fly"), function (c) { c.parentNode.removeChild(c); });
       card.innerHTML = (basket ? '<div class="ph-basket" id="target" aria-hidden="true">🧺</div>'
-        : '<img class="ph-sunny" id="target" src="' + base + L.character.img + '" alt="' + L.character.alt + '">') + '<h1>' + s.title + '</h1>';
+        : '<img class="ph-sunny" id="target" src="' + base + L.character.img + '" alt="' + L.character.alt + '">') + '<h1>' + s.title + '</h1>' + (s.text ? '<p>' + s.text + '</p>' : '');
       var target = document.getElementById("target");
       var grid = el("div", "ph-grid"), msg = el("div", "ph-msg");
       var done = false;
@@ -533,7 +533,7 @@
     var want = params.get("l"), first = order[0] && order[0].id, id = want && registry[want] ? want : first;
     var wi = -1; order.forEach(function (o, i) { if (o.id === id) wi = i; });
     if (want && registry[want] && FEAT.unlock && !isOpen(wi)) id = first;    // a locked lesson opens lesson 1 instead
-    L = registry[id]; base = L.base || "";
+    L = registry[id]; base = L.base || ""; if (L.center) card.classList.add("ph-center");
     if (LEGACY) L.steps = L.steps.filter(function (st) { return st.type !== "scene"; });   // legacy = the page before Phase 1
     if (!LEGACY && params.get("dev") === "1" && params.get("game")) L.steps.forEach(function (st) { if (st.type === "pictures") st.game = params.get("game"); });
     var bar = document.getElementById("steps"); bar.innerHTML = ""; L.steps.forEach(function () { bar.appendChild(el("span")); });
