@@ -2,7 +2,7 @@
    Sound spelling used for the recording: see phonics/lesson2_a_script_groups.md. */
 VP.lesson({
   id: "a", letter: "a", bigLetter: "Aa", center: true, soundText: "a", soundClip: "a_sound", synth: "voice",
-  base: "a/", audioV: 3,
+  base: "a/", audioV: 4,
   character: { name: "Andy the Ant", img: "andy.webp", alt: "Andy the Ant, smiling and waving" },
   parentNote: '<b>For parents:</b> Sit with your child. This is the short <b>a</b> sound, like the start of apple and ant (not the letter name "ay"). Progress is saved only on this device, nothing is sent to us. No sign-up needed.',
   vocab: {
@@ -25,7 +25,7 @@ VP.lesson({
       wrongText: "Oh no! {Word} doesn't start with a. Andy wants a.",
       rounds: [["apple", "ball", "ant", "cat"], ["dog", "anchor", "hat", "ambulance"], ["moon", "alligator", "cup"]],
       finish: { title: "Hooray!", text: "Andy has a full picnic basket!", audio: "a_picnic_done", alt: "A full picnic basket" } },
-    { type: "shadow", title: "Mystery shadows", text: "Whose shadow is this? Tap the matching picture.",
+    { type: "shadow", title: "Mystery shadows", text: "Whose shadow is this? Tap the matching picture.", audio: "shadow_intro",
       wrongText: "Not that one. Listen again: a.", wrongAudio: "letter_no",
       foundAudio: ["found1", "found2"], foundText: ["You found one! A star for you!", "You found two! Another star!"],
       rounds: [ { word: "ant", choices: ["ant", "apple", "anchor"] }, { word: "apple", choices: ["anchor", "apple", "ant"] }, { word: "anchor", choices: ["ant", "anchor", "apple"] } ],
@@ -42,8 +42,8 @@ VP.lesson({
     { type: "trace", title: "Write the a", text: "Now let's write the letter <b>a</b>. Put your finger on the green dot. Start at the top, go round and round, then a line down.",
       letter: "a", labels: [[176, 92], [222, 112]], strokes: ["M 155.5 110.1 A 60 62 0 0 0 124.5 229.9 A 60 62 0 0 0 155.5 110.1", "M 200 108 L 200 232"],
       audio: ["trace1", "trace2"], great: { text: "Great writing!", audio: "great" } },
-    { type: "trace", title: "Write the big A", text: "Now the big <b>A</b>. Put your finger on the green dot. 1 down, 2 down, 3 across.",
-      letter: "A", labels: [[104, 56], [176, 56], [70, 175]], strokes: ["M 140 60 L 60 240", "M 140 60 L 220 240", "M 92 175 L 188 175"],
+    { type: "trace", title: "Write the big A", text: "Now let's write the big <b>A</b>. One, down. Two, down. Three, across.",
+      audio: ["trace_bigA"], letter: "A", labels: [[104, 56], [176, 56], [70, 175]], strokes: ["M 140 60 L 60 240", "M 140 60 L 220 240", "M 92 175 L 188 175"],
       great: { text: "Great writing!", audio: "great" } },
     { type: "done", title: "Well done!", text: "A says <b>a</b>, like apple, ant and anchor.", audio: ["done", "next"],
       link: { text: "Print the free Letter A worksheets", href: "../../lkg/english/letter-a/" } }
