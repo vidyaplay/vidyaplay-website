@@ -191,32 +191,39 @@
     repeatButton(s.audio);
     later(function () { say(s.audio); }, 300);
   };
-  TYPES.trace = function (s) {
+  TYPES.trace = function (s) {                              // s.path = one stroke; s.strokes = several strokes in worksheet order (lift the finger between them)
     card.innerHTML = '<h1>' + s.title + '</h1><p>' + s.text + '</p>';
     var cv = el("canvas"); cv.id = "trace"; card.appendChild(cv);
-    if (!LEGACY) { cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Tracing box: trace the letter " + L.letter + " with your finger"); }
+    if (!LEGACY) { cv.setAttribute("role", "img"); cv.setAttribute("aria-label", "Tracing box: trace the letter " + (s.letter || L.letter) + " with your finger"); }
     var msg = el("div", "ph-msg"); card.appendChild(msg);
     var dpr = window.devicePixelRatio || 1, W = 280, H = 300; cv.width = W * dpr; cv.height = H * dpr;
     var g = cv.getContext("2d"); g.scale(dpr, dpr);
-    var path = document.createElementNS("http://www.w3.org/2000/svg", "path"); path.setAttribute("d", s.path);
-    var len = path.getTotalLength(), pts = [];
-    for (var i = 0; i <= 40; i++) { var p = path.getPointAtLength(len * i / 40); pts.push([p.x, p.y]); }
+    var multi = !!s.strokes, SP = (s.strokes || [s.path]).map(function (d) {
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path"); path.setAttribute("d", d);
+      var len = path.getTotalLength(), n = multi ? Math.max(8, Math.round(len / 9)) : 40, out = [];
+      for (var i = 0; i <= n; i++) { var p = path.getPointAtLength(len * i / n); out.push([p.x, p.y]); } return out; });
+    var si = 0, pts = SP[0];
     var NEAR = FEAT.gentleTrace ? 38 : 30, START = FEAT.gentleTrace ? 44 : 34;
-    var hit = 0, drawing = false, finished = false, demo = -1, sparks = [], raf = 0, lastPulse = 0;
+    var hit = 0, drawing = false, finished = false, demo = -1, demoS = 0, sparks = [], raf = 0, lastPulse = 0;
     function star(x, y, r, a) { g.save(); g.globalAlpha = a; g.fillStyle = "#F5C518"; g.strokeStyle = "#E8456B"; g.lineWidth = 1; g.beginPath();
       for (var k = 0; k < 10; k++) { var ang = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? r * 0.45 : r; g.lineTo(x + rr * Math.cos(ang), y + rr * Math.sin(ang)); }
       g.closePath(); g.fill(); g.stroke(); g.restore(); }
     function animate() { raf = 0; var now = Date.now(); sparks = sparks.filter(function (k) { return now - k.t < 900; }); paint(); if (sparks.length) raf = requestAnimationFrame(animate); }
-    function line(upto, color, width) { g.strokeStyle = color; g.lineWidth = width; g.beginPath(); pts.slice(0, upto + 1).forEach(function (q, j) { j ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); }); }
+    function line(P, upto, color, width) { g.strokeStyle = color; g.lineWidth = width; g.beginPath(); P.slice(0, upto + 1).forEach(function (q, j) { j ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); }); }
     function paint() {
       g.clearRect(0, 0, W, H); g.lineCap = "round"; g.lineJoin = "round";
-      line(pts.length - 1, "#E6DDF6", 38); g.stroke();
-      g.strokeStyle = "#9C7BD9"; g.lineWidth = 3; g.setLineDash([8, 8]); g.stroke(); g.setLineDash([]);
-      line(hit, "#7B4CC9", 16); if (hit > 0) g.stroke();
-      var q = pts[hit < pts.length - 1 ? hit : pts.length - 1];
-      g.fillStyle = "#2E9E4F"; g.beginPath(); g.arc(q[0], q[1], 12, 0, 7); g.fill();
+      SP.forEach(function (P) { line(P, P.length - 1, "#E6DDF6", 38); g.stroke(); });
+      SP.forEach(function (P) { line(P, P.length - 1, "#9C7BD9", 3); g.setLineDash([8, 8]); g.stroke(); g.setLineDash([]); });
+      SP.forEach(function (P, k) { var up = k < si ? P.length - 1 : (k === si ? hit : -1); if (up > 0) { line(P, up, "#7B4CC9", 16); g.stroke(); } });
+      if (multi) SP.forEach(function (P, k) {                // stroke numbers beside each start, like the worksheet
+        var a = P[0], b = P[Math.min(3, P.length - 1)], dx = a[0] - b[0], dy = a[1] - b[1], m = Math.hypot(dx, dy) || 1;
+        var x = a[0] + dx / m * 26 + (-dy / m) * 14, y = a[1] + dy / m * 26 + (dx / m) * 14; if (s.labels && s.labels[k]) { x = s.labels[k][0]; y = s.labels[k][1]; }
+        g.fillStyle = k === si && !finished ? "#E8456B" : "#B9A9DA"; g.beginPath(); g.arc(x, y, 11, 0, 7); g.fill();
+        g.fillStyle = "#fff"; g.font = "800 14px 'Baloo 2', sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(String(k + 1), x, y + 1); });
+      if (!finished || !multi) { var q = pts[hit < pts.length - 1 ? hit : pts.length - 1];
+        g.fillStyle = "#2E9E4F"; g.beginPath(); g.arc(q[0], q[1], 12, 0, 7); g.fill(); }
       var now = Date.now(); sparks.forEach(function (k) { var age = (now - k.t) / 900; star(k.x, k.y - age * 14, 7 + 5 * (1 - age), 1 - age); });
-      if (demo >= 0) { var d = pts[demo]; g.fillStyle = "rgba(245,197,24,.95)"; g.beginPath(); g.arc(d[0], d[1], 10, 0, 7); g.fill(); }
+      if (demo >= 0) { var d = SP[demoS][demo]; g.fillStyle = "rgba(245,197,24,.95)"; g.beginPath(); g.arc(d[0], d[1], 10, 0, 7); g.fill(); }
     }
     function pos(e) { var b = cv.getBoundingClientRect(); return [(e.clientX - b.left) * W / b.width, (e.clientY - b.top) * H / b.height]; }
     function finish() {
@@ -235,8 +242,11 @@
         if (L.synth === "hiss" && Date.now() - lastPulse > 380) { lastPulse = Date.now(); hiss(0.28, 0.22); }
         if (!raf) raf = requestAnimationFrame(animate);
       }
+      if (hit >= pts.length - 1) {
+        if (si < SP.length - 1) { si++; pts = SP[si]; hit = 0; drawing = false; msg.className = "ph-msg tip"; msg.textContent = "Now line " + (si + 1) + ": start at the green dot."; }
+        else { paint(); finish(); return; }
+      }
       paint();
-      if (hit >= pts.length - 1) finish();
     }
     cv.addEventListener("pointerdown", function (e) {
       var q = pos(e), st = pts[hit]; demo = -1;
@@ -247,8 +257,12 @@
     cv.addEventListener("pointerup", function () { drawing = false; });
     cv.addEventListener("pointercancel", function () { drawing = false; });
     paint();
-    if (FEAT.gentleTrace) {                               // show the stroke once: a yellow dot runs along the letter
-      var k = 0; (function run() { if (finished || drawing) { demo = -1; paint(); return; } demo = k; paint(); k++; if (k < pts.length) later(run, 45); else { demo = -1; paint(); } })();
+    if (FEAT.gentleTrace) {                               // show the strokes once: a yellow dot runs along the letter, stroke by stroke
+      var k = 0; demoS = 0; (function run() { if (finished || drawing || (multi && (hit > 0 || si > 0))) { demo = -1; paint(); return; }
+        demo = k; paint(); k++;
+        if (k < SP[demoS].length) later(run, multi ? 30 : 45);
+        else if (demoS < SP.length - 1) { demoS++; k = 0; later(run, 250); }
+        else { demo = -1; demoS = 0; paint(); } })();
     }
     if (FEAT.skip) {                                      // keyboard / motor-difficulty way through
       var sk = el("button", "ph-skip"); sk.type = "button"; sk.textContent = "Skip writing"; sk.onclick = function () { next(); }; card.appendChild(sk);
@@ -324,11 +338,15 @@
       place(pt.x, pt.y);
       while (dots * step <= L2) { var q = path.getPointAtLength(dots * step), c = document.createElementNS(NS, "circle");
         c.setAttribute("cx", q.x); c.setAttribute("cy", q.y); c.setAttribute("r", 5); c.setAttribute("fill", "#7B4CC9"); svg.appendChild(c); dots++; }
-      if (L2 < len) requestAnimationFrame(frame); else { later(done, 400); }
+      if (L2 < len) requestAnimationFrame(frame); else { walkOff(pt.x, pt.y); }
+    }
+    function walkOff(x0, y0) {                             // Andy walks away so the letters are clear to see
+      var t1 = null; (function off(ts) { if (scr !== screenId) return; if (t1 === null) t1 = ts; var k = Math.min(1, (ts - t1) / 1200);
+        place(x0 + (340 - x0) * k, y0 + (250 - y0) * k); if (k < 1) requestAnimationFrame(off); else { walker.style.display = "none"; done(); } })(performance.now());
     }
     walker.style.setProperty("--w", W + "px");
     if (reduce) { for (var d = 0; d * step <= len; d++) { var q = path.getPointAtLength(d * step), c = document.createElementNS(NS, "circle"); c.setAttribute("cx", q.x); c.setAttribute("cy", q.y); c.setAttribute("r", 5); c.setAttribute("fill", "#7B4CC9"); svg.appendChild(c); }
-      var e = path.getPointAtLength(len); place(e.x, e.y); done(); } else { later(function () { requestAnimationFrame(frame); }, 300); }
+      walker.style.display = "none"; done(); } else { later(function () { requestAnimationFrame(frame); }, 300); }
     later(function () { say(s.audio); }, 300);
     later(done, 12000);
   };
