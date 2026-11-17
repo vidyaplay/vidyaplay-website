@@ -254,8 +254,8 @@
       else if (FEAT.gentleTrace) { msg.className = "ph-msg tip"; msg.textContent = "Start from the green dot."; }
     });
     cv.addEventListener("pointermove", move);
-    cv.addEventListener("pointerup", function () { drawing = false; });
-    cv.addEventListener("pointercancel", function () { drawing = false; });
+    cv.addEventListener("pointerup", function () { drawing = false; if (multi && !finished && hit > 0 && hit < pts.length - 1) { hit = 0; paint(); } });
+    cv.addEventListener("pointercancel", function () { drawing = false; if (multi && !finished && hit < pts.length - 1) { hit = 0; paint(); } });
     paint();
     if (FEAT.gentleTrace) {                               // show the strokes once: a yellow dot runs along the letter, stroke by stroke
       var k = 0; demoS = 0; (function run() { if (finished || drawing || (multi && (hit > 0 || si > 0))) { demo = -1; paint(); return; }
@@ -382,7 +382,8 @@
             closed = true; b.className = "ph-choice right used"; sh.classList.add("lit");
             msg.className = "ph-msg good"; msg.textContent = v.yesText;
             var moved = false, go = function () { if (moved) return; moved = true; clearTimers(); r++; if (r < s.rounds.length) round(); else finishAll(); };
-            say(v.yes, function () { later(go, 900); }); later(go, 5000);
+            var extra = s.foundAudio && s.foundAudio[r]; if (extra && s.foundText) msg.textContent = v.yesText + " " + s.foundText[r];
+            say(extra ? [v.yes, extra] : v.yes, function () { later(go, 900); }); later(go, extra ? 9000 : 5000);
           } else {
             missedAny++; wrongHere++; b.className = "ph-choice wrong used"; b.__used = true;
             msg.className = "ph-msg bad"; msg.textContent = s.wrongText; say(s.wrongAudio);

@@ -27,6 +27,7 @@ VP.lesson({
       finish: { title: "Hooray!", text: "Andy has a full picnic basket!", audio: "a_picnic_done", alt: "A full picnic basket" } },
     { type: "shadow", title: "Mystery shadows", text: "Whose shadow is this? Tap the matching picture.",
       wrongText: "Not that one. Listen again: a.", wrongAudio: "letter_no",
+      foundAudio: ["found1", "found2"], foundText: ["You found one! A star for you!", "You found two! Another star!"],
       rounds: [ { word: "ant", choices: ["ant", "apple", "anchor"] }, { word: "apple", choices: ["anchor", "apple", "ant"] }, { word: "anchor", choices: ["ant", "anchor", "apple"] } ],
       finish: { title: "You found all three!", text: "Andy is so happy!", audio: "found3" } },
     { type: "speak", title: "Say it slowly with me",

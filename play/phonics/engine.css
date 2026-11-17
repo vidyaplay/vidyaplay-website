@@ -174,3 +174,7 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 .ph-grid.n3 .ph-choice:nth-child(3) { grid-column: 1 / span 2; justify-self: center; width: calc(50% - 5px); }
 @media (min-width: 900px) { .ph-grid.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: min(620px, 100%); }
   .ph-grid.n3 .ph-choice:nth-child(3) { grid-column: auto; width: 100%; } }
+/* phones: Lesson A content starts below the Again button, letter pairs fit at 360 px */
+@media (max-width: 600px) { .ph-card.ph-center.has-repeat { padding-top: 66px; }
+  .ph-card.ph-center.has-repeat > h1, .ph-card.ph-center.has-repeat > p { padding-left: 0; padding-right: 0; text-align: center; } }
+@media (max-width: 420px) { .ph-letter.two { min-width: 0; width: 30%; padding: 0 4px; font-size: 40px; } .ph-letters { gap: 10px; } }
