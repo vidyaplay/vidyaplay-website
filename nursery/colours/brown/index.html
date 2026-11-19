@@ -26,9 +26,24 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
   <meta name="twitter:card" content="summary_large_image">
-  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads) -->
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
   <script>
-    if (location.hostname === 'vidyaplay.in' || location.hostname === 'www.vidyaplay.in') {
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
       var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
       document.head.appendChild(ga);
       window.dataLayer = window.dataLayer || [];
@@ -37,7 +52,12 @@
       gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
       gtag('js', new Date());
       gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
-    }
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
   </script>
 
   <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Nursery","item":"https://vidyaplay.in/nursery/"},{"@type":"ListItem","position":3,"name":"Colours","item":"https://vidyaplay.in/nursery/colours/"},{"@type":"ListItem","position":4,"name":"Brown Colour Worksheets for Nursery","item":"https://vidyaplay.in/nursery/colours/brown/"}]}</script>
