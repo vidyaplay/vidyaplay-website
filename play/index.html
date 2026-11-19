@@ -64,7 +64,21 @@
     .topic-jump a { display: inline-block; padding: 9px 16px; border-radius: 999px; background: #EAF2FB; color: var(--navy);
       font-weight: 700; text-decoration: none; border: 2px solid #CFE0F3; }
     .topic-jump a:hover, .topic-jump a:focus-visible { background: var(--blue); color: #fff; border-color: var(--blue); }
-    .game-group { margin: 0 0 30px; padding-top: 6px; scroll-margin-top: 80px; }
+    /* compact game tiles (her video 19 Nov: too much scrolling) */
+    .game-group .sheet-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+    .game-group .sheet-card { padding: 10px; }
+    .game-group .sheet-card > a:first-child img { width: 100%; height: 150px; object-fit: cover; object-position: top; border-radius: 12px; }
+    .game-group .sheet-text, .game-group .sheet-code { display: none; }
+    .game-group .sheet-title { font-size: 17px; margin: 4px 0 8px; line-height: 1.2; }
+    .game-group .series-tag { margin: 6px 0 0; font-size: 12px; }
+    .game-group .play-btn { padding: 8px 12px; font-size: 16px; margin-top: auto; }
+    .topic-jump { position: sticky; top: 64px; z-index: 5; background: var(--bg, #fff); padding: 8px 0 !important; margin: 10px 0 6px !important; }
+    @media (max-width: 480px) { .topic-jump { flex-wrap: nowrap !important; overflow-x: auto; gap: 6px !important; scrollbar-width: none; }
+      .topic-jump a { padding: 6px 12px !important; font-size: 14px; white-space: nowrap; }
+      .game-group { scroll-margin-top: 120px; }
+      .game-group .sheet-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .game-group .sheet-card > a:first-child img { height: 120px; } .game-group .sheet-title { font-size: 15px; } }
+    .game-group { margin: 0 0 30px; padding-top: 6px; scroll-margin-top: 130px; }
     .game-group .section-label { margin-bottom: 2px; }
     .group-line { margin: 0 0 12px; color: var(--grey, #5E6880); font-size: 16px; }
     .series-tag { display: inline-block; align-self: flex-start; margin: 8px 0 2px; padding: 3px 10px; border-radius: 999px; background: #EFE8FB; color: #5B36A8; font-size: 13px; font-weight: 700; }
