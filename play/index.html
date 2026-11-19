@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Free Online Learning Games for LKG Kids | VidyaPlay</title>
-  <meta name="description" content="Free, simple online letter games for LKG kids. Tap and play on a phone or tablet, no sign-up. Each game has a matching printable worksheet.">
+  <title>Free Learning Games for Kids: English, Maths and More | VidyaPlay</title>
+  <meta name="description" content="Free, simple learning games for young kids: letters, numbers, world around us and brain games. Play on a phone, no sign-up, progress saved.">
 
   <link rel="icon" href="../favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="../vidyaplay-icon-512.png">
@@ -18,8 +18,8 @@
   <!-- Share preview (WhatsApp, Facebook and others) -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="VidyaPlay">
-  <meta property="og:title" content="Free Online Learning Games for LKG Kids | VidyaPlay">
-  <meta property="og:description" content="Free, simple online letter games for LKG kids. Tap and play on a phone or tablet, no sign-up. Each game has a matching printable worksheet.">
+  <meta property="og:title" content="Free Learning Games for Kids: English, Maths and More | VidyaPlay">
+  <meta property="og:description" content="Free, simple learning games for young kids: letters, numbers, world around us and brain games. Play on a phone, no sign-up, progress saved.">
   <meta property="og:url" content="https://vidyaplay.in/play/">
   <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
   <meta property="og:image:width" content="1200">
@@ -60,28 +60,28 @@
     })();
   </script>
   <style>
-    .topic-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; padding: 0; list-style: none; }
-    .topic-jump a { display: inline-block; padding: 9px 16px; border-radius: 999px; background: #EAF2FB; color: var(--navy);
-      font-weight: 700; text-decoration: none; border: 2px solid #CFE0F3; }
-    .topic-jump a:hover, .topic-jump a:focus-visible { background: var(--blue); color: #fff; border-color: var(--blue); }
-    /* compact game tiles (her video 19 Nov: too much scrolling) */
-    .game-group .sheet-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
-    .game-group .sheet-card { padding: 10px; }
-    .game-group .sheet-card > a:first-child img { width: 100%; height: 150px; object-fit: cover; object-position: top; border-radius: 12px; }
-    .game-group .sheet-text, .game-group .sheet-code { display: none; }
-    .game-group .sheet-title { font-size: 17px; margin: 4px 0 8px; line-height: 1.2; }
-    .game-group .series-tag { margin: 6px 0 0; font-size: 12px; }
-    .game-group .play-btn { padding: 8px 12px; font-size: 16px; margin-top: auto; }
-    .topic-jump { position: sticky; top: 64px; z-index: 5; background: var(--bg, #fff); padding: 8px 0 !important; margin: 10px 0 6px !important; }
-    @media (max-width: 480px) { .topic-jump { flex-wrap: nowrap !important; overflow-x: auto; gap: 6px !important; scrollbar-width: none; }
-      .topic-jump a { padding: 6px 12px !important; font-size: 14px; white-space: nowrap; }
-      .game-group { scroll-margin-top: 120px; }
-      .game-group .sheet-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .game-group .sheet-card > a:first-child img { height: 120px; } .game-group .sheet-title { font-size: 15px; } }
-    .game-group { margin: 0 0 30px; padding-top: 6px; scroll-margin-top: 130px; }
-    .game-group .section-label { margin-bottom: 2px; }
-    .group-line { margin: 0 0 12px; color: var(--grey, #5E6880); font-size: 16px; }
-    .series-tag { display: inline-block; align-self: flex-start; margin: 8px 0 2px; padding: 3px 10px; border-radius: 999px; background: #EFE8FB; color: #5B36A8; font-size: 13px; font-weight: 700; }
+    .topic-jump { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; margin: 14px 0 8px; padding: 8px 0; list-style: none; position: sticky; top: 60px; z-index: 5; background: #fff; scrollbar-width: none; }
+    .topic-jump a { display: inline-block; white-space: nowrap; padding: 8px 16px; border-radius: 999px; background: #EAF2FB; color: var(--navy); font-weight: 700; text-decoration: none; border: 2px solid #D6E4F5; }
+    .topic-jump a:hover, .topic-jump a:focus-visible { background: var(--blue); color: #fff; }
+    .game-group { margin: 0 0 26px; scroll-margin-top: 130px; }
+    .gg-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+    .gg-head .section-label { margin: 6px 0 2px; }
+    .gg-count { font-size: 14px; font-weight: 700; color: #2E9E4F; white-space: nowrap; }
+    .group-line { margin: 0 0 10px; color: #5E6880; font-size: 15px; }
+    .group-sub { margin: 14px 0 8px; font-weight: 700; color: var(--navy); }
+    .game-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+    .game-row { display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 8px; border: 2px solid #E3E8F0; border-radius: 16px; background: #fff; color: var(--navy); text-decoration: none; min-height: 64px; }
+    .game-row:hover, .game-row:focus-visible { border-color: var(--blue); }
+    .game-row img { width: 64px; height: 64px; object-fit: cover; object-position: top; border-radius: 12px; flex: none; }
+    .gr-text { display: flex; flex-direction: column; flex: 1; line-height: 1.25; }
+    .gr-text b { font-size: 17px; } .gr-text span { font-size: 14px; color: #5E6880; }
+    .gr-done { display: none; width: 28px; height: 28px; border-radius: 50%; background: #2E9E4F; color: #fff; font-weight: 800; text-align: center; line-height: 28px; flex: none; }
+    .played .gr-done { display: inline-block; }
+    .letter-games { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 8px; max-width: 760px; }
+    .lg { position: relative; display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 14px; background: var(--blue); color: #fff; font-size: 26px; font-weight: 800; text-decoration: none; }
+    .lg:hover, .lg:focus-visible { background: #13234A; }
+    .lg.soon { background: #E3E8F0; color: #9AA3B2; }
+    .lg .gr-done { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; line-height: 22px; font-size: 13px; border: 2px solid #fff; }
   </style>
 
   <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Play and Learn","item":"https://vidyaplay.in/play/"}]}</script>
@@ -136,187 +136,70 @@
     </nav>
 
     <h1 class="page-title">Play and Learn</h1>
-    <p class="page-intro">
-      Short, simple games that go with our worksheets. Tap and play on a phone or tablet.
-      No sign-up, no ads.
-    </p>
-    <p class="facts">Play together for about 5 minutes, then print the worksheet.</p>
+    <p class="page-intro">Short games for every child. Tap and play on a phone or tablet. No sign-up, no ads.</p>
+    <p class="facts">Play for about 5 minutes. A ✓ shows the games you finished (saved on this device only).</p>
+    <ul class="topic-jump" aria-label="Jump to a group of games"><li><a href="#english">English</a></li><li><a href="#maths">Maths</a></li><li><a href="#world">World Around Us</a></li><li><a href="#brain">Brain Games</a></li></ul>
 
-    <ul class="topic-jump" aria-label="Jump to a group of games"><li><a href="#phonics">Phonics</a></li><li><a href="#english">LKG English</a></li><li><a href="#maths">LKG Maths</a></li><li><a href="#evs">LKG EVS</a></li><li><a href="#nursery">Nursery</a></li></ul>
-
-    <section class="game-group" id="phonics" aria-labelledby="phonics-title">
-      <h2 class="section-label" id="phonics-title">Phonics lessons</h2>
-      <p class="group-line">Interactive lessons: hear the sound, play, trace. One new lesson each week.</p>
-      <ul class="sheet-grid">
-      <li class="sheet-card">
-        <a href="phonics/"><img src="../images/games/phonics-sunny.webp" width="480" height="592" loading="lazy" alt="Phonics with Sunny: an interactive lesson for the s sound"></a>
-        <span class="series-tag">Phonics · Lesson 1</span>
-        <span class="sheet-code">Interactive lesson · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Phonics with Sunny: the s sound</h3>
-        <p class="sheet-text">Hear the sound, do the action, find the s pictures in the garden and trace the letter. Stars are saved on your device.</p>
-        <a class="button play-btn" href="phonics/">Start lesson 1</a>
-      </li>
+    <section class="game-group" id="english" aria-labelledby="english-t">
+      <div class="gg-head"><h2 class="section-label" id="english-t">English</h2><span class="gg-count" data-group="english" data-total="12"></span></div>
+      <p class="group-line">Letter sounds and one game for each letter.</p>
+      <ul class="game-list">
+        <li><a class="game-row" href="sound-match/" data-game="sound-match"><img src="../images/games/sound-match.webp" width="64" height="64" alt="" loading="lazy"><span class="gr-text"><b>Sound Match</b><span>Hear a letter sound, tap the picture</span></span><span class="gr-done" aria-label="played">✓</span></a></li>
+      </ul>
+      <p class="group-sub">Letter games: tap a letter</p>
+      <ul class="letter-games">
+        <li><a class="lg" href="apple-tree-hunt/" data-game="apple-tree-hunt" aria-label="Letter A game">A<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="busy-bee-garden/" data-game="busy-bee-garden" aria-label="Letter B game">B<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="colour-the-caterpillar/" data-game="colour-the-caterpillar" aria-label="Letter C game">C<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="decorate-the-dinosaur/" data-game="decorate-the-dinosaur" aria-label="Letter D game">D<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="decorate-the-elephant/" data-game="decorate-the-elephant" aria-label="Letter E game">E<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="decorate-the-fish/" data-game="decorate-the-fish" aria-label="Letter F game">F<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="decorate-the-goat/" data-game="decorate-the-goat" aria-label="Letter G game">G<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="build-the-house/" data-game="build-the-house" aria-label="Letter H game">H<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="catch-the-i-words/" data-game="catch-the-i-words" aria-label="Letter I game">I<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="jam-jar-memory/" data-game="jam-jar-memory" aria-label="Letter J game">J<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><a class="lg" href="kite-sky-quiz/" data-game="kite-sky-quiz" aria-label="Letter K game">K<span class="gr-done" aria-hidden="true">✓</span></a></li>
+        <li><span class="lg soon" title="Coming soon">L</span></li>
       </ul>
     </section>
 
-    <section class="game-group" id="english" aria-labelledby="english-title">
-      <h2 class="section-label" id="english-title">LKG English: letter games</h2>
-      <p class="group-line">One game for each letter, in letter order. Play after the letter worksheets.</p>
-      <ul class="sheet-grid">
-      <li class="sheet-card">
-        <a href="sound-match/"><img src="../images/games/sound-match.webp" width="480" height="592" loading="lazy" alt="Sound Match game: listen and tap the picture"></a>
-        <span class="series-tag">Letters A to M · Sound game</span>
-        <span class="sheet-code">Sound game for letters A to M · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Sound Match</h3>
-        <p class="sheet-text">Listen to Vidya Teacher say a letter sound, then tap the picture that starts with it.</p>
-        <a class="button play-btn" href="sound-match/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="apple-tree-hunt/"><img src="../images/games/apple-tree-hunt.webp" width="480" height="662" loading="lazy" alt="Apple Tree Hunt game: tap the letters"></a>
-        <span class="series-tag">Letter A · Game 1 of 11</span>
-        <span class="sheet-code">Letter A · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Apple Tree Hunt</h3>
-        <p class="sheet-text">Tap every apple with big A or small a. Pop!</p>
-        <a class="button play-btn" href="apple-tree-hunt/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="busy-bee-garden/"><img src="../images/games/busy-bee-garden.webp" width="480" height="639" loading="lazy" alt="Busy Bee Garden game: tap the letters"></a>
-        <span class="series-tag">Letter B · Game 2 of 11</span>
-        <span class="sheet-code">Letter B · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Busy Bee Garden</h3>
-        <p class="sheet-text">Tap every flower with big B or small b. Buzz!</p>
-        <a class="button play-btn" href="busy-bee-garden/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="colour-the-caterpillar/"><img src="../images/games/colour-the-caterpillar.webp" width="480" height="583" loading="lazy" alt="Colour the Caterpillar game: tap the letters"></a>
-        <span class="series-tag">Letter C · Game 3 of 11</span>
-        <span class="sheet-code">Letter C · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Colour the Caterpillar</h3>
-        <p class="sheet-text">Tap every circle with big C or small c. Then watch the caterpillar colour itself!</p>
-        <a class="button play-btn" href="colour-the-caterpillar/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="decorate-the-dinosaur/"><img src="../images/games/decorate-the-dinosaur.webp" width="480" height="591" loading="lazy" alt="Decorate the Dinosaur game: tap the letters"></a>
-        <span class="series-tag">Letter D · Game 4 of 11</span>
-        <span class="sheet-code">Letter D · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Decorate the Dinosaur</h3>
-        <p class="sheet-text">Tap every spot with big D or small d. Then watch the dinosaur colour itself!</p>
-        <a class="button play-btn" href="decorate-the-dinosaur/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="decorate-the-elephant/"><img src="../images/games/decorate-the-elephant.webp" width="480" height="502" loading="lazy" alt="Decorate the Elephant game: tap the letters"></a>
-        <span class="series-tag">Letter E · Game 5 of 11</span>
-        <span class="sheet-code">Letter E · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Decorate the Elephant</h3>
-        <p class="sheet-text">Tap every spot with big E or small e. Then watch the elephant colour itself!</p>
-        <a class="button play-btn" href="decorate-the-elephant/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="decorate-the-fish/"><img src="../images/games/decorate-the-fish.webp" width="480" height="588" loading="lazy" alt="Decorate the Fish game: tap the letters"></a>
-        <span class="series-tag">Letter F · Game 6 of 11</span>
-        <span class="sheet-code">Letter F · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Decorate the Fish</h3>
-        <p class="sheet-text">Tap every bubble with big F or small f. Then watch the fish colour itself!</p>
-        <a class="button play-btn" href="decorate-the-fish/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="decorate-the-goat/"><img src="../images/games/decorate-the-goat.webp" width="480" height="592" loading="lazy" alt="Decorate the Goat game: tap the letters"></a>
-        <span class="series-tag">Letter G · Game 7 of 11</span>
-        <span class="sheet-code">Letter G · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Decorate the Goat</h3>
-        <p class="sheet-text">Tap every spot with big G or small g. Then watch the goat colour itself!</p>
-        <a class="button play-btn" href="decorate-the-goat/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="build-the-house/"><img src="../images/games/build-the-house.webp" width="480" height="386" loading="lazy" alt="Build the House game: drag the pieces into place"></a>
-        <span class="series-tag">Letter H · Game 8 of 11</span>
-        <span class="sheet-code">Letter H · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Build the House</h3>
-        <p class="sheet-text">Drag the roof, door, windows and H sign into place to build the house.</p>
-        <a class="button play-btn" href="build-the-house/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="catch-the-i-words/"><img src="../images/games/catch-the-i-words.webp" width="480" height="344" loading="lazy" alt="Catch the I Words game: pop the balloons"></a>
-        <span class="series-tag">Letter I · Game 9 of 11</span>
-        <span class="sheet-code">Letter I · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Catch the I Words</h3>
-        <p class="sheet-text">Pop the balloons that start with i: igloo, iguana and ink. Wrong ones just wobble.</p>
-        <a class="button play-btn" href="catch-the-i-words/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="jam-jar-memory/"><img src="../images/games/jam-jar-memory.webp" width="480" height="424" loading="lazy" alt="Jam Jar Memory game: match the pairs"></a>
-        <span class="series-tag">Letter J · Game 10 of 11</span>
-        <span class="sheet-code">Letter J · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Jam Jar Memory</h3>
-        <p class="sheet-text">Turn the jar lids and match jam, jellyfish and jet.</p>
-        <a class="button play-btn" href="jam-jar-memory/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="kite-sky-quiz/"><img src="../images/games/kite-sky-quiz.webp" width="480" height="473" loading="lazy" alt="Kite Sky Quiz game: tap the kite with the first letter"></a>
-        <span class="series-tag">Letter K · Game 11 of 11</span>
-        <span class="sheet-code">Letter K · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Kite Sky Quiz</h3>
-        <p class="sheet-text">Look at the picture and tap the kite with the letter it starts with.</p>
-        <a class="button play-btn" href="kite-sky-quiz/">Play</a>
-      </li>
+    <section class="game-group" id="maths" aria-labelledby="maths-t">
+      <div class="gg-head"><h2 class="section-label" id="maths-t">Maths</h2><span class="gg-count" data-group="maths" data-total="1"></span></div>
+      <p class="group-line">Counting and numbers.</p>
+      <ul class="game-list">
+        <li><a class="game-row" href="count-and-tap/" data-game="count-and-tap"><img src="../images/games/count-and-tap.webp" width="64" height="64" alt="" loading="lazy"><span class="gr-text"><b>Count and Tap</b><span>Count the pictures, tap the number</span></span><span class="gr-done" aria-label="played">✓</span></a></li>
       </ul>
     </section>
 
-    <section class="game-group" id="maths" aria-labelledby="maths-title">
-      <h2 class="section-label" id="maths-title">LKG Maths: numbers</h2>
-      <p class="group-line">Counting games for numbers 1 to 10.</p>
-      <ul class="sheet-grid">
-      <li class="sheet-card">
-        <a href="count-and-tap/"><img src="../images/games/count-and-tap.webp" width="480" height="713" loading="lazy" alt="Count and Tap game: count the ducks and tap the right number"></a>
-        <span class="series-tag">Numbers · Game 1 of 1</span>
-        <span class="sheet-code">Counting 1 to 10 · Ages 3 to 5</span>
-        <h3 class="sheet-title">Count and Tap</h3>
-        <p class="sheet-text">Count the pictures, then tap the right number. The numbers 1 to 10, ten rounds, stars at the end.</p>
-        <a class="button play-btn" href="count-and-tap/">Play</a>
-      </li>
+    <section class="game-group" id="world" aria-labelledby="world-t">
+      <div class="gg-head"><h2 class="section-label" id="world-t">World Around Us</h2><span class="gg-count" data-group="world" data-total="2"></span></div>
+      <p class="group-line">Transport, helpers and road safety.</p>
+      <ul class="game-list">
+        <li><a class="game-row" href="rescue-mission/" data-game="rescue-mission"><img src="../images/games/rescue-mission.webp" width="64" height="64" alt="" loading="lazy"><span class="gr-text"><b>Rescue Mission</b><span>Who comes to help?</span></span><span class="gr-done" aria-label="played">✓</span></a></li>
+        <li><a class="game-row" href="traffic-detective/" data-game="traffic-detective"><img src="../images/games/traffic-detective.webp" width="64" height="64" alt="" loading="lazy"><span class="gr-text"><b>Traffic Detective</b><span>Find who is not safe on the road</span></span><span class="gr-done" aria-label="played">✓</span></a></li>
       </ul>
     </section>
 
-    <section class="game-group" id="evs" aria-labelledby="evs-title">
-      <h2 class="section-label" id="evs-title">LKG EVS: Transport and road safety</h2>
-      <p class="group-line">Games that go with the Transport worksheets.</p>
-      <ul class="sheet-grid">
-      <li class="sheet-card">
-        <a href="rescue-mission/"><img src="../images/games/rescue-mission.webp" width="480" height="518" loading="lazy" alt="Rescue Mission game: tap the vehicle that comes to help"></a>
-        <span class="series-tag">Transport · Game 1 of 2</span>
-        <span class="sheet-code">EVS Transport · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Rescue Mission</h3>
-        <p class="sheet-text">Who comes to help? Tap the ambulance, fire engine or police car.</p>
-        <a class="button play-btn" href="rescue-mission/">Play</a>
-      </li>
-      <li class="sheet-card">
-        <a href="traffic-detective/"><img src="../images/games/traffic-detective.webp" width="480" height="320" loading="lazy" alt="Traffic Detective game: find who is not being safe on the road"></a>
-        <span class="series-tag">Transport · Game 2 of 2</span>
-        <span class="sheet-code">EVS Road safety · Ages 3.5 to 5</span>
-        <h3 class="sheet-title">Traffic Detective</h3>
-        <p class="sheet-text">Find the 3 people who are not being safe on the road and tap them.</p>
-        <a class="button play-btn" href="traffic-detective/">Play</a>
-      </li>
+    <section class="game-group" id="brain" aria-labelledby="brain-t">
+      <div class="gg-head"><h2 class="section-label" id="brain-t">Brain Games</h2><span class="gg-count" data-group="brain" data-total="1"></span></div>
+      <p class="group-line">Sort, match and think.</p>
+      <ul class="game-list">
+        <li><a class="game-row" href="colour-sort/" data-game="colour-sort"><img src="../images/games/colour-sort.webp" width="64" height="64" alt="" loading="lazy"><span class="gr-text"><b>Colour Sort</b><span>Red or yellow? Sort the pictures</span></span><span class="gr-done" aria-label="played">✓</span></a></li>
       </ul>
     </section>
 
-    <section class="game-group" id="nursery" aria-labelledby="nursery-title">
-      <h2 class="section-label" id="nursery-title">Nursery: colours</h2>
-      <p class="group-line">Easy tap games for ages 2.5 to 4.</p>
-      <ul class="sheet-grid">
-      <li class="sheet-card">
-        <a href="colour-sort/"><img src="../images/games/colour-sort.webp" width="480" height="713" loading="lazy" alt="Colour Sort game: put the picture in the red or yellow basket"></a>
-        <span class="series-tag">Colours · Game 1 of 1</span>
-        <span class="sheet-code">Red and yellow · Ages 2.5 to 4</span>
-        <h3 class="sheet-title">Colour Sort</h3>
-        <p class="sheet-text">Vidya Teacher shows a picture. Is it red or yellow? Tap or drag it into the right basket.</p>
-        <a class="button play-btn" href="colour-sort/">Play</a>
-      </li>
-      </ul>
-    </section>
+    <p class="facts">Looking for phonics lessons? They are in <a href="phonics/">Phonics</a>. New games come with new worksheets.</p>
 
-    <p class="facts">New games come with new worksheets: letters L to Z and more Transport games are next.</p>
-
+    <script>
+      (function () {   // show ticks and "n of m played" from this device's progress
+        var d = {}; try { d = JSON.parse(localStorage.getItem("vp_played") || "{}"); } catch (e) {}
+        document.querySelectorAll("[data-game]").forEach(function (a) { if (d[a.getAttribute("data-game")]) a.classList.add("played"); });
+        document.querySelectorAll(".gg-count").forEach(function (c) {
+          var g = document.getElementById(c.getAttribute("data-group")), n = g.querySelectorAll("[data-game].played").length;
+          c.textContent = n + " of " + c.getAttribute("data-total") + " played" + (n == c.getAttribute("data-total") ? " ⭐" : "");
+        });
+      })();
+    </script>
   </main>
 
   <footer class="footer">
