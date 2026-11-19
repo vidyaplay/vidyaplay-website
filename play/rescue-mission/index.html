@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rescue Mission: Transport Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online transport game for LKG kids: who comes to help? Tap the ambulance, fire engine or police car. Works on phones, no sign-up.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=11">
+  <link rel="canonical" href="https://vidyaplay.in/play/rescue-mission/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Rescue Mission: Transport Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online transport game for LKG kids: who comes to help? Tap the ambulance, fire engine or police car. Works on phones, no sign-up.">
+  <meta property="og:url" content="https://vidyaplay.in/play/rescue-mission/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Rescue Mission (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px; border-radius: 24px; background: #FFECEC; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 8px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .scene { display: flex; align-items: center; gap: 12px; margin: 0 auto 6px; padding: 10px; border: 0; width: 100%; border-radius: 18px; background: #FFFFFF; cursor: pointer; font: inherit; }
+    .scene img { width: 46%; aspect-ratio: 1; object-fit: contain; }
+    .scene span { flex: 1; font-size: 24px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .say-word { margin: 4px 0; min-height: 28px; font-size: 20px; font-weight: 800; color: var(--navy); }
+    .say-word .no { color: #C0392B; }
+    .helpers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .helper { position: relative; border: 4px solid #FFFFFF; border-radius: 18px; background: #FFFFFF; padding: 6px 4px 4px; cursor: pointer; font: inherit; -webkit-tap-highlight-color: transparent; min-height: 44px; }
+    .helper img { width: 100%; aspect-ratio: 1.2; object-fit: contain; pointer-events: none; }
+    .helper b { display: block; font-size: 15px; color: var(--navy); }
+    .helper:focus-visible { outline: 4px solid var(--blue); }
+    .helper.nope { animation: wiggle 0.45s ease-in-out; }
+    .helper.nope::after { content: "✕"; position: absolute; right: -4px; top: -4px; width: 30px; height: 30px; border-radius: 50%; background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; }
+    .helper.go { border-color: #43A047; animation: drive 1.1s ease-in forwards; pointer-events: none; }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 50% { transform: rotate(5deg); } 75% { transform: rotate(-3deg); } }
+    @keyframes drive { 0% { transform: translateX(0); } 30% { transform: translateX(-6px); } 100% { transform: translateX(120%); opacity: 0; } }
+    .score { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF; }
+    .basket span.on { background: #E53935; border: 2.5px solid #8A1C1C; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); }
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px; background: rgba(255,255,255,0.96); box-shadow: 0 4px 18px rgba(44,53,80,0.18); }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; color: #E53935; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .helper { animation: none !important; } }
+  </style>
+
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
+  <script>
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Rescue Mission!","item":"https://vidyaplay.in/play/rescue-mission/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../play/phonics/">Phonics lessons (new)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/phonics/">Phonics</a>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Rescue Mission</span>
+    </nav>
+    <h1 class="page-title">Rescue Mission!</h1>
+    <p class="facts">LKG EVS · Transport and helpers · Ages 3.5 to 5</p>
+    <section class="game-card" aria-label="Rescue Mission game">
+      <div class="game-top">
+        <p class="game-ask">Who comes to help? Tap the right vehicle.</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <button class="scene" id="scene" type="button" aria-label="Tap to hear"><img id="pic" alt="" width="180" height="180"><span id="what"></span></button>
+      <p class="say-word" id="heard" aria-live="polite">&nbsp;</p>
+      <div class="helpers" id="helpers"></div>
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 3 done</p>
+      </div>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🚑🚒🚓</div>
+        <p class="win-big">Super helper!</p>
+        <p class="win-text">Ambulance, fire engine and police car help us.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Talk about each picture: "The child is sick. Who comes? The ambulance!" Ask your child what number we call for help (in India: 112).
+    </p>
+  </main>
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../parents/">Parent's guide</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    var ROUNDS = [
+      {pic: "sick", text: "The child is sick.", ans: "ambulance", say: "The child is sick. Who comes to help?"},
+      {pic: "fire", text: "The house is on fire.", ans: "fireengine", say: "The house is on fire. Who comes to help?"},
+      {pic: "cat", text: "The cat is stuck in a tree.", ans: "fireengine", say: "The cat is stuck in a tree. Who comes to help?"}
+    ];
+    var HELPERS = [{id: "ambulance", name: "ambulance"}, {id: "fireengine", name: "fire engine"}, {id: "police", name: "police car"}];
+    var helpers = document.getElementById("helpers"), basket = document.getElementById("basket"), scoreText = document.getElementById("score");
+    var win = document.getElementById("win"), pic = document.getElementById("pic"), what = document.getElementById("what"), heard = document.getElementById("heard");
+    var order = [], round = 0, locked = false, soundOn = true, audio = null, voice = null;
+    var soundBtn = document.getElementById("sound");
+    function tone(f, e, s, l, v) { var t = audio.currentTime + s, o = audio.createOscillator(), g = audio.createGain();
+      o.type = "sine"; o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(e, t + l);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + l);
+      o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + l + 0.02); }
+    function play(kind) { if (!soundOn) return; try {
+      if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === "suspended") audio.resume();
+      if (kind === "siren") { tone(700, 950, 0, 0.3, 0.2); tone(950, 700, 0.3, 0.3, 0.2); }
+      if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+      if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+    } catch (e) {} }
+    function pickVoice() { if (!window.speechSynthesis) return; var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return /^en[-_](IN|GB|US)/i.test(v.lang); })[0] || null; }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    function speak(t) { if (!soundOn || !window.speechSynthesis) return; try { window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(t); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85; window.speechSynthesis.speak(u); } catch (e) {} }
+    soundBtn.addEventListener("click", function () { soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel(); });
+    function shuffle(l) { for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = l[i]; l[i] = l[j]; l[j] = t; } return l; }
+    document.getElementById("hear").addEventListener("click", function () { speak("Look at the picture. Who comes to help? Tap the right vehicle."); });
+    document.getElementById("scene").addEventListener("click", function () { if (round < ROUNDS.length) speak(order[round].say); });
+    function update() { var d = basket.children; for (var i = 0; i < d.length; i++) d[i].className = i < round ? "on" : "";
+      scoreText.textContent = round + " of " + ROUNDS.length + " done"; }
+    function showRound() {
+      var r = order[round]; pic.src = r.pic + ".webp"; pic.alt = r.text; what.textContent = r.text; heard.innerHTML = "&nbsp;";
+      helpers.innerHTML = ""; locked = false;
+      shuffle(HELPERS.slice()).forEach(function (h) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "helper"; b.setAttribute("aria-label", h.name);
+        var im = document.createElement("img"); im.alt = ""; im.setAttribute("src", h.id + ".webp");
+        var nm = document.createElement("b"); nm.textContent = h.name; b.appendChild(im); b.appendChild(nm);
+        b.addEventListener("click", function () {
+          if (locked) return;
+          if (h.id === r.ans) {
+            locked = true; b.classList.add("go"); play("siren"); heard.textContent = "Yes! The " + h.name + " helps."; speak("Yes! The " + h.name + " comes to help.");
+            round++; update();
+            if (round === ROUNDS.length) setTimeout(function () { play("win"); win.hidden = false; helpers.setAttribute("inert", ""); document.getElementById("again").focus(); speak("Super helper! Well done."); }, 1500);
+            else setTimeout(function () { showRound(); speak(order[round].say); }, 2400);
+          } else {
+            heard.innerHTML = '<span class="no">Not the ' + h.name + '.</span> Try again!';
+            b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope"); speak("Try again!");
+            setTimeout(function () { b.classList.remove("nope"); }, 1400);
+          }
+        });
+        helpers.appendChild(b);
+      });
+    }
+    function newGame() { helpers.removeAttribute("inert"); order = shuffle(ROUNDS.slice()); round = 0;
+      basket.innerHTML = ""; ROUNDS.forEach(function () { basket.appendChild(document.createElement("span")); }); win.hidden = true; update(); showRound(); }
+    document.getElementById("again").addEventListener("click", function () { newGame(); speak(order[0].say); });
+    newGame();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+</body>
+</html>
