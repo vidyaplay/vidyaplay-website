@@ -179,9 +179,9 @@
   (function () {
     // spots in % of the picture (centre x, centre y, radius as % of width)
     var SPOTS = [
-      {x: 39, y: 63, r: 11, text: "The boy is running across the road. Cross only at the zebra crossing!"},
-      {x: 69, y: 47, r: 10, text: "No helmet on the scooter! Always wear a helmet."},
-      {x: 88, y: 46, r: 12, text: "A car is parked on the footpath. The footpath is for walking!"}
+      {x: 39, y: 63, r: 11, text: "The boy is running across the road. Cross only at the zebra crossing!", clip: "zebra_crossing"},
+      {x: 69, y: 47, r: 10, text: "No helmet on the scooter! Always wear a helmet.", clip: "wear_helmet"},
+      {x: 88, y: 46, r: 12, text: "A car is parked on the footpath. The footpath is for walking!", clip: "no_footpath_park"}
     ];
     var street = document.getElementById("street"), heard = document.getElementById("heard"), basket = document.getElementById("basket");
     var scoreText = document.getElementById("score"), win = document.getElementById("win"), soundBtn = document.getElementById("sound");
@@ -196,11 +196,21 @@
     function pickVoice() { if (!window.speechSynthesis) return; var vs = window.speechSynthesis.getVoices() || [];
       voice = vs.filter(function (v) { return /^en[-_](IN|GB|US)/i.test(v.lang); })[0] || null; }
     if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
-    function speak(t) { if (!soundOn || !window.speechSynthesis) return; try { window.speechSynthesis.cancel();
+    function speakTTS(t) { if (!soundOn || !window.speechSynthesis) return; try { window.speechSynthesis.cancel();
       var u = new SpeechSynthesisUtterance(t); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85; window.speechSynthesis.speak(u); } catch (e) {} }
+    var LIB = "../../audio/voice/", clips = {}, queue = [];             // shared voice library (her recordings)
+    function clip(n) { if (!clips[n]) { var a = new Audio(); a.preload = "auto"; a._ok = null;
+        a.addEventListener("canplaythrough", function () { a._ok = true; }); a.addEventListener("error", function () { a._ok = false; });
+        a.src = LIB + n + ".mp3"; clips[n] = a; } return clips[n]; }
+    function stopAll() { queue = []; Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+    function sayList(items) { stopAll(); if (!soundOn) return; queue = items.slice(); next(); }
+    function next() { var it = queue.shift(); if (!it) return; var c = it.clip ? clip(it.clip) : null;
+      if (c && c._ok !== false) { c.currentTime = 0; c.onended = function () { c.onended = null; next(); };
+        var pr = c.play(); if (pr && pr.catch) pr.catch(function () { speakTTS(it.text); }); }
+      else { speakTTS(it.text); setTimeout(next, 1800); } }
     soundBtn.addEventListener("click", function () { soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
-      soundBtn.setAttribute("aria-pressed", soundOn); if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel(); });
-    document.getElementById("hear").addEventListener("click", function () { speak("Three people are not being safe. Find them and tap them."); });
+      soundBtn.setAttribute("aria-pressed", soundOn); if (!soundOn) stopAll(); });
+    document.getElementById("hear").addEventListener("click", function () { sayList([{clip: "ins_detective", text: "Find 3 people who are not safe. Tap them."}]); });
     function update() { var d = basket.children; for (var i = 0; i < 3; i++) d[i].className = i < found.length ? "on" : "";
       scoreText.textContent = found.length + " of 3 found"; }
     street.addEventListener("click", function (e) {
@@ -216,15 +226,16 @@
           ring.style.left = (s.x - s.r) + "%"; ring.style.width = (2 * s.r) + "%";
           ring.style.top = "calc(" + s.y + "% - " + s.r / aspect + "%)"; ring.style.height = (2 * s.r / aspect) + "%";
           street.appendChild(ring); requestAnimationFrame(function () { ring.classList.add("on"); });
-          heard.textContent = s.text; speak(s.text); update();
-          if (found.length === 3) { done = true; setTimeout(function () { play("win"); win.hidden = false; document.getElementById("again").focus(); speak("Super detective! Well done."); }, 2600); }
+          heard.textContent = s.text; sayList([{clip: s.clip, text: s.text}]); update();
+          if (found.length === 3) { done = true; setTimeout(function () { play("win"); win.hidden = false; document.getElementById("again").focus(); sayList([{clip: "super_detective", text: "Super detective!"}]); }, 2600); }
           return;
         }
       }
-      play("no"); heard.textContent = "Look again!";
+      play("no"); heard.textContent = "Look again!"; sayList([{clip: "look_again", text: "Look again!"}]);
       var m = document.createElement("div"); m.className = "miss"; m.textContent = "?"; m.style.left = px + "%"; m.style.top = py + "%";
       street.appendChild(m); setTimeout(function () { m.remove(); }, 900);
     });
+    ["ins_detective", "zebra_crossing", "wear_helmet", "no_footpath_park", "look_again", "super_detective"].forEach(clip);
     document.getElementById("again").addEventListener("click", function () {
       found = []; done = false; win.hidden = true; heard.innerHTML = "&nbsp;";
       street.querySelectorAll(".ring").forEach(function (x) { x.remove(); }); update();
