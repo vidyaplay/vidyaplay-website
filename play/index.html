@@ -59,6 +59,16 @@
       }, true);
     })();
   </script>
+  <style>
+    .topic-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; padding: 0; list-style: none; }
+    .topic-jump a { display: inline-block; padding: 9px 16px; border-radius: 999px; background: #EAF2FB; color: var(--navy);
+      font-weight: 700; text-decoration: none; border: 2px solid #CFE0F3; }
+    .topic-jump a:hover, .topic-jump a:focus-visible { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .game-group { margin: 0 0 30px; padding-top: 6px; scroll-margin-top: 80px; }
+    .game-group .section-label { margin-bottom: 2px; }
+    .group-line { margin: 0 0 12px; color: var(--grey, #5E6880); font-size: 16px; }
+    .series-tag { display: inline-block; align-self: flex-start; margin: 8px 0 2px; padding: 3px 10px; border-radius: 999px; background: #EFE8FB; color: #5B36A8; font-size: 13px; font-weight: 700; }
+  </style>
 
   <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Play and Learn","item":"https://vidyaplay.in/play/"}]}</script>
 </head>
@@ -118,21 +128,30 @@
     </p>
     <p class="facts">Play together for about 5 minutes, then print the worksheet.</p>
 
-    <h2 class="section-label">Phonics lessons (new)</h2>
-    <ul class="sheet-grid">
+    <ul class="topic-jump" aria-label="Jump to a group of games"><li><a href="#phonics">Phonics</a></li><li><a href="#english">LKG English</a></li><li><a href="#maths">LKG Maths</a></li><li><a href="#evs">LKG EVS</a></li><li><a href="#nursery">Nursery</a></li></ul>
+
+    <section class="game-group" id="phonics" aria-labelledby="phonics-title">
+      <h2 class="section-label" id="phonics-title">Phonics lessons</h2>
+      <p class="group-line">Interactive lessons: hear the sound, play, trace. One new lesson each week.</p>
+      <ul class="sheet-grid">
       <li class="sheet-card">
         <a href="phonics/"><img src="../images/games/phonics-sunny.webp" width="480" height="592" loading="lazy" alt="Phonics with Sunny: an interactive lesson for the s sound"></a>
+        <span class="series-tag">Phonics · Lesson 1</span>
         <span class="sheet-code">Interactive lesson · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Phonics with Sunny: the s sound</h3>
         <p class="sheet-text">Hear the sound, do the action, find the s pictures in the garden and trace the letter. Stars are saved on your device.</p>
         <a class="button play-btn" href="phonics/">Start lesson 1</a>
       </li>
-    </ul>
+      </ul>
+    </section>
 
-    <h2 class="section-label">LKG English: Letters</h2>
-    <ul class="sheet-grid">
+    <section class="game-group" id="english" aria-labelledby="english-title">
+      <h2 class="section-label" id="english-title">LKG English: letter games</h2>
+      <p class="group-line">One game for each letter, in letter order. Play after the letter worksheets.</p>
+      <ul class="sheet-grid">
       <li class="sheet-card">
         <a href="sound-match/"><img src="../images/games/sound-match.webp" width="480" height="592" loading="lazy" alt="Sound Match game: listen and tap the picture"></a>
+        <span class="series-tag">Letters A to M · Sound game</span>
         <span class="sheet-code">Sound game for letters A to M · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Sound Match</h3>
         <p class="sheet-text">Listen to Vidya Teacher say a letter sound, then tap the picture that starts with it.</p>
@@ -140,6 +159,7 @@
       </li>
       <li class="sheet-card">
         <a href="apple-tree-hunt/"><img src="../images/games/apple-tree-hunt.webp" width="480" height="662" loading="lazy" alt="Apple Tree Hunt game: tap the letters"></a>
+        <span class="series-tag">Letter A · Game 1 of 11</span>
         <span class="sheet-code">Letter A · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Apple Tree Hunt</h3>
         <p class="sheet-text">Tap every apple with big A or small a. Pop!</p>
@@ -147,6 +167,7 @@
       </li>
       <li class="sheet-card">
         <a href="busy-bee-garden/"><img src="../images/games/busy-bee-garden.webp" width="480" height="639" loading="lazy" alt="Busy Bee Garden game: tap the letters"></a>
+        <span class="series-tag">Letter B · Game 2 of 11</span>
         <span class="sheet-code">Letter B · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Busy Bee Garden</h3>
         <p class="sheet-text">Tap every flower with big B or small b. Buzz!</p>
@@ -154,6 +175,7 @@
       </li>
       <li class="sheet-card">
         <a href="colour-the-caterpillar/"><img src="../images/games/colour-the-caterpillar.webp" width="480" height="583" loading="lazy" alt="Colour the Caterpillar game: tap the letters"></a>
+        <span class="series-tag">Letter C · Game 3 of 11</span>
         <span class="sheet-code">Letter C · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Colour the Caterpillar</h3>
         <p class="sheet-text">Tap every circle with big C or small c. Then watch the caterpillar colour itself!</p>
@@ -161,6 +183,7 @@
       </li>
       <li class="sheet-card">
         <a href="decorate-the-dinosaur/"><img src="../images/games/decorate-the-dinosaur.webp" width="480" height="591" loading="lazy" alt="Decorate the Dinosaur game: tap the letters"></a>
+        <span class="series-tag">Letter D · Game 4 of 11</span>
         <span class="sheet-code">Letter D · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Decorate the Dinosaur</h3>
         <p class="sheet-text">Tap every spot with big D or small d. Then watch the dinosaur colour itself!</p>
@@ -168,6 +191,7 @@
       </li>
       <li class="sheet-card">
         <a href="decorate-the-elephant/"><img src="../images/games/decorate-the-elephant.webp" width="480" height="502" loading="lazy" alt="Decorate the Elephant game: tap the letters"></a>
+        <span class="series-tag">Letter E · Game 5 of 11</span>
         <span class="sheet-code">Letter E · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Decorate the Elephant</h3>
         <p class="sheet-text">Tap every spot with big E or small e. Then watch the elephant colour itself!</p>
@@ -175,6 +199,7 @@
       </li>
       <li class="sheet-card">
         <a href="decorate-the-fish/"><img src="../images/games/decorate-the-fish.webp" width="480" height="588" loading="lazy" alt="Decorate the Fish game: tap the letters"></a>
+        <span class="series-tag">Letter F · Game 6 of 11</span>
         <span class="sheet-code">Letter F · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Decorate the Fish</h3>
         <p class="sheet-text">Tap every bubble with big F or small f. Then watch the fish colour itself!</p>
@@ -182,6 +207,7 @@
       </li>
       <li class="sheet-card">
         <a href="decorate-the-goat/"><img src="../images/games/decorate-the-goat.webp" width="480" height="592" loading="lazy" alt="Decorate the Goat game: tap the letters"></a>
+        <span class="series-tag">Letter G · Game 7 of 11</span>
         <span class="sheet-code">Letter G · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Decorate the Goat</h3>
         <p class="sheet-text">Tap every spot with big G or small g. Then watch the goat colour itself!</p>
@@ -189,6 +215,7 @@
       </li>
       <li class="sheet-card">
         <a href="build-the-house/"><img src="../images/games/build-the-house.webp" width="480" height="386" loading="lazy" alt="Build the House game: drag the pieces into place"></a>
+        <span class="series-tag">Letter H · Game 8 of 11</span>
         <span class="sheet-code">Letter H · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Build the House</h3>
         <p class="sheet-text">Drag the roof, door, windows and H sign into place to build the house.</p>
@@ -196,6 +223,7 @@
       </li>
       <li class="sheet-card">
         <a href="catch-the-i-words/"><img src="../images/games/catch-the-i-words.webp" width="480" height="344" loading="lazy" alt="Catch the I Words game: pop the balloons"></a>
+        <span class="series-tag">Letter I · Game 9 of 11</span>
         <span class="sheet-code">Letter I · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Catch the I Words</h3>
         <p class="sheet-text">Pop the balloons that start with i: igloo, iguana and ink. Wrong ones just wobble.</p>
@@ -203,6 +231,7 @@
       </li>
       <li class="sheet-card">
         <a href="jam-jar-memory/"><img src="../images/games/jam-jar-memory.webp" width="480" height="424" loading="lazy" alt="Jam Jar Memory game: match the pairs"></a>
+        <span class="series-tag">Letter J · Game 10 of 11</span>
         <span class="sheet-code">Letter J · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Jam Jar Memory</h3>
         <p class="sheet-text">Turn the jar lids and match jam, jellyfish and jet.</p>
@@ -210,17 +239,37 @@
       </li>
       <li class="sheet-card">
         <a href="kite-sky-quiz/"><img src="../images/games/kite-sky-quiz.webp" width="480" height="473" loading="lazy" alt="Kite Sky Quiz game: tap the kite with the first letter"></a>
+        <span class="series-tag">Letter K · Game 11 of 11</span>
         <span class="sheet-code">Letter K · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Kite Sky Quiz</h3>
         <p class="sheet-text">Look at the picture and tap the kite with the letter it starts with.</p>
         <a class="button play-btn" href="kite-sky-quiz/">Play</a>
       </li>
-    </ul>
+      </ul>
+    </section>
 
-    <h2 class="section-label">LKG: EVS</h2>
-    <ul class="sheet-grid">
+    <section class="game-group" id="maths" aria-labelledby="maths-title">
+      <h2 class="section-label" id="maths-title">LKG Maths: numbers</h2>
+      <p class="group-line">Counting games for numbers 1 to 10.</p>
+      <ul class="sheet-grid">
+      <li class="sheet-card">
+        <a href="count-and-tap/"><img src="../images/games/count-and-tap.webp" width="480" height="713" loading="lazy" alt="Count and Tap game: count the ducks and tap the right number"></a>
+        <span class="series-tag">Numbers · Game 1 of 1</span>
+        <span class="sheet-code">Counting 1 to 10 · Ages 3 to 5</span>
+        <h3 class="sheet-title">Count and Tap</h3>
+        <p class="sheet-text">Count the pictures, then tap the right number. The numbers 1 to 10, ten rounds, stars at the end.</p>
+        <a class="button play-btn" href="count-and-tap/">Play</a>
+      </li>
+      </ul>
+    </section>
+
+    <section class="game-group" id="evs" aria-labelledby="evs-title">
+      <h2 class="section-label" id="evs-title">LKG EVS: Transport and road safety</h2>
+      <p class="group-line">Games that go with the Transport worksheets.</p>
+      <ul class="sheet-grid">
       <li class="sheet-card">
         <a href="rescue-mission/"><img src="../images/games/rescue-mission.webp" width="480" height="518" loading="lazy" alt="Rescue Mission game: tap the vehicle that comes to help"></a>
+        <span class="series-tag">Transport · Game 1 of 2</span>
         <span class="sheet-code">EVS Transport · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Rescue Mission</h3>
         <p class="sheet-text">Who comes to help? Tap the ambulance, fire engine or police car.</p>
@@ -228,36 +277,31 @@
       </li>
       <li class="sheet-card">
         <a href="traffic-detective/"><img src="../images/games/traffic-detective.webp" width="480" height="320" loading="lazy" alt="Traffic Detective game: find who is not being safe on the road"></a>
+        <span class="series-tag">Transport · Game 2 of 2</span>
         <span class="sheet-code">EVS Road safety · Ages 3.5 to 5</span>
         <h3 class="sheet-title">Traffic Detective</h3>
         <p class="sheet-text">Find the 3 people who are not being safe on the road and tap them.</p>
         <a class="button play-btn" href="traffic-detective/">Play</a>
       </li>
-    </ul>
+      </ul>
+    </section>
 
-    <h2 class="section-label">Nursery: Colours</h2>
-    <ul class="sheet-grid">
+    <section class="game-group" id="nursery" aria-labelledby="nursery-title">
+      <h2 class="section-label" id="nursery-title">Nursery: colours</h2>
+      <p class="group-line">Easy tap games for ages 2.5 to 4.</p>
+      <ul class="sheet-grid">
       <li class="sheet-card">
         <a href="colour-sort/"><img src="../images/games/colour-sort.webp" width="480" height="713" loading="lazy" alt="Colour Sort game: put the picture in the red or yellow basket"></a>
+        <span class="series-tag">Colours · Game 1 of 1</span>
         <span class="sheet-code">Red and yellow · Ages 2.5 to 4</span>
         <h3 class="sheet-title">Colour Sort</h3>
         <p class="sheet-text">Vidya Teacher shows a picture. Is it red or yellow? Tap or drag it into the right basket.</p>
         <a class="button play-btn" href="colour-sort/">Play</a>
       </li>
-    </ul>
+      </ul>
+    </section>
 
-    <h2 class="section-label">LKG: Numbers</h2>
-    <ul class="sheet-grid">
-      <li class="sheet-card">
-        <a href="count-and-tap/"><img src="../images/games/count-and-tap.webp" width="480" height="713" loading="lazy" alt="Count and Tap game: count the ducks and tap the right number"></a>
-        <span class="sheet-code">Counting 1 to 10 · Ages 3 to 5</span>
-        <h3 class="sheet-title">Count and Tap</h3>
-        <p class="sheet-text">Count the pictures, then tap the right number. The numbers 1 to 10, ten rounds, stars at the end.</p>
-        <a class="button play-btn" href="count-and-tap/">Play</a>
-      </li>
-    </ul>
-
-    <p class="facts">Letter games A to G so far. A new game comes with each new letter.</p>
+    <p class="facts">New games come with new worksheets: letters L to Z and more Transport games are next.</p>
 
   </main>
 
