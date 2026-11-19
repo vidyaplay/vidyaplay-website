@@ -189,11 +189,11 @@
   <script>
   (function () {
     var ROUNDS = [
-      {pic: "sick", text: "The child is sick.", ans: "ambulance", say: "The child is sick. Who comes to help?"},
-      {pic: "fire", text: "The house is on fire.", ans: "fireengine", say: "The house is on fire. Who comes to help?"},
-      {pic: "cat", text: "The cat is stuck in a tree.", ans: "fireengine", say: "The cat is stuck in a tree. Who comes to help?"}
+      {pic: "sick", text: "The child is sick.", ans: "ambulance", clip: "child_is_sick"},
+      {pic: "fire", text: "The house is on fire.", ans: "fireengine", clip: "house_on_fire"},
+      {pic: "cat", text: "The cat is stuck in a tree.", ans: "fireengine", clip: "cat_in_tree"}
     ];
-    var HELPERS = [{id: "ambulance", name: "ambulance"}, {id: "fireengine", name: "fire engine"}, {id: "police", name: "police car"}];
+    var HELPERS = [{id: "ambulance", name: "ambulance", clip: "the_ambulance"}, {id: "fireengine", name: "fire engine", clip: "the_fire_engine"}, {id: "police", name: "police car"}];
     var helpers = document.getElementById("helpers"), basket = document.getElementById("basket"), scoreText = document.getElementById("score");
     var win = document.getElementById("win"), pic = document.getElementById("pic"), what = document.getElementById("what"), heard = document.getElementById("heard");
     var order = [], round = 0, locked = false, soundOn = true, audio = null, voice = null;
@@ -211,14 +211,27 @@
     function pickVoice() { if (!window.speechSynthesis) return; var vs = window.speechSynthesis.getVoices() || [];
       voice = vs.filter(function (v) { return /^en[-_](IN|GB|US)/i.test(v.lang); })[0] || null; }
     if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
-    function speak(t) { if (!soundOn || !window.speechSynthesis) return; try { window.speechSynthesis.cancel();
+    function speakTTS(t) { if (!soundOn || !window.speechSynthesis) return; try { window.speechSynthesis.cancel();
       var u = new SpeechSynthesisUtterance(t); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85; window.speechSynthesis.speak(u); } catch (e) {} }
+    // shared voice library (her recordings, 19 Nov): ../../audio/voice/<name>.mp3; phone voice only if a clip is missing
+    var LIB = "../../audio/voice/", clips = {}, queue = [];
+    function clip(n) { if (!clips[n]) { var a = new Audio(); a.preload = "auto"; a._ok = null;
+        a.addEventListener("canplaythrough", function () { a._ok = true; }); a.addEventListener("error", function () { a._ok = false; });
+        a.src = LIB + n + ".mp3"; clips[n] = a; } return clips[n]; }
+    function stopAll() { queue = []; Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+    function sayList(items) { stopAll(); if (!soundOn) return; queue = items.slice(); next(); }
+    function next() { var it = queue.shift(); if (!it) return; var c = it.clip ? clip(it.clip) : null;
+      if (c && c._ok !== false) { c.currentTime = 0; c.onended = function () { c.onended = null; next(); };
+        var pr = c.play(); if (pr && pr.catch) pr.catch(function () { speakTTS(it.text); }); }
+      else { speakTTS(it.text); setTimeout(next, 1800); } }
+    function speak(t) { sayList([{text: t}]); }
     soundBtn.addEventListener("click", function () { soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
-      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel(); });
+      if (!soundOn) stopAll(); });
     function shuffle(l) { for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = l[i]; l[i] = l[j]; l[j] = t; } return l; }
-    document.getElementById("hear").addEventListener("click", function () { speak("Look at the picture. Who comes to help? Tap the right vehicle."); });
-    document.getElementById("scene").addEventListener("click", function () { if (round < ROUNDS.length) speak(order[round].say); });
+    document.getElementById("hear").addEventListener("click", function () { sayList([{clip: "ins_rescue", text: "Tap the vehicle that comes to help."}]); });
+    function sayRound() { var r = order[round]; sayList([{clip: r.clip, text: r.text}]); }
+    document.getElementById("scene").addEventListener("click", function () { if (round < ROUNDS.length) sayRound(); });
     function update() { var d = basket.children; for (var i = 0; i < d.length; i++) d[i].className = i < round ? "on" : "";
       scoreText.textContent = round + " of " + ROUNDS.length + " done"; }
     function showRound() {
@@ -231,13 +244,13 @@
         b.addEventListener("click", function () {
           if (locked) return;
           if (h.id === r.ans) {
-            locked = true; b.classList.add("go"); play("siren"); heard.textContent = "Yes! The " + h.name + " helps."; speak("Yes! The " + h.name + " comes to help.");
+            locked = true; b.classList.add("go"); play("siren"); heard.textContent = "Yes! The " + h.name + " helps."; sayList([{clip: "yes_well_done", text: "Yes! Well done."}, {clip: h.clip, text: "The " + h.name + "!"}]);
             round++; update();
-            if (round === ROUNDS.length) setTimeout(function () { play("win"); win.hidden = false; helpers.setAttribute("inert", ""); document.getElementById("again").focus(); speak("Super helper! Well done."); }, 1500);
-            else setTimeout(function () { showRound(); speak(order[round].say); }, 2400);
+            if (round === ROUNDS.length) setTimeout(function () { play("win"); win.hidden = false; helpers.setAttribute("inert", ""); document.getElementById("again").focus(); sayList([{clip: "super_helper", text: "Super helper!"}]); }, 1500);
+            else setTimeout(function () { showRound(); sayRound(); }, 3200);
           } else {
             heard.innerHTML = '<span class="no">Not the ' + h.name + '.</span> Try again!';
-            b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope"); speak("Try again!");
+            b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope"); sayList([{clip: "try_again", text: "Try again!"}]);
             setTimeout(function () { b.classList.remove("nope"); }, 1400);
           }
         });
@@ -246,7 +259,8 @@
     }
     function newGame() { helpers.removeAttribute("inert"); order = shuffle(ROUNDS.slice()); round = 0;
       basket.innerHTML = ""; ROUNDS.forEach(function () { basket.appendChild(document.createElement("span")); }); win.hidden = true; update(); showRound(); }
-    document.getElementById("again").addEventListener("click", function () { newGame(); speak(order[0].say); });
+    document.getElementById("again").addEventListener("click", function () { newGame(); sayRound(); });
+    ["ins_rescue", "child_is_sick", "house_on_fire", "cat_in_tree", "the_ambulance", "the_fire_engine", "yes_well_done", "try_again", "super_helper"].forEach(clip);
     newGame();
   })();
   </script>
