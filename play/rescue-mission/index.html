@@ -255,8 +255,8 @@
           if (h.id === r.ans) {
             locked = true; b.classList.add("go"); play("siren"); heard.textContent = "Yes! Well done. The " + h.name + "!"; sayList([{clip: "yes_well_done", text: "Yes! Well done."}, {clip: h.clip, text: "The " + h.name + "!"}]);
             round++; update();
-            if (round === ROUNDS.length) setTimeout(function () { play("win"); win.hidden = false; helpers.setAttribute("inert", ""); document.getElementById("again").focus(); sayList([{clip: "super_helper", text: "Super helper!"}]); }, 1500);
-            else setTimeout(function () { showRound(); sayRound(); }, 3200);
+            if (round === ROUNDS.length) setTimeout(function () { play("win"); win.hidden = false; helpers.setAttribute("inert", ""); document.getElementById("again").focus(); sayList([{clip: "super_helper", text: "Super helper!"}]); }, 4500);
+            else setTimeout(function () { showRound(); sayRound(); }, 4500);
           } else {
             heard.innerHTML = '<span class="no">Not the ' + h.name + '.</span> Try again!';
             b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope"); sayList([{clip: "try_again", text: "Try again!"}]);
