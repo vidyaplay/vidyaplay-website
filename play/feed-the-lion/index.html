@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feed the Lion: Letter L Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online letter L game for LKG kids: feed the lion lamp, leaf, lemon and ladder. Works on phones, no sign-up. Print the matching worksheet too.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=11">
+  <link rel="canonical" href="https://vidyaplay.in/play/feed-the-lion/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Feed the Lion: Letter L Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online letter L game for LKG kids: feed the lion lamp, leaf, lemon and ladder. Works on phones, no sign-up. Print the matching worksheet too.">
+  <meta property="og:url" content="https://vidyaplay.in/play/feed-the-lion/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Feed the Lion (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px;
+      border-radius: 24px; background: #FFF1E6; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .lion-wrap { position: relative; width: 46%; max-width: 210px; margin: 4px auto 6px; padding: 8px; border-radius: 28px; border: 4px dashed transparent;
+      transition: border-color 0.15s, background 0.15s; }
+    .lion-wrap.over { border-color: #FB8C00; background: rgba(251, 140, 0, 0.12); }
+    .lion-wrap img { display: block; width: 100%; height: auto; pointer-events: none; transform-origin: 50% 90%; }
+    .lion-wrap.chomp img { animation: chomp 0.5s ease-in-out; }
+    .lion-wrap.no img { animation: shake 0.5s ease-in-out; }
+    .lion-wrap.full img { animation: dance 0.8s ease-in-out infinite; }
+    .tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px 8px; background: linear-gradient(#C8E6C9, #E8F5E9); border-radius: 18px; }
+    .food { position: relative; width: 100%; aspect-ratio: 1 / 1; padding: 8px; border: 4px solid #2C3550; border-radius: 20px; background: #FFFFFF;
+      cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+    .food img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+    .food:focus-visible { border-color: var(--blue); border-width: 6px; outline: none; }
+    .food.dragging { z-index: 30; cursor: grabbing; box-shadow: 0 10px 22px rgba(44, 53, 80, 0.35); transition: none; }
+    .food.back { transition: transform 0.35s ease-out; }
+    .food.gone { pointer-events: none; }
+    .food.nope::after { content: "✕"; position: absolute; right: -6px; top: -6px; width: 30px; height: 30px; border-radius: 50%;
+      background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; text-align: center; }
+    .food.hint { animation: wiggle 0.45s ease-in-out; }
+    .tip { margin: 6px 0 0; font-size: 15px; color: #5A6377; }
+    .heard { margin: 4px 0 0; min-height: 30px; font-size: 20px; font-weight: 800; color: var(--navy); }
+    .heard .no { color: #C0392B; }
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF; transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #FB8C00; border: 2.5px solid #8A3B00; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+    @keyframes chomp { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.12, 0.92); } 60% { transform: scale(0.96, 1.06); } }
+    @keyframes shake { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-7deg); } 40% { transform: rotate(7deg); } 60% { transform: rotate(-4deg); } 80% { transform: rotate(3deg); } }
+    @keyframes dance { 0%, 100% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(3deg) translateY(-8px); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column;
+      align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
+      background: rgba(255, 255, 255, 0.96); box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .lion-wrap img, .win-icons, .food { animation: none !important; } }
+  </style>
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
+  <script>
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Feed the Lion","item":"https://vidyaplay.in/play/feed-the-lion/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../play/phonics/">Phonics lessons (new)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/phonics/">Phonics</a>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Feed the Lion</span>
+    </nav>
+    <!-- back-to-letter --><p class="back-link"><a class="button btn-download" href="../../lkg/english/letter-l/">&larr; Back to Letter L worksheets</a></p><!--/ back-to-letter -->
+
+    <h1 class="page-title">Feed the Lion</h1>
+    <p class="facts">LKG English · Letter L · Ages 3.5 to 5</p>
+
+    <section class="game-card" aria-label="Feed the Lion game">
+      <div class="game-top">
+        <p class="game-ask">The lion is hungry. Feed him things that start with <span class="orange">L</span>.</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <div class="lion-wrap" id="lion"><img src="lion.webp" width="228" height="226" alt="A friendly lion with his mouth open"></div>
+      <div class="tray" id="tray"></div>
+      <p class="tip">Drag a picture to the lion.</p>
+      <p class="heard" id="heard" aria-live="polite">&nbsp;</p>
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 4 fed</p>
+      </div>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🦁🎉🦁</div>
+        <p class="win-big">Well done! The lion is full.</p>
+        <p class="win-text">lamp, leaf, lemon, ladder: all start with l.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-L4_Help_the_Lion_Reach_the_Leaf.pdf" download>Print the Letter L worksheet (PDF)</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say each word out loud and listen for the "l" at the start: l-l-lamp. Then print the Letter L worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../parents/">Parent's guide</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // Feed the Lion: drag a picture to the lion. L things are eaten, the others hop back.
+    var FOODS = [["lamp", true], ["leaf", true], ["lemon", true], ["ladder", true], ["ball", false], ["cup", false]];
+    var NEED = 4;
+    var ASK = "The lion is hungry. Feed him things that start with L.";
+    var tray = document.getElementById("tray"), lionBox = document.getElementById("lion"), basket = document.getElementById("basket");
+    var scoreText = document.getElementById("score"), heard = document.getElementById("heard"), win = document.getElementById("win");
+    var fed = 0, drag = null, finished = false;
+
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "chomp") { tone(220, 120, 0, 0.1, 0.35); tone(240, 130, 0.14, 0.1, 0.3); }
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    // Voice: the phone's own voice for now. Her recorded clips replace it later (same lines).
+    var voice = null;
+    function pickVoice() {
+      if (!window.speechSynthesis) return;
+      var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return v.localService && /^en[-_](IN|GB|US)/i.test(v.lang); })[0] ||
+              vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
+    }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    var pendingT = [];
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
+    function say(text, then) {
+      cancelLater();
+      var done = false;
+      function once() { if (done) return; done = true; if (then) then(); }
+      if (!soundOn || !window.speechSynthesis) { if (then) later(once, 900); return; }
+      try {
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(text); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
+        if (then) { u.onend = once; later(once, 3600); }   // safety: some phones never send "end"
+        window.speechSynthesis.speak(u);
+      } catch (e) { if (then) later(once, 900); }
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+    });
+    document.getElementById("hear").addEventListener("click", function () { say(ASK); });
+
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
+      return list;
+    }
+    function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
+    function overLion(x, y) {
+      var r = lionBox.getBoundingClientRect(), m = 14;
+      return x > r.left - m && x < r.right + m && y > r.top - m && y < r.bottom + m;
+    }
+    function pulse(el, cls, ms) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function () { el.classList.remove(cls); }, ms); }
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < fed ? "on" : "";
+      scoreText.textContent = fed + " of " + NEED + " fed";
+    }
+    function showWin() {
+      if (finished) return;
+      finished = true; tray.setAttribute("inert", ""); play("win"); lionBox.classList.add("full");
+      win.hidden = false; document.getElementById("again").focus();
+      say("Well done! The lion is full.");
+    }
+    function eat(item) {                              // a right drop: the picture flies into the mouth
+      var el = item.el, r = item.rect, lr = lionBox.getBoundingClientRect();
+      var tx = lr.left + lr.width * 0.36 - (r.left + r.width / 2), ty = lr.top + lr.height * 0.55 - (r.top + r.height / 2);
+      item.fed = true; el.classList.remove("dragging"); el.classList.add("gone");
+      el.style.transition = "transform 0.35s ease-in, opacity 0.35s"; el.style.transform = "translate(" + tx + "px," + ty + "px) scale(0.15)"; el.style.opacity = "0";
+      setTimeout(function () { pulse(lionBox, "chomp", 520); play("chomp"); }, 300);
+      fed++; update();
+      var line = "Yes! Well done. " + cap(item.word) + ".";
+      heard.textContent = line;
+      if (fed === NEED) {                          // last one: lock the tray, let the voice finish, then the win box (the timer cannot be cancelled by a new voice)
+        tray.setAttribute("inert", "");
+        say(line, function () { setTimeout(showWin, 500); });
+        setTimeout(showWin, 4600);
+      } else say(line);
+    }
+    function reject(item) {                           // a wrong drop: the lion shakes his head, the picture hops back
+      var el = item.el;
+      el.classList.remove("dragging"); el.classList.add("back", "nope"); el.style.transform = "";
+      setTimeout(function () { el.classList.remove("back"); }, 400);
+      setTimeout(function () { el.classList.remove("nope"); }, 1400);
+      pulse(lionBox, "no", 520); play("nope");
+      var line = "Oops! " + cap(item.word) + " does not start with L.";
+      heard.textContent = line; say(line);
+    }
+    function giveBack(item) {
+      var el = item.el;
+      el.classList.remove("dragging"); el.classList.add("back"); el.style.transform = "";
+      setTimeout(function () { el.classList.remove("back"); }, 400);
+    }
+    function build(item) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "food"; b.setAttribute("aria-label", item.word + ". Drag to the lion");
+      b.innerHTML = '<img alt="" width="150" height="150">'; b.querySelector("img").setAttribute("src", item.word + ".webp");
+      item.el = b;
+      b.addEventListener("pointerdown", function (e) {
+        if (item.fed || finished || drag) return;
+        e.preventDefault();
+        try { b.setPointerCapture(e.pointerId); } catch (err) {}
+        drag = { item: item, id: e.pointerId, sx: e.clientX, sy: e.clientY, moved: false };
+        item.rect = b.getBoundingClientRect(); b.classList.remove("back");
+        say(item.word);                               // the word is heard as the finger lands
+      });
+      b.addEventListener("pointermove", function (e) {
+        if (!drag || drag.item !== item || e.pointerId !== drag.id) return;
+        var dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+        if (!drag.moved && Math.hypot(dx, dy) < 8) return;
+        drag.moved = true; b.classList.add("dragging");
+        b.style.transform = "translate(" + dx + "px," + dy + "px) scale(1.12)";
+        lionBox.classList.toggle("over", overLion(e.clientX, e.clientY));
+      });
+      function end(e) {
+        if (!drag || drag.item !== item || e.pointerId !== drag.id) return;
+        var d = drag; drag = null; lionBox.classList.remove("over");
+        try { b.releasePointerCapture(e.pointerId); } catch (err) {}
+        if (!d.moved) { pulse(b, "hint", 480); return; }          // a tap: the word was said, the picture wiggles
+        if (e.type === "pointercancel" || !overLion(e.clientX, e.clientY)) { giveBack(item); return; }
+        if (item.hit) eat(item); else reject(item);
+      }
+      b.addEventListener("pointerup", end); b.addEventListener("pointercancel", end);
+      b.addEventListener("keydown", function (e) {      // keyboard: Enter or Space feeds the lion
+        if ((e.key === "Enter" || e.key === " ") && !item.fed && !finished) {
+          e.preventDefault(); item.rect = b.getBoundingClientRect();
+          say(item.word); if (item.hit) eat(item); else reject(item);
+        }
+      });
+      return b;
+    }
+    function newRound() {
+      cancelLater(); if (window.speechSynthesis) window.speechSynthesis.cancel();
+      finished = false; fed = 0; drag = null; tray.removeAttribute("inert"); lionBox.classList.remove("full", "over", "chomp", "no");
+      tray.innerHTML = "";
+      shuffle(FOODS.slice()).forEach(function (f) { tray.appendChild(build({ word: f[0], hit: f[1], fed: false })); });
+      basket.innerHTML = ""; for (var i = 0; i < NEED; i++) basket.appendChild(document.createElement("span"));
+      heard.innerHTML = "&nbsp;"; win.hidden = true; update();
+    }
+    document.getElementById("again").addEventListener("click", function () { newRound(); if (tray.firstChild) tray.firstChild.focus(); });
+    newRound();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+<!-- vp-progress -->
+  <script>
+    // Progress (her ask 19 Nov): when the win box shows, remember this game on THIS device only (no data is sent)
+    (function () {
+      var slug = location.pathname.split("/").filter(Boolean).pop();
+      var box = document.getElementById("win") || document.getElementById("end");
+      if (!box || !slug) return;
+      function mark() { try { var d = JSON.parse(localStorage.getItem("vp_played") || "{}"); d[slug] = (d[slug] || 0) + 1; localStorage.setItem("vp_played", JSON.stringify(d)); } catch (e) {} }
+      new MutationObserver(function () { if (!box.hidden) mark(); }).observe(box, {attributes: true, attributeFilter: ["hidden"]});
+    })();
+  </script>
+</body>
+</html>
