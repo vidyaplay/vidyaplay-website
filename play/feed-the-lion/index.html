@@ -311,7 +311,7 @@
       setTimeout(function () { el.classList.remove("back"); }, 400);
       setTimeout(function () { el.classList.remove("nope"); }, 1400);
       pulse(lionBox, "no", 520); play("nope");
-      var line = "Oops! " + cap(item.word) + " does not start with L.";
+      var line = cap(item.word) + " does not start with L. Try again!";
       heard.textContent = line; say(line);
     }
     function giveBack(item) {
