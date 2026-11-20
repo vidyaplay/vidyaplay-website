@@ -164,7 +164,7 @@
       <div class="helpers" id="helpers"></div>
       <div class="score">
         <div class="basket" id="basket" aria-hidden="true"></div>
-        <p class="score-text" id="score" aria-live="polite">0 of 3 done</p>
+        <p class="score-text" id="score" aria-live="polite">0 of 5 done</p>
       </div>
       <div class="win" id="win" hidden>
         <div class="win-icons" aria-hidden="true">🚑🚒🚓</div>
@@ -192,9 +192,11 @@
     var ROUNDS = [
       {pic: "sick", text: "The child is sick.", ans: "ambulance", clip: "child_is_sick"},
       {pic: "fire", text: "The house is on fire.", ans: "fireengine", clip: "house_on_fire"},
-      {pic: "cat", text: "The cat is stuck in a tree.", ans: "fireengine", clip: "cat_in_tree"}
+      {pic: "cat", text: "The cat is stuck in a tree.", ans: "fireengine", clip: "cat_in_tree"},
+      {pic: "thief", text: "A thief is running away.", ans: "police", clip: "thief_running"},
+      {pic: "grandpa", text: "Grandpa fell and is hurt.", ans: "ambulance", clip: "grandpa_fell"}
     ];
-    var HELPERS = [{id: "ambulance", name: "ambulance", clip: "the_ambulance"}, {id: "fireengine", name: "fire engine", clip: "the_fire_engine"}, {id: "police", name: "police car"}];
+    var HELPERS = [{id: "ambulance", name: "ambulance", clip: "the_ambulance"}, {id: "fireengine", name: "fire engine", clip: "the_fire_engine"}, {id: "police", name: "police car", clip: "the_police_car"}];
     var helpers = document.getElementById("helpers"), basket = document.getElementById("basket"), scoreText = document.getElementById("score");
     var win = document.getElementById("win"), pic = document.getElementById("pic"), what = document.getElementById("what"), heard = document.getElementById("heard");
     var order = [], round = 0, locked = false, soundOn = true, audio = null, voice = null;
@@ -261,7 +263,7 @@
     function newGame() { helpers.removeAttribute("inert"); order = shuffle(ROUNDS.slice()); round = 0;
       basket.innerHTML = ""; ROUNDS.forEach(function () { basket.appendChild(document.createElement("span")); }); win.hidden = true; update(); showRound(); }
     document.getElementById("again").addEventListener("click", function () { newGame(); sayRound(); });
-    ["ins_rescue", "child_is_sick", "house_on_fire", "cat_in_tree", "the_ambulance", "the_fire_engine", "yes_well_done", "try_again", "super_helper"].forEach(clip);
+    ["ins_rescue", "child_is_sick", "house_on_fire", "cat_in_tree", "thief_running", "grandpa_fell", "the_police_car", "the_ambulance", "the_fire_engine", "yes_well_done", "try_again", "super_helper"].forEach(clip);
     newGame();
   })();
   </script>
