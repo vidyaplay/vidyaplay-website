@@ -238,7 +238,18 @@
         if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
       } catch (e) { /* no sound: the game still works */ }
     }
-    // Voice: the phone's own voice for now. Her recorded clips replace it later (same lines).
+    // Voice: her recorded clips (chained), the phone's own voice only as a back-up if a clip is missing.
+    var CLIPS = { ins_lion: "audio/ins_lion.mp3", lamp: "audio/lamp.mp3", leaf: "audio/leaf.mp3", lemon: "audio/lemon.mp3", ladder: "audio/ladder.mp3",
+      ball: "audio/ball.mp3", cup: "audio/cup.mp3", not_l: "audio/not_l.mp3", lion_full: "audio/lion_full.mp3",
+      yes_well_done: "../../audio/voice/yes_well_done.mp3", try_again: "../../audio/voice/try_again.mp3" };
+    var clips = {};
+    Object.keys(CLIPS).forEach(function (k) {
+      var a = new Audio(); a.preload = "auto";
+      a.addEventListener("canplaythrough", function () { a._ok = true; });
+      a.addEventListener("error", function () { a._ok = false; });
+      a.src = CLIPS[k]; clips[k] = a;
+    });
+    function stopClips() { Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
     var voice = null;
     function pickVoice() {
       if (!window.speechSynthesis) return;
@@ -250,24 +261,39 @@
     var pendingT = [];
     function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
     function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
-    function say(text, then) {
-      cancelLater();
+    function speak(text, then) {                      // back-up: the phone's own voice
       var done = false;
       function once() { if (done) return; done = true; if (then) then(); }
-      if (!soundOn || !window.speechSynthesis) { if (then) later(once, 900); return; }
+      if (!window.speechSynthesis) { if (then) later(once, 900); return; }
       try {
         window.speechSynthesis.cancel();
         var u = new SpeechSynthesisUtterance(text); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
-        if (then) { u.onend = once; later(once, 3600); }   // safety: some phones never send "end"
+        if (then) { u.onend = once; later(once, 3600); }
         window.speechSynthesis.speak(u);
       } catch (e) { if (then) later(once, 900); }
+    }
+    function say(names, text, then) {                 // plays the clips one after the other; any new say() stops the old one
+      cancelLater(); stopClips();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { if (then) later(then, 900); return; }
+      var list = names.map(function (n) { return clips[n]; });
+      if (list.some(function (c) { return !c || c._ok === false; })) { speak(text, then); return; }
+      var i = 0;
+      (function next() {
+        if (i >= list.length) { if (then) then(); return; }
+        var c = list[i++];
+        c.currentTime = 0;
+        c.onended = function () { c.onended = null; next(); };
+        var pr = c.play();
+        if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) { c.onended = null; speak(text, then); } });
+      })();
     }
     soundBtn.addEventListener("click", function () {
       soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
-      if (!soundOn && window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
     });
-    document.getElementById("hear").addEventListener("click", function () { say(ASK); });
+    document.getElementById("hear").addEventListener("click", function () { say(["ins_lion"], ASK); });
 
     function shuffle(list) {
       for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
@@ -288,7 +314,7 @@
       if (finished) return;
       finished = true; tray.setAttribute("inert", ""); play("win"); lionBox.classList.add("full");
       win.hidden = false; document.getElementById("again").focus();
-      say("Well done! The lion is full.");
+      say(["lion_full"], "Well done! The lion is full.");
     }
     function eat(item) {                              // a right drop: the picture flies into the mouth
       var el = item.el, r = item.rect, lr = lionBox.getBoundingClientRect();
@@ -301,9 +327,9 @@
       heard.textContent = line;
       if (fed === NEED) {                          // last one: lock the tray, let the voice finish, then the win box (the timer cannot be cancelled by a new voice)
         tray.setAttribute("inert", "");
-        say(line, function () { setTimeout(showWin, 500); });
-        setTimeout(showWin, 4600);
-      } else say(line);
+        say(["yes_well_done", item.word], line, function () { setTimeout(showWin, 500); });
+        setTimeout(showWin, 5200);
+      } else say(["yes_well_done", item.word], line);
     }
     function reject(item) {                           // a wrong drop: the lion shakes his head, the picture hops back
       var el = item.el;
@@ -312,7 +338,7 @@
       setTimeout(function () { el.classList.remove("nope"); }, 1400);
       pulse(lionBox, "no", 520); play("nope");
       var line = cap(item.word) + " does not start with L. Try again!";
-      heard.textContent = line; say(line);
+      heard.textContent = line; say([item.word, "not_l", "try_again"], line);
     }
     function giveBack(item) {
       var el = item.el;
@@ -330,7 +356,7 @@
         try { b.setPointerCapture(e.pointerId); } catch (err) {}
         drag = { item: item, id: e.pointerId, sx: e.clientX, sy: e.clientY, moved: false };
         item.rect = b.getBoundingClientRect(); b.classList.remove("back");
-        say(item.word);                               // the word is heard as the finger lands
+        say([item.word], item.word);                  // the word is heard as the finger lands
       });
       b.addEventListener("pointermove", function (e) {
         if (!drag || drag.item !== item || e.pointerId !== drag.id) return;
@@ -352,13 +378,13 @@
       b.addEventListener("keydown", function (e) {      // keyboard: Enter or Space feeds the lion
         if ((e.key === "Enter" || e.key === " ") && !item.fed && !finished) {
           e.preventDefault(); item.rect = b.getBoundingClientRect();
-          say(item.word); if (item.hit) eat(item); else reject(item);
+          if (item.hit) eat(item); else reject(item);
         }
       });
       return b;
     }
     function newRound() {
-      cancelLater(); if (window.speechSynthesis) window.speechSynthesis.cancel();
+      cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel();
       finished = false; fed = 0; drag = null; tray.removeAttribute("inert"); lionBox.classList.remove("full", "over", "chomp", "no");
       tray.innerHTML = "";
       shuffle(FOODS.slice()).forEach(function (f) { tray.appendChild(build({ word: f[0], hit: f[1], fed: false })); });
