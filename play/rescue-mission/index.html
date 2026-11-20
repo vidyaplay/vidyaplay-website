@@ -29,6 +29,9 @@
 
   <style>
     /* ===== Game: Rescue Mission (only used on this page) ===== */
+    .start-box { display: none; }
+    .game-card.pre > :not(.start-box) { visibility: hidden; }
+    .game-card.pre .start-box { display: flex; visibility: visible; position: absolute; inset: 0; align-items: center; justify-content: center; flex-direction: column; gap: 10px; z-index: 2; }
     .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px; border-radius: 24px; background: #FFECEC; text-align: center; }
     .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 8px; }
     .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
@@ -153,7 +156,8 @@
     <!-- back-to-transport --><p class="back-link"><a class="button btn-download" href="../../lkg/evs/#transport">&larr; Back to Transport worksheets</a></p>
     <h1 class="page-title">Rescue Mission!</h1>
     <p class="facts">LKG EVS · Transport and helpers · Ages 3.5 to 5</p>
-    <section class="game-card" aria-label="Rescue Mission game">
+    <section class="game-card pre" id="card" aria-label="Rescue Mission game">
+      <div class="start-box"><p class="game-ask">Ready to help?</p><button class="button btn-play" id="start" type="button">&#9654; Start</button></div>
       <div class="game-top">
         <p class="game-ask">Who comes to help? Tap the right vehicle.</p>
         <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
@@ -247,7 +251,7 @@
         b.addEventListener("click", function () {
           if (locked) return;
           if (h.id === r.ans) {
-            locked = true; b.classList.add("go"); play("siren"); heard.textContent = "Yes! The " + h.name + " helps."; sayList([{clip: "yes_well_done", text: "Yes! Well done."}, {clip: h.clip, text: "The " + h.name + "!"}]);
+            locked = true; b.classList.add("go"); play("siren"); heard.textContent = "Yes! Well done. The " + h.name + "!"; sayList([{clip: "yes_well_done", text: "Yes! Well done."}, {clip: h.clip, text: "The " + h.name + "!"}]);
             round++; update();
             if (round === ROUNDS.length) setTimeout(function () { play("win"); win.hidden = false; helpers.setAttribute("inert", ""); document.getElementById("again").focus(); sayList([{clip: "super_helper", text: "Super helper!"}]); }, 1500);
             else setTimeout(function () { showRound(); sayRound(); }, 3200);
@@ -265,6 +269,8 @@
     document.getElementById("again").addEventListener("click", function () { newGame(); sayRound(); });
     ["ins_rescue", "child_is_sick", "house_on_fire", "cat_in_tree", "thief_running", "grandpa_fell", "the_police_car", "the_ambulance", "the_fire_engine", "yes_well_done", "try_again", "super_helper"].forEach(clip);
     newGame();
+    // phones block sound until the first tap, so the first question is read after Start (her note 20 Nov)
+    document.getElementById("start").addEventListener("click", function () { document.getElementById("card").classList.remove("pre"); sayRound(); });
   })();
   </script>
 <!-- nav-menu -->
