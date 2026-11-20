@@ -227,14 +227,14 @@
     var ASK = "The lion is hungry. Feed him things that start with L.";
     var tray = document.getElementById("tray"), lionBox = document.getElementById("lion"), basket = document.getElementById("basket");
     var card = document.getElementById("card"), scoreText = document.getElementById("score"), heard = document.getElementById("heard"), win = document.getElementById("win");
-    var fed = 0, drag = null, finished = false, idleT = null;
-    function armIdle() {                              // nothing touched for 9 s: the lion calls and the next L picture wiggles
+    var fed = 0, drag = null, finished = false, idleT = null, winT = [], hints = 0;
+    function armIdle(again) {                         // nothing touched for 9 s: the lion calls and an L picture wiggles (3 times at most, a different picture each time)
       clearTimeout(idleT);
+      if (!again) hints = 0;
       idleT = setTimeout(function () {
-        if (finished || drag) { armIdle(); return; }
-        var next = items.filter(function (it) { return it.hit && !it.fed; })[0];
-        if (next) { pulse(next.el, "hint", 480); pulse(lionBox, "chomp", 520); }
-        armIdle();
+        if (finished || drag) { armIdle(true); return; }
+        var left = items.filter(function (it) { return it.hit && !it.fed; });
+        if (left.length && hints < 3) { pulse(left[hints % left.length].el, "hint", 480); pulse(lionBox, "chomp", 520); hints++; armIdle(true); }
       }, 9000);
     }
     var items = [];
@@ -330,7 +330,7 @@
       scoreText.textContent = fed + " of " + NEED + " fed";
     }
     function showWin() {
-      if (finished) return;
+      if (finished || fed < NEED) return;           // a stale timer from an earlier round must never show the win box
       finished = true; clearTimeout(idleT); tray.setAttribute("inert", ""); play("win"); lionBox.classList.add("full"); card.classList.add("won");
       win.hidden = false; document.getElementById("again").focus();
       say(["lion_full"], "Well done! The lion is full.");
@@ -346,8 +346,8 @@
       heard.textContent = line;
       if (fed === NEED) {                          // last one: lock the tray, let the voice finish, then the win box (the timer cannot be cancelled by a new voice)
         tray.setAttribute("inert", "");
-        say(["yes_well_done", item.word], line, function () { setTimeout(showWin, 500); });
-        setTimeout(showWin, 5200);
+        say(["yes_well_done", item.word], line, function () { winT.push(setTimeout(showWin, 500)); });
+        winT.push(setTimeout(showWin, 5200));
       } else say(["yes_well_done", item.word], line);
     }
     function reject(item) {                           // a wrong drop: the lion shakes his head, the picture hops back
@@ -366,7 +366,7 @@
     }
     function build(item) {
       var b = document.createElement("button");
-      b.type = "button"; b.className = "food"; b.setAttribute("aria-label", item.word + ". Drag to the lion");
+      b.type = "button"; b.className = "food"; b.setAttribute("aria-label", item.word + ". Drag or tap to feed the lion");
       b.innerHTML = '<img alt="" width="150" height="150">'; b.querySelector("img").setAttribute("src", item.word + ".webp");
       item.el = b;
       b.addEventListener("pointerdown", function (e) {
@@ -405,6 +405,7 @@
     }
     function newRound() {
       cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel();
+      winT.forEach(clearTimeout); winT = [];
       finished = false; fed = 0; drag = null; tray.removeAttribute("inert"); lionBox.classList.remove("full", "over", "chomp", "no"); card.classList.remove("won");
       tray.innerHTML = ""; items = [];
       shuffle(FOODS.slice()).forEach(function (f) { var it = { word: f[0], hit: f[1], fed: false }; items.push(it); tray.appendChild(build(it)); });
