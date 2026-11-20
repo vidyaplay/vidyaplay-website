@@ -237,6 +237,8 @@
       if (!soundOn) stopAll(); });
     function shuffle(l) { for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = l[i]; l[i] = l[j]; l[j] = t; } return l; }
     document.getElementById("hear").addEventListener("click", function () { sayList([{clip: "ins_rescue", text: "Tap the vehicle that comes to help."}]); });
+    var INS = {clip: "ins_rescue", text: "Tap the vehicle that comes to help."};
+    function sayFirst() { var r = order[round]; sayList([INS, {clip: r.clip, text: r.text}]); }
     function sayRound() { var r = order[round]; sayList([{clip: r.clip, text: r.text}]); }
     document.getElementById("scene").addEventListener("click", function () { if (round < ROUNDS.length) sayRound(); });
     function update() { var d = basket.children; for (var i = 0; i < d.length; i++) d[i].className = i < round ? "on" : "";
@@ -266,11 +268,11 @@
     }
     function newGame() { helpers.removeAttribute("inert"); order = shuffle(ROUNDS.slice()); round = 0;
       basket.innerHTML = ""; ROUNDS.forEach(function () { basket.appendChild(document.createElement("span")); }); win.hidden = true; update(); showRound(); }
-    document.getElementById("again").addEventListener("click", function () { newGame(); sayRound(); });
+    document.getElementById("again").addEventListener("click", function () { newGame(); sayFirst(); });
     ["ins_rescue", "child_is_sick", "house_on_fire", "cat_in_tree", "thief_running", "grandpa_fell", "the_police_car", "the_ambulance", "the_fire_engine", "yes_well_done", "try_again", "super_helper"].forEach(clip);
     newGame();
     // phones block sound until the first tap, so the first question is read after Start (her note 20 Nov)
-    document.getElementById("start").addEventListener("click", function () { document.getElementById("card").classList.remove("pre"); sayRound(); });
+    document.getElementById("start").addEventListener("click", function () { document.getElementById("card").classList.remove("pre"); sayFirst(); });
   })();
   </script>
 <!-- nav-menu -->
