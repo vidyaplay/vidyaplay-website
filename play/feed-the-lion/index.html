@@ -35,7 +35,7 @@
     .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
     .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
     .btn-pair { display: flex; gap: 6px; flex: none; }
-    .lion-wrap { position: relative; width: 46%; max-width: 210px; margin: 4px auto 6px; padding: 8px; border-radius: 28px; border: 4px dashed transparent;
+    .lion-wrap { position: relative; width: min(60%, 260px, 32vh); margin: 4px auto 6px; padding: 8px; border-radius: 28px; border: 4px dashed transparent;
       transition: border-color 0.15s, background 0.15s; }
     .lion-wrap.over { border-color: #FB8C00; background: rgba(251, 140, 0, 0.12); }
     .lion-wrap img { display: block; width: 100%; height: auto; pointer-events: none; transform-origin: 50% 90%; }
@@ -67,7 +67,8 @@
     @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
     .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column;
       align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
-      background: rgba(255, 255, 255, 0.96); box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+      background: #FFFFFF; box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .game-card.won .tray, .game-card.won .tip, .game-card.won .heard { visibility: hidden; }   /* nothing shows through the win box */
     .win[hidden] { display: none; }
     .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
     .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
@@ -79,6 +80,14 @@
     .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
     .game-help .buttons { margin-bottom: 14px; }
     .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    /* phone held sideways: lion on the left, pictures on the right, so one drag never needs scrolling */
+    @media (orientation: landscape) and (max-height: 560px) {
+      .game-card { display: grid; grid-template-columns: 34% 1fr; column-gap: 12px; align-items: center; max-width: 760px; }
+      .game-top, .tip, .heard, .score { grid-column: 1 / -1; }
+      .lion-wrap { grid-column: 1; grid-row: 2; width: 100%; max-width: min(190px, 40vh); margin: 0 auto; }
+      .tray { grid-column: 2; grid-row: 2; grid-template-columns: repeat(3, 24vh); justify-content: center; }
+      .food { padding: 4px; border-width: 3px; }
+    }
     @media (prefers-reduced-motion: reduce) { .lion-wrap img, .win-icons, .food { animation: none !important; } }
   </style>
   <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
@@ -170,7 +179,7 @@
     <h1 class="page-title">Feed the Lion</h1>
     <p class="facts">LKG English · Letter L · Ages 3.5 to 5</p>
 
-    <section class="game-card" aria-label="Feed the Lion game">
+    <section class="game-card" id="card" aria-label="Feed the Lion game">
       <div class="game-top">
         <p class="game-ask">The lion is hungry. Feed him things that start with <span class="orange">L</span>.</p>
         <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
@@ -178,7 +187,7 @@
       </div>
       <div class="lion-wrap" id="lion"><img src="lion.webp" width="228" height="226" alt="A friendly lion with his mouth open"></div>
       <div class="tray" id="tray"></div>
-      <p class="tip">Drag a picture to the lion.</p>
+      <p class="tip">Drag or tap a picture to feed the lion.</p>
       <p class="heard" id="heard" aria-live="polite">&nbsp;</p>
       <div class="score">
         <div class="basket" id="basket" aria-hidden="true"></div>
@@ -187,7 +196,7 @@
       <div class="win" id="win" hidden>
         <div class="win-icons" aria-hidden="true">🦁🎉🦁</div>
         <p class="win-big">Well done! The lion is full.</p>
-        <p class="win-text">lamp, leaf, lemon, ladder: all start with l.</p>
+        <p class="win-text">lamp, leaf, lemon, ladder: all start with the L sound.</p>
         <button class="button btn-play" id="again" type="button">Play again</button>
       </div>
     </section>
@@ -200,7 +209,7 @@
     </div>
 
     <p class="parent-note">
-      <strong>For parents:</strong> play together for about 5 minutes. Say each word out loud and listen for the "l" at the start: l-l-lamp. Then print the Letter L worksheet and do it on paper.
+      <strong>For parents:</strong> play together for about 5 minutes. Say each word out loud and listen for the L sound at the start: L, L, lamp. Then print the Letter L worksheet and do it on paper.
     </p>
 
   </main>
@@ -217,8 +226,18 @@
     var NEED = 4;
     var ASK = "The lion is hungry. Feed him things that start with L.";
     var tray = document.getElementById("tray"), lionBox = document.getElementById("lion"), basket = document.getElementById("basket");
-    var scoreText = document.getElementById("score"), heard = document.getElementById("heard"), win = document.getElementById("win");
-    var fed = 0, drag = null, finished = false;
+    var card = document.getElementById("card"), scoreText = document.getElementById("score"), heard = document.getElementById("heard"), win = document.getElementById("win");
+    var fed = 0, drag = null, finished = false, idleT = null;
+    function armIdle() {                              // nothing touched for 9 s: the lion calls and the next L picture wiggles
+      clearTimeout(idleT);
+      idleT = setTimeout(function () {
+        if (finished || drag) { armIdle(); return; }
+        var next = items.filter(function (it) { return it.hit && !it.fed; })[0];
+        if (next) { pulse(next.el, "hint", 480); pulse(lionBox, "chomp", 520); }
+        armIdle();
+      }, 9000);
+    }
+    var items = [];
 
     var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
     function tone(freq, endFreq, start, length, volume) {
@@ -241,7 +260,7 @@
     // Voice: her recorded clips (chained), the phone's own voice only as a back-up if a clip is missing.
     var CLIPS = { ins_lion: "audio/ins_lion.mp3", lamp: "audio/lamp.mp3", leaf: "audio/leaf.mp3", lemon: "audio/lemon.mp3", ladder: "audio/ladder.mp3",
       ball: "audio/ball.mp3", cup: "audio/cup.mp3", not_l: "audio/not_l.mp3", lion_full: "audio/lion_full.mp3",
-      yes_well_done: "../../audio/voice/yes_well_done.mp3", try_again: "../../audio/voice/try_again.mp3" };
+      yes_well_done: "../../audio/voice/yes_well_done.mp3" };
     var clips = {};
     Object.keys(CLIPS).forEach(function (k) {
       var a = new Audio(); a.preload = "auto";
@@ -301,7 +320,7 @@
     }
     function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
     function overLion(x, y) {
-      var r = lionBox.getBoundingClientRect(), m = 14;
+      var r = lionBox.getBoundingClientRect(), m = 36;
       return x > r.left - m && x < r.right + m && y > r.top - m && y < r.bottom + m;
     }
     function pulse(el, cls, ms) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function () { el.classList.remove(cls); }, ms); }
@@ -312,7 +331,7 @@
     }
     function showWin() {
       if (finished) return;
-      finished = true; tray.setAttribute("inert", ""); play("win"); lionBox.classList.add("full");
+      finished = true; clearTimeout(idleT); tray.setAttribute("inert", ""); play("win"); lionBox.classList.add("full"); card.classList.add("won");
       win.hidden = false; document.getElementById("again").focus();
       say(["lion_full"], "Well done! The lion is full.");
     }
@@ -322,7 +341,7 @@
       item.fed = true; el.classList.remove("dragging"); el.classList.add("gone");
       el.style.transition = "transform 0.35s ease-in, opacity 0.35s"; el.style.transform = "translate(" + tx + "px," + ty + "px) scale(0.15)"; el.style.opacity = "0";
       setTimeout(function () { pulse(lionBox, "chomp", 520); play("chomp"); }, 300);
-      fed++; update();
+      fed++; update(); armIdle();
       var line = "Yes! Well done. " + cap(item.word) + ".";
       heard.textContent = line;
       if (fed === NEED) {                          // last one: lock the tray, let the voice finish, then the win box (the timer cannot be cancelled by a new voice)
@@ -336,9 +355,9 @@
       el.classList.remove("dragging"); el.classList.add("back", "nope"); el.style.transform = "";
       setTimeout(function () { el.classList.remove("back"); }, 400);
       setTimeout(function () { el.classList.remove("nope"); }, 1400);
-      pulse(lionBox, "no", 520); play("nope");
-      var line = cap(item.word) + " does not start with L. Try again!";
-      heard.textContent = line; say([item.word, "not_l", "try_again"], line);
+      pulse(lionBox, "no", 520); play("nope"); armIdle();
+      var line = cap(item.word) + " does not start with L.";
+      heard.textContent = line; say([item.word, "not_l"], line);
     }
     function giveBack(item) {
       var el = item.el;
@@ -357,6 +376,7 @@
         drag = { item: item, id: e.pointerId, sx: e.clientX, sy: e.clientY, moved: false };
         item.rect = b.getBoundingClientRect(); b.classList.remove("back");
         say([item.word], item.word);                  // the word is heard as the finger lands
+        armIdle();
       });
       b.addEventListener("pointermove", function (e) {
         if (!drag || drag.item !== item || e.pointerId !== drag.id) return;
@@ -370,7 +390,7 @@
         if (!drag || drag.item !== item || e.pointerId !== drag.id) return;
         var d = drag; drag = null; lionBox.classList.remove("over");
         try { b.releasePointerCapture(e.pointerId); } catch (err) {}
-        if (!d.moved) { pulse(b, "hint", 480); return; }          // a tap: the word was said, the picture wiggles
+        if (!d.moved) { item.rect = b.getBoundingClientRect(); if (item.hit) eat(item); else reject(item); return; }   // a tap feeds the lion too
         if (e.type === "pointercancel" || !overLion(e.clientX, e.clientY)) { giveBack(item); return; }
         if (item.hit) eat(item); else reject(item);
       }
@@ -385,11 +405,11 @@
     }
     function newRound() {
       cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel();
-      finished = false; fed = 0; drag = null; tray.removeAttribute("inert"); lionBox.classList.remove("full", "over", "chomp", "no");
-      tray.innerHTML = "";
-      shuffle(FOODS.slice()).forEach(function (f) { tray.appendChild(build({ word: f[0], hit: f[1], fed: false })); });
+      finished = false; fed = 0; drag = null; tray.removeAttribute("inert"); lionBox.classList.remove("full", "over", "chomp", "no"); card.classList.remove("won");
+      tray.innerHTML = ""; items = [];
+      shuffle(FOODS.slice()).forEach(function (f) { var it = { word: f[0], hit: f[1], fed: false }; items.push(it); tray.appendChild(build(it)); });
       basket.innerHTML = ""; for (var i = 0; i < NEED; i++) basket.appendChild(document.createElement("span"));
-      heard.innerHTML = "&nbsp;"; win.hidden = true; update();
+      heard.innerHTML = "&nbsp;"; win.hidden = true; update(); armIdle();
     }
     document.getElementById("again").addEventListener("click", function () { newRound(); if (tray.firstChild) tray.firstChild.focus(); });
     newRound();
