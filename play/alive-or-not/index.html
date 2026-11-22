@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alive or Not? Living and Non-living Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online living and non-living game for LKG kids: drag each picture to the Living or Non-living box. Works on phones, no sign-up.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=11">
+  <link rel="canonical" href="https://vidyaplay.in/play/alive-or-not/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Alive or Not? Living and Non-living Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online living and non-living game for LKG kids: drag each picture to the Living or Non-living box. Works on phones, no sign-up.">
+  <meta property="og:url" content="https://vidyaplay.in/play/alive-or-not/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Alive or Not? (only used on this page) ===== */
+    .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px; border-radius: 24px; background: #EAF6EE; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 8px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .bins { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .bin { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 0; padding: 10px 6px 8px; border: 4px dashed; border-radius: 22px;
+      background: #FFFFFF; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s, border-color 0.15s; }
+    .bin.living { border-color: #2E9E4F; } .bin.non { border-color: #5B6478; }
+    .bin.over.living { background: #D8F0DF; border-style: solid; } .bin.over.non { background: #E3E7EE; border-style: solid; }
+    .bin:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+    .bin .icon { width: 52px; height: 52px; object-fit: contain; pointer-events: none; }
+    .bin .label { font-size: 21px; font-weight: 800; color: var(--navy); line-height: 1.1; }
+    .bin.living .label { color: #1E8E4E; }
+    .stack { display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 4px; margin-top: 2px; min-height: 86px; }
+    .stack img { width: 40px; height: 40px; object-fit: contain; pointer-events: none; animation: pop 0.35s ease-out; }
+    .bin.yes { animation: bounce 0.5s ease-in-out; } .bin.no { animation: shake 0.5s ease-in-out; }
+    .tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; padding: 10px 8px; background: #FFFFFF; border-radius: 18px; }
+    .food { position: relative; width: 100%; aspect-ratio: 1 / 1; padding: 8px; border: 4px solid #2C3550; border-radius: 20px; background: #FFFFFF;
+      cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+    .food img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+    .food:focus-visible { border-color: var(--blue); border-width: 6px; outline: none; }
+    .food.sel { border-color: var(--blue); border-width: 6px; box-shadow: 0 0 0 4px rgba(30, 91, 184, 0.25); }
+    .food.dragging { z-index: 30; cursor: grabbing; box-shadow: 0 10px 22px rgba(44, 53, 80, 0.35); transition: none; }
+    .food.back { transition: transform 0.35s ease-out; }
+    .food.gone { visibility: hidden; pointer-events: none; }
+    .food.nope::after { content: "✕"; position: absolute; right: -6px; top: -6px; width: 30px; height: 30px; border-radius: 50%;
+      background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; text-align: center; }
+    .food.hint { animation: wiggle 0.45s ease-in-out; }
+    .tip { margin: 8px 0 0; font-size: 15px; color: #5A6377; }
+    .heard { margin: 4px 0 0; min-height: 30px; font-size: 19px; font-weight: 800; color: var(--navy); }
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF; transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #2E9E4F; border: 2.5px solid #14562C; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+    @keyframes pop { 0% { transform: scale(0.2); } 70% { transform: scale(1.25); } 100% { transform: scale(1); } }
+    @keyframes shake { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-4deg); } 40% { transform: rotate(4deg); } 60% { transform: rotate(-2deg); } 80% { transform: rotate(2deg); } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-9px); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px;
+      background: #FFFFFF; box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .game-card.won .tray, .game-card.won .tip, .game-card.won .heard { visibility: hidden; }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--green); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    .btn-play { background: var(--green); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--orange); }
+    .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    /* phone held sideways: boxes on the left, pictures on the right, so one drag never needs scrolling */
+    @media (orientation: landscape) and (max-height: 560px) {
+      .game-card { display: grid; grid-template-columns: 40% 1fr; column-gap: 12px; align-items: start; max-width: 800px; }
+      .game-top, .tip, .heard, .score { grid-column: 1 / -1; }
+      .bins { grid-column: 1; grid-row: 2; } .bin { min-height: 120px; } .bin .icon { width: 44px; height: 44px; } .stack img { width: 32px; height: 32px; } .stack { min-height: 32px; }
+      .tray { grid-column: 2; grid-row: 2; margin-top: 0; grid-template-columns: repeat(3, 20vh); justify-content: center; }
+      .food { padding: 4px; border-width: 3px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .stack img, .win-icons, .food, .bin { animation: none !important; } }
+  </style>
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
+  <script>
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Alive or Not?","item":"https://vidyaplay.in/play/alive-or-not/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../play/phonics/">Phonics lessons (new)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/phonics/">Phonics</a>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Alive or Not?</span>
+    </nav>
+    <p class="back-link"><a class="button btn-download" href="../../lkg/evs/">&larr; Back to EVS worksheets</a></p>
+
+    <h1 class="page-title">Alive or Not?</h1>
+    <p class="facts">LKG EVS · Living and non-living things · Ages 3.5 to 5</p>
+
+    <section class="game-card" id="card" aria-label="Alive or Not game">
+      <div class="game-top">
+        <p class="game-ask">Is it alive? Drag each picture to the right box.</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <div class="bins">
+        <button class="bin living" id="binL" type="button" aria-label="Living box. Tap here to put the chosen picture in the Living box"><img class="icon" src="tree.webp" width="52" height="52" alt=""><span class="label">Living</span><span class="stack" id="stackL"></span></button>
+        <button class="bin non" id="binN" type="button" aria-label="Non-living box. Tap here to put the chosen picture in the Non-living box"><img class="icon" src="box.webp" width="52" height="52" alt=""><span class="label">Non-living</span><span class="stack" id="stackN"></span></button>
+      </div>
+      <div class="tray" id="tray"></div>
+      <p class="tip">Drag a picture to a box. Or tap the picture, then tap a box.</p>
+      <p class="heard" id="heard" aria-live="polite">&nbsp;</p>
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 6 sorted</p>
+      </div>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🌳🎉🚌</div>
+        <p class="win-big">Well done! All sorted.</p>
+        <p class="win-text">Living things grow and need food and water. Non-living things do not.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../lkg/evs/">Print EVS worksheets</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. For each picture ask: Does it eat? Does it grow? Can it move by itself? Living things say yes. Then talk about why, and look for living things around your home.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../parents/">Parent's guide</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // Alive or Not?: drag each picture to the Living box or the Non-living box (tap the picture, then tap a box, also works).
+    var LIVING = ["dog", "hen", "flower", "frog"], NON = ["bus", "cup", "kite", "ball"];
+    var NEED = 6;
+    var ASK = "Is it alive? Drag each picture to the right box.";
+    var tray = document.getElementById("tray"), basket = document.getElementById("basket");
+    var card = document.getElementById("card"), scoreText = document.getElementById("score"), heard = document.getElementById("heard"), win = document.getElementById("win");
+    var binL = document.getElementById("binL"), binN = document.getElementById("binN"), stackL = document.getElementById("stackL"), stackN = document.getElementById("stackN");
+    var done = 0, drag = null, finished = false, idleT = null, winT = [], hints = 0, selected = null, items = [];
+    function armIdle(again) {                          // nothing touched for 9 s: a picture wiggles (3 times at most, a different one each time)
+      clearTimeout(idleT);
+      if (!again) hints = 0;
+      idleT = setTimeout(function () {
+        if (finished || drag) { armIdle(true); return; }
+        var left = items.filter(function (it) { return !it.done; });
+        if (left.length && hints < 3) { pulse(left[hints % left.length].el, "hint", 480); hints++; armIdle(true); }
+      }, 9000);
+    }
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") { tone(520, 780, 0, 0.1, 0.3); tone(700, 1040, 0.1, 0.1, 0.25); }
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    // Voice: her recorded clips (chained); the phone's own voice only as a back-up while a clip is missing.
+    var CLIPS = { ins_alive: "audio/ins_alive.mp3", is_living: "audio/is_living.mp3", is_not_living: "audio/is_not_living.mp3", alive_win: "audio/alive_win.mp3",
+      dog: "audio/dog.mp3", hen: "audio/hen.mp3", flower: "audio/flower.mp3", frog: "audio/frog.mp3", bus: "audio/bus.mp3", kite: "audio/kite.mp3",
+      cup: "audio/cup.mp3", ball: "audio/ball.mp3",
+      yes_well_done: "../../audio/voice/yes_well_done.mp3", try_again: "../../audio/voice/try_again.mp3" };
+    var clips = {};
+    Object.keys(CLIPS).forEach(function (k) {
+      var a = new Audio(); a.preload = "auto";
+      a.addEventListener("canplaythrough", function () { a._ok = true; });
+      a.addEventListener("error", function () { a._ok = false; });
+      a.src = CLIPS[k]; clips[k] = a;
+    });
+    function stopClips() { Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    var voice = null;
+    function pickVoice() {
+      if (!window.speechSynthesis) return;
+      var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return v.localService && /^en[-_](IN|GB|US)/i.test(v.lang); })[0] ||
+              vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
+    }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    var pendingT = [];
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
+    function speak(text, then) {                       // back-up: the phone's own voice
+      var finishedOnce = false;
+      function once() { if (finishedOnce) return; finishedOnce = true; if (then) then(); }
+      if (!window.speechSynthesis) { if (then) later(once, 900); return; }
+      try {
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(text); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
+        if (then) { u.onend = once; later(once, 3600); }
+        window.speechSynthesis.speak(u);
+      } catch (e) { if (then) later(once, 900); }
+    }
+    function say(names, text, then) {                  // plays the clips one after the other; any new say() stops the old one
+      cancelLater(); stopClips();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { if (then) later(then, 900); return; }
+      if (!names.length) { speak(text, then); return; }
+      var list = names.map(function (n) { return clips[n]; });
+      if (list.some(function (c) { return !c || c._ok === false; })) { speak(text, then); return; }
+      var i = 0;
+      (function next() {
+        if (i >= list.length) { if (then) then(); return; }
+        var c = list[i++];
+        c.currentTime = 0;
+        c.onended = function () { c.onended = null; next(); };
+        var pr = c.play();
+        if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) { c.onended = null; speak(text, then); } });
+      })();
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+    });
+    document.getElementById("hear").addEventListener("click", function () { say(["ins_alive"], ASK); });
+
+    function shuffle(list) {
+      for (var i = list.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = list[i]; list[i] = list[j]; list[j] = t; }
+      return list;
+    }
+    function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
+    function binAt(x, y) {                             // which box is under the finger (a little forgiving)
+      var m = 18, rl = binL.getBoundingClientRect(), rn = binN.getBoundingClientRect();
+      if (x > rl.left - m && x < rl.right + m && y > rl.top - m && y < rl.bottom + m) return "L";
+      if (x > rn.left - m && x < rn.right + m && y > rn.top - m && y < rn.bottom + m) return "N";
+      return null;
+    }
+    function pulse(el, cls, ms) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function () { el.classList.remove(cls); }, ms); }
+    function update() {
+      var dots = basket.children;
+      for (var i = 0; i < dots.length; i++) dots[i].className = i < done ? "on" : "";
+      scoreText.textContent = done + " of " + NEED + " sorted";
+    }
+    function select(item) {
+      if (selected && selected.el) selected.el.classList.remove("sel");
+      selected = item; if (item) item.el.classList.add("sel");
+    }
+    function showWin() {
+      if (finished || done < NEED) return;             // a stale timer from an earlier round must never show the win box
+      finished = true; clearTimeout(idleT); tray.setAttribute("inert", ""); play("win"); card.classList.add("won");
+      win.hidden = false; document.getElementById("again").focus();
+      say(["alive_win"], "Well done! All sorted. Living things grow and need food and water. Non-living things do not.");
+    }
+    function place(item, which) {                      // which = "L" or "N": right box or wrong box
+      var right = (which === "L") === item.living;
+      var el = item.el; el.classList.remove("dragging", "sel"); if (selected === item) selected = null;
+      if (!right) {                                    // wrong box: the picture hops back, the box shakes
+        el.classList.add("back", "nope"); el.style.transform = "";
+        setTimeout(function () { el.classList.remove("back"); }, 400);
+        setTimeout(function () { el.classList.remove("nope"); }, 1400);
+        pulse(which === "L" ? binL : binN, "no", 520); play("nope"); armIdle();
+        var line = "Try again. Does a " + item.word + " grow and need food and water?";
+        heard.textContent = cap(item.word) + ": try again."; say([item.word, "try_again"], line); return;
+      }
+      item.done = true; el.classList.add("gone"); el.style.transform = "";
+      var img = document.createElement("img"); img.alt = ""; img.src = item.word + ".webp"; (item.living ? stackL : stackN).appendChild(img);
+      pulse(item.living ? binL : binN, "yes", 520); play("pop");
+      done++; update(); armIdle();
+      var text = "Yes! A " + item.word + (item.living ? " is a living thing." : " is not a living thing.");
+      heard.textContent = text;
+      var names = ["yes_well_done", item.word, item.living ? "is_living" : "is_not_living"];
+      if (done === NEED) {                             // last one: lock the tray, let the voice finish, then the win box
+        tray.setAttribute("inert", "");
+        say(names, text, function () { winT.push(setTimeout(showWin, 500)); });
+        winT.push(setTimeout(showWin, 6500));
+      } else say(names, text);
+    }
+    function build(item) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "food"; b.setAttribute("aria-label", item.word + ". Drag to a box, or tap it and then tap a box");
+      b.innerHTML = '<img alt="" width="150" height="150">'; b.querySelector("img").setAttribute("src", item.word + ".webp");
+      item.el = b;
+      b.addEventListener("pointerdown", function (e) {
+        if (item.done || finished || drag) return;
+        e.preventDefault();
+        try { b.setPointerCapture(e.pointerId); } catch (err) {}
+        drag = { item: item, id: e.pointerId, sx: e.clientX, sy: e.clientY, moved: false };
+        b.classList.remove("back");
+        say([item.word], item.word);                   // the word is heard as the finger lands
+        armIdle();
+      });
+      b.addEventListener("pointermove", function (e) {
+        if (!drag || drag.item !== item || e.pointerId !== drag.id) return;
+        var dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+        if (!drag.moved && Math.hypot(dx, dy) < 8) return;
+        drag.moved = true; b.classList.add("dragging");
+        b.style.transform = "translate(" + dx + "px," + dy + "px) scale(1.12)";
+        var o = binAt(e.clientX, e.clientY);
+        binL.classList.toggle("over", o === "L"); binN.classList.toggle("over", o === "N");
+      });
+      function end(e) {
+        if (!drag || drag.item !== item || e.pointerId !== drag.id) return;
+        var d = drag; drag = null; binL.classList.remove("over"); binN.classList.remove("over");
+        try { b.releasePointerCapture(e.pointerId); } catch (err) {}
+        if (!d.moved) { select(selected === item ? null : item); return; }      // a tap chooses the picture; then tap a box
+        var o = e.type === "pointercancel" ? null : binAt(e.clientX, e.clientY);
+        if (!o) { b.classList.remove("dragging"); b.classList.add("back"); b.style.transform = ""; setTimeout(function () { b.classList.remove("back"); }, 400); return; }
+        place(item, o);
+      }
+      b.addEventListener("pointerup", end); b.addEventListener("pointercancel", end);
+      b.addEventListener("keydown", function (e) {      // keyboard: Enter or Space chooses the picture; then Enter on a box
+        if ((e.key === "Enter" || e.key === " ") && !item.done && !finished) { e.preventDefault(); select(selected === item ? null : item); say([item.word], item.word); }
+      });
+      return b;
+    }
+    [[binL, "L"], [binN, "N"]].forEach(function (p) {
+      p[0].addEventListener("click", function () {
+        if (finished) return;
+        if (selected) { var it = selected; place(it, p[1]); }
+        else say([], p[1] === "L" ? "Living things grow and need food and water." : "Non-living things do not grow or need food.");
+      });
+    });
+    function newRound() {
+      cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel();
+      winT.forEach(clearTimeout); winT = [];
+      finished = false; done = 0; drag = null; selected = null; tray.removeAttribute("inert"); card.classList.remove("won");
+      tray.innerHTML = ""; items = []; stackL.innerHTML = ""; stackN.innerHTML = "";
+      var pick = shuffle(LIVING.slice()).slice(0, 3).map(function (w) { return { word: w, living: true, done: false }; })
+        .concat(shuffle(NON.slice()).slice(0, 3).map(function (w) { return { word: w, living: false, done: false }; }));
+      shuffle(pick).forEach(function (it) { items.push(it); tray.appendChild(build(it)); });
+      basket.innerHTML = ""; for (var i = 0; i < NEED; i++) basket.appendChild(document.createElement("span"));
+      heard.innerHTML = "&nbsp;"; win.hidden = true; update(); armIdle();
+    }
+    document.getElementById("again").addEventListener("click", function () { newRound(); if (tray.firstChild) tray.firstChild.focus(); });
+    newRound();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+<!-- vp-progress -->
+  <script>
+    // Progress (her ask 19 Nov): when the win box shows, remember this game on THIS device only (no data is sent)
+    (function () {
+      var slug = location.pathname.split("/").filter(Boolean).pop();
+      var box = document.getElementById("win") || document.getElementById("end");
+      if (!box || !slug) return;
+      function mark() { try { var d = JSON.parse(localStorage.getItem("vp_played") || "{}"); d[slug] = (d[slug] || 0) + 1; localStorage.setItem("vp_played", JSON.stringify(d)); } catch (e) {} }
+      new MutationObserver(function () { if (!box.hidden) mark(); }).observe(box, {attributes: true, attributeFilter: ["hidden"]});
+    })();
+  </script>
+</body>
+</html>
