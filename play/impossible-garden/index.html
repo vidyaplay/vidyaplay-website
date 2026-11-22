@@ -327,7 +327,13 @@
       if (b.getAttribute("data-imp") === "1") {
         b.classList.add("found"); found++; update(); play("pop");
         var L = LINES[id]; heard.textContent = L[1];
-        if (found >= NEED) { say(["yes_well_done", L[0], "garden_win"], L[1] + " Well done! You found all 5 impossible things.", function () {}); winT.push(setTimeout(showWin, 400)); }
+        if (found >= NEED) {                         // last find: let her voice finish the line, THEN show the end box
+          finished = true;
+          var shown = false;
+          function end() { if (shown) return; shown = true; winT.forEach(clearTimeout); winT = []; winT.push(setTimeout(showWin, 300)); }
+          say(["yes_well_done", L[0], "garden_win"], L[1] + " You found all 5 impossible things!", end);
+          winT.push(setTimeout(end, 14000));        // safety net if a clip never ends
+        }
         else say(["yes_well_done", L[0]], L[1]);
       } else {
         pulse(b, "nope", 500); play("nope"); heard.textContent = "That one is fine. Look again!";
