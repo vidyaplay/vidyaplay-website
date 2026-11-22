@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Impossible Garden: Spot What Is Wrong Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free online spot-the-wrong-thing game for LKG kids: tap the 5 impossible things in the garden. Works on phones, no sign-up.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=11">
+  <link rel="canonical" href="https://vidyaplay.in/play/impossible-garden/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="The Impossible Garden: Spot What Is Wrong Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free online spot-the-wrong-thing game for LKG kids: tap the 5 impossible things in the garden. Works on phones, no sign-up.">
+  <meta property="og:url" content="https://vidyaplay.in/play/impossible-garden/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: The Impossible Garden (only used on this page) ===== */
+    .game-card { position: relative; max-width: 560px; margin: 0 auto 20px; padding: 14px 12px 16px; border-radius: 24px; background: #EAF6EE; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 8px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .scene { position: relative; width: 100%; aspect-ratio: 3 / 2; border-radius: 20px; overflow: hidden; background: linear-gradient(#DCEEFB 0 62%, #7CC576 62% 100%); touch-action: manipulation; }
+    .scene .hill { position: absolute; left: -10%; bottom: 20%; width: 80%; height: 18%; border-radius: 50%; background: #6AB866; }
+    .it { position: absolute; transform: translate(-50%, -50%); box-sizing: content-box; padding: 10px; margin: 0; border: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .it img { display: block; width: 100%; height: auto; pointer-events: none; -webkit-user-drag: none; }
+    .it::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 0 solid transparent; pointer-events: none; }
+    .it:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; border-radius: 12px; }
+    .it.found::before { inset: 0; border: 5px solid #2E9E4F; background: rgba(46, 158, 79, 0.12); animation: pop 0.4s ease-out; }
+    .it.found::after { content: "✓"; position: absolute; right: -4px; top: -4px; width: 30px; height: 30px; border-radius: 50%; background: #2E9E4F; color: #FFF; border: 3px solid #FFF; font-size: 18px; font-weight: 800; line-height: 24px; }
+    .it.found { cursor: default; }
+    .it.nope { animation: shake 0.5s ease-in-out; }
+    .it.hint { animation: wiggle 0.45s ease-in-out; }
+    .tip { margin: 8px 0 0; font-size: 15px; color: #5A6377; }
+    .heard { margin: 4px 0 0; min-height: 30px; font-size: 19px; font-weight: 800; color: var(--navy); }
+    .score { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF; transition: background 0.2s, border-color 0.2s; }
+    .basket span.on { background: #2E9E4F; border: 2.5px solid #14562C; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+    @keyframes pop { 0% { transform: scale(0.2); } 70% { transform: scale(1.25); } 100% { transform: scale(1); } }
+    @keyframes shake { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 20% { transform: translate(-50%, -50%) rotate(-5deg); } 40% { transform: translate(-50%, -50%) rotate(5deg); } 60% { transform: translate(-50%, -50%) rotate(-3deg); } 80% { transform: translate(-50%, -50%) rotate(3deg); } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-9px); } }
+    @keyframes wiggle { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 20% { transform: translate(-50%, -50%) rotate(-9deg); } 40% { transform: translate(-50%, -50%) rotate(8deg); } 60% { transform: translate(-50%, -50%) rotate(-5deg); } 80% { transform: translate(-50%, -50%) rotate(3deg); } }
+    .win { position: absolute; left: 10px; right: 10px; top: 28%; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 14px 16px; border-radius: 20px;
+      background: #FFFFFF; box-shadow: 0 4px 18px rgba(44, 53, 80, 0.25); z-index: 5; }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; color: var(--green); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win:not([hidden]) .win-icons { animation: bounce 0.9s ease-in-out infinite; }
+    .btn-play { background: var(--green); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--orange); }
+    .game-help { max-width: 560px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 560px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (orientation: landscape) and (max-height: 560px) { .game-card { max-width: 720px; } .scene { max-height: 62vh; margin: 0 auto; } }
+    @media (prefers-reduced-motion: reduce) { .it, .win-icons { animation: none !important; } .it.found::before { animation: none; } }
+  </style>
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
+  <script>
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"The Impossible Garden","item":"https://vidyaplay.in/play/impossible-garden/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../play/phonics/">Phonics lessons (new)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/phonics/">Phonics</a>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>The Impossible Garden</span>
+    </nav>
+    <p class="back-link"><a class="button btn-download" href="../../lkg/evs/">&larr; Back to EVS worksheets</a></p>
+
+    <h1 class="page-title">The Impossible Garden</h1>
+    <p class="facts">LKG EVS · Plants · Ages 3.5 to 5</p>
+
+    <section class="game-card" id="card" aria-label="The Impossible Garden game">
+      <div class="game-top">
+        <p class="game-ask">Look at the garden. Tap the 5 impossible things!</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <div class="scene" id="scene"><span class="hill"></span>
+        <button class="it" type="button" data-id="sun" data-imp="0" style="left:12%;top:15%;width:15%" aria-label="Sun"><img src="sun.webp" alt=""></button>
+        <button class="it" type="button" data-id="cloud" data-imp="0" style="left:76%;top:15%;width:26%" aria-label="Cloud"><img src="cloud.webp" alt=""></button>
+        <button class="it" type="button" data-id="cow" data-imp="1" style="left:76%;top:8%;width:12%" aria-label="Cow on the cloud"><img src="cow.webp" alt=""></button>
+        <button class="it" type="button" data-id="tree" data-imp="0" style="left:36%;top:55%;width:28%" aria-label="Tree"><img src="tree.webp" alt=""></button>
+        <button class="it" type="button" data-id="fish" data-imp="1" style="left:37%;top:38%;width:11%" aria-label="Fish in the tree"><img src="fish.webp" alt=""></button>
+        <button class="it" type="button" data-id="shoe" data-imp="1" style="left:49%;top:48%;width:10%" aria-label="Shoe on the tree"><img src="shoe.webp" alt=""></button>
+        <button class="it" type="button" data-id="bus" data-imp="1" style="left:58%;top:26%;width:20%" aria-label="Bus in the sky"><img src="bus.webp" alt=""></button>
+        <button class="it" type="button" data-id="house" data-imp="0" style="left:82%;top:70%;width:26%" aria-label="House"><img src="house.webp" alt=""></button>
+        <button class="it" type="button" data-id="elephant" data-imp="1" style="left:82%;top:44%;width:14%" aria-label="Elephant on the roof"><img src="elephant.webp" alt=""></button>
+        <button class="it" type="button" data-id="f1" data-imp="0" style="left:8%;top:86%;width:8%" aria-label="Flower"><img src="flower.webp" alt=""></button>
+        <button class="it" type="button" data-id="f2" data-imp="0" style="left:19%;top:89%;width:8%" aria-label="Flower"><img src="flower.webp" alt=""></button>
+        <button class="it" type="button" data-id="f3" data-imp="0" style="left:30%;top:86%;width:8%" aria-label="Flower"><img src="flower.webp" alt=""></button>
+        <button class="it" type="button" data-id="f4" data-imp="0" style="left:55%;top:88%;width:8%" aria-label="Flower"><img src="flower.webp" alt=""></button>
+        <button class="it" type="button" data-id="f5" data-imp="0" style="left:66%;top:86%;width:8%" aria-label="Flower"><img src="flower.webp" alt=""></button>
+        <button class="it" type="button" data-id="sf" data-imp="0" style="left:46%;top:89%;width:8%" aria-label="Sunflower"><img src="sunflower.webp" alt=""></button>
+      </div>
+      <p class="tip">Tap what cannot be true in a real garden.</p>
+      <p class="heard" id="heard" aria-live="polite">&nbsp;</p>
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 5 found</p>
+      </div>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🌳🎉🐘</div>
+        <p class="win-big">You found all 5!</p>
+        <p class="win-text">Fish live in water, shoes are for feet, and plants grow in the ground.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../lkg/evs/">Print EVS worksheets</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. After each find, ask: Why can this not be true? Then go for a walk and talk about what you see in a real garden.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../parents/">Parent's guide</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // The Impossible Garden: tap the 5 things that cannot be true.
+    var ASK = "Look at the garden. Tap the 5 impossible things!";
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "pop") { tone(520, 780, 0, 0.1, 0.3); tone(700, 1040, 0.1, 0.1, 0.25); }
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    // Voice: her recorded clips (chained); the phone's own voice only as a back-up while a clip is missing.
+    var CLIPS = { ins_garden: "audio/ins_garden.mp3", imp_fish: "audio/imp_fish.mp3", imp_shoe: "audio/imp_shoe.mp3", imp_bus: "audio/imp_bus.mp3", imp_cow: "audio/imp_cow.mp3",
+      imp_elephant: "audio/imp_elephant.mp3", fine_look: "audio/fine_look.mp3", garden_win: "audio/garden_win.mp3",
+      yes_well_done: "../../audio/voice/yes_well_done.mp3" };
+    var clips = {};
+    Object.keys(CLIPS).forEach(function (k) {
+      var a = new Audio(); a.preload = "auto";
+      a.addEventListener("canplaythrough", function () { a._ok = true; });
+      a.addEventListener("error", function () { a._ok = false; });
+      a.src = CLIPS[k]; clips[k] = a;
+    });
+    function stopClips() { Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    var voice = null;
+    function pickVoice() {
+      if (!window.speechSynthesis) return;
+      var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return v.localService && /^en[-_](IN|GB|US)/i.test(v.lang); })[0] ||
+              vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
+    }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    var pendingT = [];
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
+    function speak(text, then) {                       // back-up: the phone's own voice
+      var finishedOnce = false;
+      function once() { if (finishedOnce) return; finishedOnce = true; if (then) then(); }
+      if (!window.speechSynthesis) { if (then) later(once, 900); return; }
+      try {
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(text); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
+        if (then) { u.onend = once; later(once, 3600); }
+        window.speechSynthesis.speak(u);
+      } catch (e) { if (then) later(once, 900); }
+    }
+    function say(names, text, then) {                  // plays the clips one after the other; any new say() stops the old one
+      cancelLater(); stopClips();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { if (then) later(then, 900); return; }
+      if (!names.length) { speak(text, then); return; }
+      var list = names.map(function (n) { return clips[n]; });
+      if (list.some(function (c) { return !c || c._ok === false; })) { speak(text, then); return; }
+      var i = 0;
+      (function next() {
+        if (i >= list.length) { if (then) then(); return; }
+        var c = list[i++];
+        c.currentTime = 0;
+        c.onended = function () { c.onended = null; next(); };
+        var pr = c.play();
+        if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) { c.onended = null; speak(text, then); } });
+      })();
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+    });
+    document.getElementById("hear").addEventListener("click", function () { say(["ins_garden"], ASK); });
+
+    
+    var LINES = {
+      fish: ["imp_fish", "Yes! A fish cannot live in a tree. Fish live in water."],
+      shoe: ["imp_shoe", "Yes! Shoes do not grow on trees. Shoes are for our feet."],
+      bus: ["imp_bus", "Yes! A bus cannot fly in the sky. A bus drives on the road."],
+      cow: ["imp_cow", "Yes! A cow cannot sit on a cloud. A cow lives on a farm."],
+      elephant: ["imp_elephant", "Yes! An elephant cannot sit on a roof. It is far too big."]
+    };
+    var NEED = 5, found = 0, finished = false, idleT = null, hints = 0, winT = [];
+    var card = document.getElementById("card"), scene = document.getElementById("scene"), basket = document.getElementById("basket");
+    var scoreText = document.getElementById("score"), heard = document.getElementById("heard"), win = document.getElementById("win");
+    var all = Array.prototype.slice.call(scene.querySelectorAll(".it"));
+    function pulse(el, cls, ms) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function () { el.classList.remove(cls); }, ms); }
+    function update() {
+      basket.innerHTML = ""; for (var i = 0; i < NEED; i++) { var s = document.createElement("span"); if (i < found) s.className = "on"; basket.appendChild(s); }
+      scoreText.textContent = found + " of " + NEED + " found";
+    }
+    function armIdle(again) {                          // nothing tapped for 12 s: one impossible thing wiggles (3 times at most)
+      clearTimeout(idleT); if (!again) hints = 0;
+      idleT = setTimeout(function () {
+        if (finished) return;
+        var left = all.filter(function (b) { return b.getAttribute("data-imp") === "1" && !b.classList.contains("found"); });
+        if (left.length && hints < 3) { pulse(left[hints % left.length], "hint", 480); hints++; armIdle(true); }
+      }, 12000);
+    }
+    function showWin() { finished = true; win.hidden = false; play("win"); }
+    function tap(b) {
+      if (finished || b.classList.contains("found")) return;
+      var id = b.getAttribute("data-id");
+      if (b.getAttribute("data-imp") === "1") {
+        b.classList.add("found"); found++; update(); play("pop");
+        var L = LINES[id]; heard.textContent = L[1];
+        if (found >= NEED) {                         // last find: let her voice finish the line, THEN show the end box
+          finished = true;
+          var shown = false;
+          function end() { if (shown) return; shown = true; winT.forEach(clearTimeout); winT = []; winT.push(setTimeout(showWin, 300)); }
+          say(["yes_well_done", L[0], "garden_win"], L[1] + " You found all 5 impossible things!", end);
+          winT.push(setTimeout(end, 14000));        // safety net if a clip never ends
+        }
+        else say(["yes_well_done", L[0]], L[1]);
+      } else {
+        pulse(b, "nope", 500); play("nope"); heard.textContent = "That one is fine. Look again!";
+        say(["fine_look"], "That one is fine. Look again!");
+      }
+      armIdle();
+    }
+    all.forEach(function (b) { b.addEventListener("click", function () { tap(b); }); });
+    function newRound() {
+      winT.forEach(clearTimeout); winT = []; cancelLater(); stopClips(); finished = false; found = 0; win.hidden = true; heard.innerHTML = "&nbsp;";
+      all.forEach(function (b) { b.classList.remove("found", "nope", "hint"); }); update(); armIdle();
+    }
+    document.getElementById("again").addEventListener("click", function () { newRound(); });
+    newRound();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+<!-- vp-progress -->
+  <script>
+    // Progress (her ask 19 Nov): when the win box shows, remember this game on THIS device only (no data is sent)
+    (function () {
+      var slug = location.pathname.split("/").filter(Boolean).pop();
+      var box = document.getElementById("win") || document.getElementById("end");
+      if (!box || !slug) return;
+      function mark() { try { var d = JSON.parse(localStorage.getItem("vp_played") || "{}"); d[slug] = (d[slug] || 0) + 1; localStorage.setItem("vp_played", JSON.stringify(d)); } catch (e) {} }
+      new MutationObserver(function () { if (!box.hidden) mark(); }).observe(box, {attributes: true, attributeFilter: ["hidden"]});
+    })();
+  </script>
+</body>
+</html>
