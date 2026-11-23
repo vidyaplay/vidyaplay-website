@@ -1,6 +1,6 @@
 /* VidyaPlay phonics lesson engine (Phase 1, 14 Nov 2026). Plain JavaScript, no libraries.
    A lesson is data (lessons/<id>.js calls VP.lesson({...})); this file turns the data into screens.
-   (23 Nov: intro and done steps may set img/alt to show another character picture; lessons without it are unchanged.)
+   (23 Nov: intro and done steps may set img/alt; intro may set anim "tap"/"puff"; basket game may set bin (emoji). Lessons without them are unchanged.)
    Step types: intro, listen, pictures (games: tap, basket, oddOneOut), letters, trace, done.
    Progress: localStorage "vp_phonics_v1" (old format {done:{s:2}} is read and upgraded, never deleted).
    ?legacy=1 turns off the Phase 1 improvements (used by the parity test to prove nothing changed). */
@@ -146,6 +146,7 @@
   var TYPES = {};
   TYPES.intro = function (s) {
     card.innerHTML = '<h1>' + s.title + '</h1><img class="ph-sunny" src="' + base + (s.img || L.character.img) + '" alt="' + (s.alt || L.character.alt) + '">' +
+      (s.anim ? '<div class="ph-anim" aria-hidden="true">' + (s.anim.indexOf("tap") >= 0 ? '<span class="ph-tapfinger">👇</span>' : '') + (s.anim.indexOf("puff") >= 0 ? '<span class="ph-puff">💨</span>' : '') + '</div>' : '') +
       '<p>' + s.text + '</p><div class="ph-big">' + (L.bigLetter || L.letter) + '</div>';
     var hear = btn(s.hearLabel, function () { sound(); nextB.disabled = false; }, "alt");
     var nextB = btn("Next", next); nextB.disabled = true;
@@ -470,7 +471,7 @@
     function round() {
       var list = rounds[r], left = list.filter(function (n) { return L.vocab[n].first === L.letter; }).length, wrongHere = 0;
       [].forEach.call(document.querySelectorAll(".ph-drag,.ph-fly"), function (c) { c.parentNode.removeChild(c); });
-      card.innerHTML = (basket ? '<div class="ph-basket" id="target" aria-hidden="true">🧺</div>'
+      card.innerHTML = (basket ? '<div class="ph-basket" id="target" aria-hidden="true">' + (s.bin || "🧺") + '</div>'
         : '<img class="ph-sunny" id="target" src="' + base + L.character.img + '" alt="' + L.character.alt + '">') + '<h1>' + s.title + '</h1>' + (s.text ? '<p>' + s.text + '</p>' : '');
       var target = document.getElementById("target");
       var grid = el("div", "ph-grid" + (L.center ? " n" + list.length : "")), msg = el("div", "ph-msg");
@@ -509,7 +510,7 @@
     }
     function finishAll() {
       clearTimers(); stopVoice();
-      card.innerHTML = (basket ? '<div class="ph-basket" id="target" aria-hidden="true">🧺</div>'
+      card.innerHTML = (basket ? '<div class="ph-basket" id="target" aria-hidden="true">' + (s.bin || "🧺") + '</div>'
         : '<img class="ph-sunny" id="target" src="' + base + L.character.img + '" alt="' + (s.finish.alt || L.character.alt) + '" style="margin:10px 0 14px">') +
         '<h1>' + s.finish.title + '</h1><p>' + s.finish.text + '</p>';
       fed = total; shine();

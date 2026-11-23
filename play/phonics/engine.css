@@ -178,3 +178,11 @@ a.ph-tile { text-decoration: none; cursor: pointer; }
 @media (max-width: 600px) { .ph-card.ph-center.has-repeat { padding-top: 66px; }
   .ph-card.ph-center.has-repeat > h1, .ph-card.ph-center.has-repeat > p { padding-left: 0; padding-right: 0; text-align: center; } }
 @media (max-width: 420px) { .ph-letter.two { min-width: 0; width: 30%; padding: 0 4px; font-size: 40px; } .ph-letters { gap: 10px; } }
+
+/* 23 Nov: small intro animations (lesson t): a finger tapping and a puff of air */
+.ph-anim { display: flex; justify-content: center; gap: 34px; font-size: 44px; line-height: 1; height: 58px; margin: 2px 0 4px; }
+.ph-tapfinger { display: inline-block; animation: phTap .55s ease-in-out infinite; }
+.ph-puff { display: inline-block; animation: phPuff 1.6s ease-out infinite; }
+@keyframes phTap { 0%, 100% { transform: translateY(-10px); } 50% { transform: translateY(6px); } }
+@keyframes phPuff { 0% { opacity: 0; transform: translateX(-16px) scale(.6); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateX(28px) scale(1.25); } }
+@media (prefers-reduced-motion: reduce) { .ph-tapfinger, .ph-puff { animation: none; } }
