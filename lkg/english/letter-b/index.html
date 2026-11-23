@@ -166,6 +166,27 @@
       </li>
     </ul>
 
+    <section class="story-video" aria-labelledby="story-title">
+      <h2 id="story-title" class="pack-title">Watch the Letter B story</h2>
+      <p class="pack-text">Benny the Bear and the Banana: the sound of B, picture words, how to write B and b, and a quick quiz. 3 minutes.</p>
+      <div class="video-box" id="vbox">
+        <button class="video-play" type="button" aria-label="Play the video: Letter B for Kids: Benny the Bear and the Banana">
+          <img src="../../../images/letter-b-story.webp" width="960" height="540" loading="lazy" alt="Letter B story video: Benny the Bear and the Banana">
+          <span class="video-icon" aria-hidden="true">&#9654;</span>
+        </button>
+      </div>
+      <p class="video-note">Plays from YouTube when you press play.</p>
+    </section>
+    <script>
+      (function () {
+        var box = document.getElementById("vbox");
+        if (!box) return;
+        box.querySelector(".video-play").addEventListener("click", function () {
+          box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/L-cNPOGzOt0?autoplay=1&rel=0" title="Letter B for Kids: Benny the Bear and the Banana" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+        });
+      })();
+    </script>
+
     <nav class="letter-nav" aria-label="Other letters">
       <a href="../letter-a/">← Letter A</a>
       <a href="../">All letters</a>
