@@ -16,11 +16,11 @@ VP.lesson({
   },
   steps: [
     { type: "intro", title: "Meet Tara the Tiger", audio: ["t_hello_tiger", "t_hello"], hearLabel: "🔊 Hear the t sound",
-      text: "Tick, tick! <b>t</b>, <b>t</b>, <b>t</b>! Hello! I am Tara. I tap my tail: <b>t</b>, <b>t</b>, <b>t</b>! I love the sound <b>t</b>, like <b>t</b>iger. Can you say <b>t</b>?" },
+      text: "Tick, tick! <b>t</b>, <b>t</b>, <b>t</b>! What was that sound? Look! Tara the Tiger is here! Hello! I am Tara. I tap my tail: <b>t</b>, <b>t</b>, <b>t</b>! I love the sound <b>t</b>, like <b>t</b>iger. Can you say <b>t</b>?" },
     { type: "intro", title: "Tap with Tara", img: "tara_tail.webp", alt: "Tara the Tiger tapping her tail", audio: "t_tap", hearLabel: "🔊 Hear the t sound",
       text: "Tap your finger on the table with Tara: <b>t</b>, <b>t</b>, <b>t</b>!" },
     { type: "intro", title: "Feel the t sound", audio: "t_puff", hearLabel: "🔊 Hear the t sound",
-      text: "<b>t</b> is a quiet sound. Put your hand in front of your mouth and say <b>t</b>. Can you feel a little puff of air?" },
+      text: "<b>t</b> is a quiet sound. Put your hand in front of your mouth and say <b>t</b>. Can you feel a little puff of air? <span class=\"ph-cap\">(Grown-up: show it first, then let your child try.)</span>" },
     { type: "discover", title: "Tara makes Tt!", audio: "t_trail", hearLabel: "🔊 Say the t sound", seconds: 5,
       text: "Tara walks and makes a letter <b>t</b>: big <b>T</b> and small <b>t</b>.",
       path: "M 90 80 L 90 230 M 35 80 L 145 80 M 212 112 L 212 198 Q 212 234 248 226 M 188 145 L 238 145" },
