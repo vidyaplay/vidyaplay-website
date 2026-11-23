@@ -1,5 +1,6 @@
 /* VidyaPlay phonics lesson engine (Phase 1, 14 Nov 2026). Plain JavaScript, no libraries.
    A lesson is data (lessons/<id>.js calls VP.lesson({...})); this file turns the data into screens.
+   (23 Nov: intro and done steps may set img/alt to show another character picture; lessons without it are unchanged.)
    Step types: intro, listen, pictures (games: tap, basket, oddOneOut), letters, trace, done.
    Progress: localStorage "vp_phonics_v1" (old format {done:{s:2}} is read and upgraded, never deleted).
    ?legacy=1 turns off the Phase 1 improvements (used by the parity test to prove nothing changed). */
@@ -144,7 +145,7 @@
   // ---------- step types ----------
   var TYPES = {};
   TYPES.intro = function (s) {
-    card.innerHTML = '<h1>' + s.title + '</h1><img class="ph-sunny" src="' + base + L.character.img + '" alt="' + L.character.alt + '">' +
+    card.innerHTML = '<h1>' + s.title + '</h1><img class="ph-sunny" src="' + base + (s.img || L.character.img) + '" alt="' + (s.alt || L.character.alt) + '">' +
       '<p>' + s.text + '</p><div class="ph-big">' + (L.bigLetter || L.letter) + '</div>';
     var hear = btn(s.hearLabel, function () { sound(); nextB.disabled = false; }, "alt");
     var nextB = btn("Next", next); nextB.disabled = true;
@@ -410,7 +411,7 @@
     prog.history[L.id] = h; save(); drawMap();
     var idx = -1; order.forEach(function (o, i) { if (o.id === L.id) idx = i; });
     var nxt = order[idx + 1], nxtReady = FEAT.unlock && nxt && registry[nxt.id];
-    card.innerHTML = '<img class="ph-sunny" src="' + base + L.character.img + '" alt="' + L.character.alt + '"><h1>' + s.title + '</h1><div class="ph-stars">' + "★".repeat(stars) + '</div>' +
+    card.innerHTML = '<img class="ph-sunny" src="' + base + (s.img || L.character.img) + '" alt="' + (s.alt || L.character.alt) + '"><h1>' + s.title + '</h1><div class="ph-stars">' + "★".repeat(stars) + '</div>' +
       '<p>' + s.text + '</p>' + (nxt ? '<p class="ph-cap">Next lesson: <b>' + nxt.id + '</b>' + (nxtReady ? '' : ' (coming soon)') + '.</p>' : '') +
       (s.link ? '<a class="ph-link" href="' + s.link.href + '">' + s.link.text + '</a><br>' : '');
     if (nxtReady) { var a = btn("Next lesson ▶", function () { location.search = "?l=" + nxt.id; }); card.appendChild(a); }
