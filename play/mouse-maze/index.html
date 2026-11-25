@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mouse Maze: Letter M Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free letter M game for LKG kids: help the mouse get home by tapping moon, mango, monkey, milk and mushroom. Works on phones, no sign-up.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=11">
+  <link rel="canonical" href="https://vidyaplay.in/play/mouse-maze/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Mouse Maze: Letter M Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free letter M game for LKG kids: help the mouse get home by tapping moon, mango, monkey, milk and mushroom. Works on phones, no sign-up.">
+  <meta property="og:url" content="https://vidyaplay.in/play/mouse-maze/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Mouse Maze (only used on this page) ===== */
+    .game-card { position: relative; max-width: 480px; margin: 0 auto 20px; padding: 12px 10px 14px; border-radius: 24px; background: #EAF6E4; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 19px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .maze { position: relative; padding: 4px 6px 6px; border-radius: 20px; background: linear-gradient(#D7EFC9, #BFE3A9); }
+    .trail { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .home-row { display: flex; justify-content: center; height: 84px; }
+    .home-row img { height: 84px; width: auto; }
+    .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 5px 4px; border-radius: 16px; transition: opacity .3s, background .3s; }
+    .row.later { opacity: .45; }
+    .row.now { background: rgba(255, 255, 255, .55); }
+    .tile { position: relative; aspect-ratio: 1 / 1; max-height: 74px; margin: 0 auto; width: 100%; padding: 5px; border: 3px solid #7A8B5E; border-radius: 50%;
+      background: #FFFDF5; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+    .row.now .tile { border-color: #2C3550; box-shadow: 0 3px 0 #2C3550; }
+    .tile img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+    .tile:focus-visible { border-color: var(--blue); border-width: 5px; outline: none; }
+    .tile.right { border-color: #2E9E4F; background: #E8F7EA; box-shadow: 0 0 0 4px #2E9E4F; }
+    .tile.nope::after { content: "✕"; position: absolute; right: -6px; top: -6px; width: 28px; height: 28px; border-radius: 50%;
+      background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 16px; font-weight: 800; line-height: 22px; text-align: center; }
+    .tile.wig { animation: wiggle .45s ease-in-out; }
+    .start-row { height: 70px; }
+    .mouse { position: absolute; left: 0; top: 0; width: 64px; height: auto; pointer-events: none; z-index: 5; transition: transform .55s cubic-bezier(.3,.6,.4,1.2); }
+    .mouse.shake { animation: shake .5s ease-in-out; }
+    .mouse.party { animation: dance .8s ease-in-out infinite; }
+    .go { position: absolute; inset: 0; z-index: 8; display: flex; align-items: center; justify-content: center; border-radius: 20px; background: rgba(255, 255, 255, .55); }
+    .go[hidden] { display: none; }
+    .tip { margin: 6px 0 0; font-size: 15px; color: #5A6377; }
+    .heard { margin: 4px 0 0; min-height: 30px; font-size: 20px; font-weight: 800; color: var(--navy); }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+    @keyframes shake { 0%, 100% { rotate: 0deg; } 25% { rotate: -10deg; } 50% { rotate: 10deg; } 75% { rotate: -5deg; } }
+    @keyframes dance { 0%, 100% { rotate: -4deg; } 50% { rotate: 4deg; } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 9; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 14px 14px;
+      border-radius: 20px; background: #FFFFFF; box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win img { height: 90px; width: auto; }
+    .win-big { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 17px; color: var(--navy); }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 480px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 480px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .mouse, .tile { animation: none !important; transition: none !important; } }
+  </style>
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
+  <script>
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Mouse Maze","item":"https://vidyaplay.in/play/mouse-maze/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../play/phonics/">Phonics lessons (new)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/phonics/">Phonics</a>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Mouse Maze</span>
+    </nav>
+    <!-- back-to-letter --><p class="back-link"><a class="button btn-download" href="../../lkg/english/letter-m/">&larr; Back to Letter M worksheets</a></p><!--/ back-to-letter -->
+
+    <h1 class="page-title">Mouse Maze</h1>
+    <p class="facts">LKG English · Letter M · Ages 3.5 to 5</p>
+
+    <section class="game-card" id="card" aria-label="Mouse Maze game">
+      <div class="game-top">
+        <p class="game-ask">Help the mouse get home! Tap the pictures that start with <span class="orange">m</span>.</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <div class="maze" id="maze">
+        <svg class="trail" id="trail" aria-hidden="true"></svg>
+        <div class="home-row"><img id="home" src="mouse_home.webp" width="300" height="290" alt="The mouse's home: a tree stump with a red door"></div>
+        <div id="rows"></div>
+        <div class="start-row" aria-hidden="true"></div>
+        <img class="mouse" id="mouse" src="mouse_sit.webp" width="252" height="300" alt="">
+        <div class="go" id="go"><button class="button btn-play" id="start" type="button">▶ Play</button></div>
+      </div>
+      <p class="tip">Tap the picture in the bright row. Only <b>m</b> pictures open the way!</p>
+      <p class="heard" id="heard" aria-live="polite">&nbsp;</p>
+      <p class="score-text" id="score" aria-live="polite">Step 0 of 5</p>
+      <div class="win" id="win" hidden>
+        <img src="mouse_jump.webp" width="247" height="300" alt="The happy mouse jumping">
+        <p class="win-big">Hooray! The mouse is home!</p>
+        <p class="win-text">moon, mango, monkey, milk, mushroom: all start with the m sound.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-M4_Help_the_Monkey_Reach_the_Mango.pdf" download>Print the Letter M worksheet (PDF)</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say each word out loud and listen for the m sound at the start: mmm, moon. Then print the Letter M worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../parents/">Parent's guide</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // Mouse Maze: 5 rows from the bottom up; in the bright row tap the picture that starts with m and the mouse hops onto it.
+    var ROWS = [["moon", ["sun", "fish"]], ["mango", ["dog", "hen"]], ["monkey", ["sun", "fish"]], ["milk", ["hen", "dog"]], ["mushroom", ["fish", "sun"]]];
+    var ASK = "Help the mouse get home! Tap the pictures that start with m.";
+    var maze = document.getElementById("maze"), rowsBox = document.getElementById("rows"), mouse = document.getElementById("mouse"), home = document.getElementById("home");
+    var trail = document.getElementById("trail"), heard = document.getElementById("heard"), score = document.getElementById("score"), win = document.getElementById("win"), go = document.getElementById("go");
+    var step = 0, rows = [], finished = false, started = false, busy = false, idleT = null, hints = 0, winT = [], last = null;
+
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "hop") { tone(500, 900, 0, 0.14, 0.25); }
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    // Voice: her recorded clips (chained), the phone's own voice only as a back-up if a clip is missing.
+    var NAMES = ["ins_mouse", "moon", "mango", "monkey", "milk", "mushroom", "sun", "fish", "dog", "hen", "not_m", "yes", "mouse_home"], clips = {};
+    NAMES.forEach(function (k) {
+      var a = new Audio(); a.preload = "auto";
+      a.addEventListener("canplaythrough", function () { a._ok = true; }); a.addEventListener("error", function () { a._ok = false; });
+      a.src = "audio/" + k + ".mp3"; clips[k] = a;
+    });
+    function stopClips() { NAMES.forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    var voice = null;
+    function pickVoice() {
+      if (!window.speechSynthesis) return;
+      var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return v.localService && /^en[-_](IN|GB|US)/i.test(v.lang); })[0] || vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
+    }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    var pendingT = [];
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
+    function speak(text, then) {
+      var done = false; function once() { if (done) return; done = true; if (then) then(); }
+      if (!window.speechSynthesis) { if (then) later(once, 900); return; }
+      try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(text); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
+        if (then) { u.onend = once; later(once, 3600); } window.speechSynthesis.speak(u); } catch (e) { if (then) later(once, 900); }
+    }
+    function say(names, text, then) {
+      cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { if (then) later(then, 900); return; }
+      var list = names.map(function (n) { return clips[n]; });
+      if (list.some(function (c) { return !c || c._ok === false; })) { speak(text, then); return; }
+      var i = 0;
+      (function next() {
+        if (i >= list.length) { if (then) then(); return; }
+        var c = list[i++]; c.currentTime = 0; c.onended = function () { c.onended = null; next(); };
+        var pr = c.play();
+        if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) { c.onended = null; speak(text, then); } });
+      })();
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇"; soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+    });
+    document.getElementById("hear").addEventListener("click", function () { say(["ins_mouse"], ASK); });
+
+    function shuffle(l) { for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = l[i]; l[i] = l[j]; l[j] = t; } return l; }
+    function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
+    function pulse(el, cls, ms) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function () { el.classList.remove(cls); }, ms); }
+    function spot(el, lift) {                         // centre of an element inside the maze box, the mouse stands on it
+      var m = maze.getBoundingClientRect(), r = el.getBoundingClientRect();
+      return { x: r.left - m.left + r.width / 2, y: r.top - m.top + r.height / 2 - (lift || 0) };
+    }
+    function place(p) { var w = mouse.offsetWidth, h = mouse.offsetHeight || w * 1.2; mouse.style.transform = "translate(" + (p.x - w / 2) + "px," + (p.y - h / 2) + "px)"; }
+    function startSpot() { var m = maze.getBoundingClientRect(); return { x: m.width / 2, y: m.height - 40 }; }
+    function line(a, b) {                             // dotted paw trail from the last stop to the new one
+      var NS = "http://www.w3.org/2000/svg", l = document.createElementNS(NS, "line");
+      l.setAttribute("x1", a.x); l.setAttribute("y1", a.y); l.setAttribute("x2", b.x); l.setAttribute("y2", b.y);
+      l.setAttribute("stroke", "#8A6B3E"); l.setAttribute("stroke-width", "6"); l.setAttribute("stroke-linecap", "round"); l.setAttribute("stroke-dasharray", "2 14");
+      trail.appendChild(l);
+    }
+    function mark() {
+      rows.forEach(function (r, i) { r.el.className = "row" + (i === step && !finished ? " now" : (i > step ? " later" : "")); r.el.querySelectorAll(".tile").forEach(function (t) { t.tabIndex = i === step ? 0 : -1; }); });
+      score.textContent = "Step " + step + " of " + rows.length;
+    }
+    function armIdle(again) {                         // nothing tapped for 9 s: the right picture wiggles (3 times at most)
+      clearTimeout(idleT); if (!again) hints = 0;
+      idleT = setTimeout(function () {
+        if (finished || !started) return;
+        if (!busy && hints < 3 && rows[step]) { pulse(rows[step].right, "wig", 480); hints++; }
+        armIdle(true);
+      }, 9000);
+    }
+    function showWin() {
+      if (finished || step < rows.length) return;
+      finished = true; clearTimeout(idleT); mark(); play("win");
+      mouse.src = "mouse_jump.webp"; mouse.classList.add("party"); win.hidden = false; document.getElementById("again").focus();
+      say(["mouse_home"], "Hooray! The mouse is home!");
+    }
+    function tap(r, t, word, ok) {
+      if (!started || finished || busy || r.i !== step) { if (started && !finished && r.i !== step && rows[step]) pulse(rows[step].el, "wig", 480); return; }
+      armIdle();
+      if (!ok) {
+        t.classList.add("nope"); pulse(t, "wig", 480); setTimeout(function () { t.classList.remove("nope"); }, 1400);
+        pulse(mouse, "shake", 520); play("nope");
+        var no = cap(word) + " doesn't start with m."; heard.textContent = no; say([word, "not_m"], no); return;
+      }
+      busy = true; t.classList.add("right"); mouse.src = "mouse_walk.webp"; play("hop");
+      var p = spot(t, 24); line(last, spot(t)); place(p); last = spot(t);
+      var yes = "Yes! Well done! " + cap(word) + "."; heard.textContent = yes;
+      step++; mark();
+      if (step === rows.length) {                    // last stop: hop home, then the win box
+        setTimeout(function () { var h = spot(home, 10); line(last, spot(home)); place(h); }, 900);
+        say(["yes", word], yes, function () { winT.push(setTimeout(showWin, 400)); });
+        winT.push(setTimeout(showWin, 6000));
+      } else { say(["yes", word], yes); setTimeout(function () { busy = false; mouse.src = "mouse_sit.webp"; }, 650); }
+    }
+    function build() {
+      rowsBox.innerHTML = ""; trail.innerHTML = ""; rows = [];
+      ROWS.forEach(function (R, i) {
+        var el = document.createElement("div"), row = { i: i, el: el };
+        shuffle([[R[0], true], [R[1][0], false], [R[1][1], false]]).forEach(function (w) {
+          var t = document.createElement("button"); t.type = "button"; t.className = "tile"; t.setAttribute("aria-label", w[0]);
+          t.innerHTML = '<img alt="" width="120" height="120">'; t.querySelector("img").setAttribute("src", w[0] + ".webp");
+          if (w[1]) row.right = t;
+          t.addEventListener("click", function () { tap(row, t, w[0], w[1]); });
+          el.appendChild(t);
+        });
+        rows.push(row);
+      });
+      rows.slice().reverse().forEach(function (r) { rowsBox.appendChild(r.el); });   // row 1 at the bottom, near the mouse
+    }
+    function newRound() {
+      cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); winT.forEach(clearTimeout); winT = [];
+      step = 0; finished = false; busy = false; win.hidden = true; heard.innerHTML = "&nbsp;";
+      mouse.classList.remove("party"); mouse.src = "mouse_sit.webp"; build(); mark();
+      mouse.style.transition = "none"; last = startSpot(); place({ x: last.x, y: last.y - 6 }); void mouse.offsetWidth; mouse.style.transition = "";
+      if (started) { armIdle(); say(["ins_mouse"], ASK); }
+    }
+    document.getElementById("start").addEventListener("click", function () {   // first tap unlocks sound on phones, then the question is read
+      started = true; go.hidden = true; armIdle(); say(["ins_mouse"], ASK);
+      if (rows[0]) rows[0].el.querySelector(".tile").focus({ preventScroll: true });
+    });
+    document.getElementById("again").addEventListener("click", function () { newRound(); if (rows[0]) rows[0].el.querySelector(".tile").focus(); });
+    window.addEventListener("resize", function () { if (!started) { last = startSpot(); place({ x: last.x, y: last.y - 6 }); } });
+    mouse.addEventListener("load", function () { if (!started) { last = startSpot(); place({ x: last.x, y: last.y - 6 }); } }, { once: true });
+    newRound();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+<!-- vp-progress -->
+  <script>
+    // Progress (her ask 19 Nov): when the win box shows, remember this game on THIS device only (no data is sent)
+    (function () {
+      var slug = location.pathname.split("/").filter(Boolean).pop();
+      var box = document.getElementById("win") || document.getElementById("end");
+      if (!box || !slug) return;
+      function mark() { try { var d = JSON.parse(localStorage.getItem("vp_played") || "{}"); d[slug] = (d[slug] || 0) + 1; localStorage.setItem("vp_played", JSON.stringify(d)); } catch (e) {} }
+      new MutationObserver(function () { if (!box.hidden) mark(); }).observe(box, {attributes: true, attributeFilter: ["hidden"]});
+    })();
+  </script>
+</body>
+</html>

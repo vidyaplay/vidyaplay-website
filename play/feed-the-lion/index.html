@@ -222,7 +222,7 @@
   <script>
   (function () {
     // Feed the Lion: drag a picture to the lion. L things are eaten, the others hop back.
-    var FOODS = [["lamp", true], ["leaf", true], ["lemon", true], ["ladder", true], ["ball", false], ["cup", false]];
+    var FOODS = [["lamp", true], ["leaf", true], ["lemon", true], ["ladder", true], ["sun", false], ["cup", false]];
     var NEED = 4;
     var ASK = "The lion is hungry. Feed him things that start with L.";
     var tray = document.getElementById("tray"), lionBox = document.getElementById("lion"), basket = document.getElementById("basket");
@@ -259,7 +259,7 @@
     }
     // Voice: her recorded clips (chained), the phone's own voice only as a back-up if a clip is missing.
     var CLIPS = { ins_lion: "audio/ins_lion.mp3", lamp: "audio/lamp.mp3", leaf: "audio/leaf.mp3", lemon: "audio/lemon.mp3", ladder: "audio/ladder.mp3",
-      ball: "audio/ball.mp3", cup: "audio/cup.mp3", not_l: "audio/not_l.mp3", lion_full: "audio/lion_full.mp3",
+      sun: "audio/sun.mp3", cup: "audio/cup.mp3", not_l: "audio/not_l.mp3", lion_full: "audio/lion_full.mp3",
       yes_well_done: "../../audio/voice/yes_well_done.mp3" };
     var clips = {};
     Object.keys(CLIPS).forEach(function (k) {
