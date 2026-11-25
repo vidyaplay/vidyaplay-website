@@ -30,6 +30,24 @@
   <style>
     /* ===== Game: Wash Hands: When? (only used on this page) ===== */
     .start-box { display: none; }
+    .game-card.pre { min-height: 520px; background: linear-gradient(180deg, #BFE3FF 0%, #E3F2FD 70%, #D6ECFB 100%); }
+    .sb-hero { position: relative; width: 210px; height: 210px; object-fit: contain; animation: bob 2.4s ease-in-out infinite; }
+    .sb-title { position: relative; margin: 0; font-family: "Baloo 2", inherit; font-size: 34px; font-weight: 800; color: #1E5BB8; line-height: 1.1; }
+    .sb-line { position: relative; margin: 0 16px 6px; font-size: 18px; font-weight: 700; color: var(--navy); }
+    .sb-go { position: relative; font-size: 22px; padding: 14px 30px; border-radius: 40px; box-shadow: 0 6px 0 #C46F00; animation: pulse 1.6s ease-in-out infinite; }
+    .sb-bubbles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; border-radius: 24px; }
+    .sb-bubbles i { position: absolute; bottom: -40px; border-radius: 50%; border: 3px solid #7FB8E8; background: radial-gradient(circle at 30% 30%, #FFFFFF 0 20%, rgba(255,255,255,0.35) 45%); animation: float 6s linear infinite; }
+    .sb-bubbles i:nth-child(1) { left: 6%; width: 34px; height: 34px; animation-delay: 0s; }
+    .sb-bubbles i:nth-child(2) { left: 20%; width: 20px; height: 20px; animation-delay: 1.5s; }
+    .sb-bubbles i:nth-child(3) { left: 34%; width: 42px; height: 42px; animation-delay: 3s; }
+    .sb-bubbles i:nth-child(4) { left: 50%; width: 24px; height: 24px; animation-delay: 0.8s; }
+    .sb-bubbles i:nth-child(5) { left: 64%; width: 38px; height: 38px; animation-delay: 2.2s; }
+    .sb-bubbles i:nth-child(6) { left: 78%; width: 22px; height: 22px; animation-delay: 4s; }
+    .sb-bubbles i:nth-child(7) { left: 88%; width: 30px; height: 30px; animation-delay: 1s; }
+    .sb-bubbles i:nth-child(8) { left: 42%; width: 16px; height: 16px; animation-delay: 4.8s; }
+    @keyframes float { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(-600px) translateX(14px); opacity: 0; } }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
     .game-card.pre > :not(.start-box) { visibility: hidden; }
     .game-card.pre .start-box { display: flex; visibility: visible; position: absolute; inset: 0; align-items: center; justify-content: center; flex-direction: column; gap: 10px; z-index: 2; }
     .game-card { position: relative; max-width: 520px; margin: 0 auto 20px; padding: 14px 12px 16px; border-radius: 24px; background: #E3F2FD; text-align: center; overflow: hidden; }
@@ -70,7 +88,7 @@
     .game-help { max-width: 520px; margin: 0 auto 24px; text-align: center; }
     .game-help .buttons { margin-bottom: 14px; }
     .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
-    @media (prefers-reduced-motion: reduce) { .choice, .bubbles i { animation: none !important; } }
+    @media (prefers-reduced-motion: reduce) { .choice, .bubbles i, .sb-hero, .sb-go, .sb-bubbles i { animation: none !important; } }
   </style>
 
   <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
@@ -159,7 +177,7 @@
     <h1 class="page-title">Wash Hands: When?</h1>
     <p class="facts">LKG EVS · Good habits · Ages 3.5 to 5</p>
     <section class="game-card pre" id="card" aria-label="Wash Hands game">
-      <div class="start-box"><p class="game-ask">Ready for clean hands?</p><button class="button btn-play" id="start" type="button">&#9654; Start</button></div>
+      <div class="start-box"><span class="sb-bubbles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><img class="sb-hero" src="hero.webp" alt="" width="210" height="210"><p class="sb-title">Germs, go away!</p><p class="sb-line">When do we wash our hands? Let's find out!</p><button class="button btn-play sb-go" id="start" type="button">🧼 Let's play!</button></div>
       <div class="game-top">
         <p class="game-ask">Do we wash our hands now?</p>
         <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
@@ -210,7 +228,7 @@
       {pic: "story", text: "Listening to a story.", wash: false, clip: "story_time"}
     ];
     var INS = {clip: "ins_wash", text: "Do we wash our hands now? Tap the soap, or tap no need."};
-    var YES = {clip: "yes_well_done", text: "Yes! Well done."}, TRY = {clip: "try_again", text: "Try again!"};
+    var YES = {clip: "yes", text: "Yes!"}, TRY = {clip: "try_again", text: "Try again!"};
     var WASH = {clip: "wash_with_soap", text: "Wash our hands with soap!"}, SKIP = {clip: "no_need_clean", text: "No need. Our hands are clean."};
     var basket = document.getElementById("basket"), scoreText = document.getElementById("score"), choices = document.getElementById("choices");
     var win = document.getElementById("win"), pic = document.getElementById("pic"), what = document.getElementById("what"), heard = document.getElementById("heard");
@@ -275,7 +293,7 @@
     function newGame() { clearTimeout(timer); choices.removeAttribute("inert"); order = shuffle(ROUNDS.slice()); round = 0;
       basket.innerHTML = ""; ROUNDS.forEach(function () { basket.appendChild(document.createElement("span")); }); win.hidden = true; update(); showRound(); }
     document.getElementById("again").addEventListener("click", function () { newGame(); sayList([INS, cur()]); });
-    ["ins_wash", "yes_well_done", "try_again", "wash_with_soap", "no_need_clean", "clean_hands_win"].concat(ROUNDS.map(function (r) { return r.clip; })).forEach(clip);
+    ["ins_wash", "yes", "try_again", "wash_with_soap", "no_need_clean", "clean_hands_win"].concat(ROUNDS.map(function (r) { return r.clip; })).forEach(clip);
     newGame();
     // phones block sound until the first tap, so the first question is read after Start
     document.getElementById("start").addEventListener("click", function () { document.getElementById("card").classList.remove("pre"); sayList([INS, cur()]); });
