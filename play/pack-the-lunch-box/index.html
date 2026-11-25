@@ -89,17 +89,18 @@
       .food { padding: 4px; border-width: 3px; }
     }
 
-    .inbox { position: absolute; left: 14%; right: 14%; top: 47%; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; pointer-events: none; }
+    .inbox { position: absolute; left: 16%; right: 16%; top: 57%; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; pointer-events: none; }
     .inbox img { width: 22%; height: auto; animation: pop 0.35s ease-out; }
     @keyframes pop { 0% { transform: scale(0); } 80% { transform: scale(1.15); } 100% { transform: scale(1); } }
     .start-box { display: none; }
     .game-card.pre > :not(.start-box) { visibility: hidden; }
     .game-card.pre { min-height: 520px; background: linear-gradient(180deg, #FFE9A8 0%, #FFF6DD 70%, #FCEBC0 100%); }
     .game-card.pre .start-box { display: flex; visibility: visible; position: absolute; inset: 0; align-items: center; justify-content: center; flex-direction: column; gap: 10px; z-index: 2; }
-    .sb-hero { position: relative; width: 220px; height: 200px; }
-    .sb-hero .box { width: 100%; height: 100%; animation: bob 2.4s ease-in-out infinite; }
+    .sb-hero { position: relative; width: 220px; height: 214px; }
+    .sb-hero .box { width: 100%; height: 100%; object-fit: contain; animation: bob 2.4s ease-in-out infinite; }
     .sb-hero .f { position: absolute; width: 74px; height: 74px; animation: dropin 2.4s ease-in-out infinite; }
-    .sb-hero .f1 { left: 18px; top: -10px; } .sb-hero .f2 { left: 74px; top: -34px; animation-delay: 0.4s; } .sb-hero .f3 { left: 132px; top: -10px; animation-delay: 0.8s; }
+    .sb-hero .f1 { left: 10px; top: -58px; } .sb-hero .f2 { left: 74px; top: -80px; animation-delay: 0.4s; } .sb-hero .f3 { left: 138px; top: -58px; animation-delay: 0.8s; }
+    .game-card.pre .start-box { padding-top: 60px; }
     .sb-title { margin: 0; font-family: "Baloo 2", inherit; font-size: 34px; font-weight: 800; color: #2E7D32; line-height: 1.1; }
     .sb-line { margin: 0 16px 6px; font-size: 18px; font-weight: 700; color: var(--navy); }
     .sb-go { font-size: 22px; padding: 14px 30px; border-radius: 40px; box-shadow: 0 6px 0 #C46F00; animation: pulse 1.6s ease-in-out infinite; }
@@ -198,7 +199,7 @@
 
     <section class="game-card pre" id="card" aria-label="Pack the Lunch Box game">
       <div class="start-box">
-        <div class="sb-hero" aria-hidden="true"><img class="f f1" src="apple.webp" alt=""><img class="f f2" src="banana.webp" alt=""><img class="f f3" src="carrot.webp" alt=""><img class="box" src="lunchbox.svg" alt=""></div>
+        <div class="sb-hero" aria-hidden="true"><img class="f f1" src="apple.webp" alt=""><img class="f f2" src="banana.webp" alt=""><img class="f f3" src="carrot.webp" alt=""><img class="box" src="lunchbox.webp" alt=""></div>
         <p class="sb-title">Lunch time!</p>
         <p class="sb-line">Fill the lunch box with every day food.</p>
         <button class="button btn-play sb-go" id="start" type="button">🍎 Let's pack!</button>
@@ -208,7 +209,7 @@
         <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
         <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
       </div>
-      <div class="lion-wrap" id="lion"><img src="lunchbox.svg" width="240" height="200" alt="An open lunch box"><div class="inbox" id="inbox" aria-hidden="true"></div></div>
+      <div class="lion-wrap" id="lion"><img src="lunchbox.webp" width="560" height="552" alt="An open blue lunch box"><div class="inbox" id="inbox" aria-hidden="true"></div></div>
       <div class="tray" id="tray"></div>
       <p class="tip">Drag or tap a food to pack it.</p>
       <p class="heard" id="heard" aria-live="polite">&nbsp;</p>
