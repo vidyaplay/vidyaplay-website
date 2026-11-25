@@ -41,11 +41,14 @@
     .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 5px 4px; border-radius: 16px; transition: opacity .3s, background .3s; }
     .row.later { opacity: .45; }
     .row.now { background: rgba(255, 255, 255, .55); }
+    .row.done { opacity: .7; }
+    .row.wig { animation: nudge .45s ease-in-out; }
+    @keyframes nudge { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 50% { transform: translateX(8px); } 75% { transform: translateX(-4px); } }
     .tile { position: relative; aspect-ratio: 1 / 1; max-height: 74px; margin: 0 auto; width: 100%; padding: 5px; border: 3px solid #7A8B5E; border-radius: 50%;
       background: #FFFDF5; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
     .row.now .tile { border-color: #2C3550; box-shadow: 0 3px 0 #2C3550; }
     .tile img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
-    .tile:focus-visible { border-color: var(--blue); border-width: 5px; outline: none; }
+    .tile:focus-visible { outline: 4px solid #1E88E5; outline-offset: 3px; }
     .tile.right { border-color: #2E9E4F; background: #E8F7EA; box-shadow: 0 0 0 4px #2E9E4F; }
     .tile.nope::after { content: "✕"; position: absolute; right: -6px; top: -6px; width: 28px; height: 28px; border-radius: 50%;
       background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 16px; font-weight: 800; line-height: 22px; text-align: center; }
@@ -54,7 +57,7 @@
     .mouse { position: absolute; left: 0; top: 0; width: 64px; height: auto; pointer-events: none; z-index: 5; transition: transform .55s cubic-bezier(.3,.6,.4,1.2); }
     .mouse.shake { animation: shake .5s ease-in-out; }
     .mouse.party { animation: dance .8s ease-in-out infinite; }
-    .go { position: absolute; inset: 0; z-index: 8; display: flex; align-items: center; justify-content: center; border-radius: 20px; background: rgba(255, 255, 255, .55); }
+    .go { position: absolute; inset: 0; z-index: 8; display: flex; align-items: flex-start; padding-top: 96px; justify-content: center; border-radius: 20px; background: rgba(255, 255, 255, .55); }
     .go[hidden] { display: none; }
     .tip { margin: 6px 0 0; font-size: 15px; color: #5A6377; }
     .heard { margin: 4px 0 0; min-height: 30px; font-size: 20px; font-weight: 800; color: var(--navy); }
@@ -73,6 +76,15 @@
     .game-help { max-width: 480px; margin: 0 auto 24px; text-align: center; }
     .game-help .buttons { margin-bottom: 14px; }
     .parent-note { margin: 0 auto 28px; max-width: 480px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    /* phone held sideways: a shorter board so it fits the screen height */
+    @media (orientation: landscape) and (max-height: 560px) {
+      .home-row, .home-row img { height: 52px; }
+      .tile { max-height: 44px; padding: 3px; border-width: 2px; }
+      .row { padding: 2px 4px; gap: 6px; }
+      .start-row { height: 46px; }
+      .mouse { width: 44px; }
+      .go { padding-top: 24px; }
+    }
     @media (prefers-reduced-motion: reduce) { .mouse, .tile { animation: none !important; transition: none !important; } }
   </style>
   <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
@@ -291,15 +303,28 @@
       l.setAttribute("stroke", "#8A6B3E"); l.setAttribute("stroke-width", "6"); l.setAttribute("stroke-linecap", "round"); l.setAttribute("stroke-dasharray", "2 14");
       trail.appendChild(l);
     }
+    function show(el) {                               // keep the bright row on screen (phones)
+      if (!el) return; var r = el.getBoundingClientRect(), vh = window.innerHeight;
+      if (r.top < 60 || r.bottom > vh - 10) { try { el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" }); } catch (e) { el.scrollIntoView(); } }
+    }
+    var path = [];                                    // elements the mouse stood on (for redrawing after a turn of the phone)
+    function redraw() {
+      trail.innerHTML = ""; var pts = path.map(function (el) { return el === "start" ? startSpot() : spot(el); });
+      for (var i = 1; i < pts.length; i++) line(pts[i - 1], pts[i]);
+      var cur = path[path.length - 1]; if (!cur) return; last = pts[pts.length - 1];
+      mouse.style.transition = "none";
+      if (cur === "start") place({ x: last.x, y: last.y - 6 }); else place(cur === home ? spot(home, 10) : spot(cur, 24));
+      void mouse.offsetWidth; mouse.style.transition = "";
+    }
     function mark() {
-      rows.forEach(function (r, i) { r.el.className = "row" + (i === step && !finished ? " now" : (i > step ? " later" : "")); r.el.querySelectorAll(".tile").forEach(function (t) { t.tabIndex = i === step ? 0 : -1; }); });
+      rows.forEach(function (r, i) { r.el.className = "row" + (i === step && !finished ? " now" : (i > step ? " later" : " done")); r.el.querySelectorAll(".tile").forEach(function (t) { t.tabIndex = i === step ? 0 : -1; }); });
       score.textContent = "Step " + step + " of " + rows.length;
     }
     function armIdle(again) {                         // nothing tapped for 9 s: the right picture wiggles (3 times at most)
       clearTimeout(idleT); if (!again) hints = 0;
       idleT = setTimeout(function () {
         if (finished || !started) return;
-        if (!busy && hints < 3 && rows[step]) { pulse(rows[step].right, "wig", 480); hints++; }
+        if (!busy && hints < 3 && rows[step]) { pulse(rows[step].right, "wig", 480); hints++; if (hints === 3) say(["ins_mouse"], ASK); }
         armIdle(true);
       }, 9000);
     }
@@ -318,14 +343,17 @@
         var no = cap(word) + " doesn't start with m."; heard.textContent = no; say([word, "not_m"], no); return;
       }
       busy = true; t.classList.add("right"); mouse.src = "mouse_walk.webp"; play("hop");
-      var p = spot(t, 24); line(last, spot(t)); place(p); last = spot(t);
+      var p = spot(t, 24); line(last, spot(t)); place(p); last = spot(t); path.push(t);
       var yes = "Yes! Well done! " + cap(word) + "."; heard.textContent = yes;
       step++; mark();
       if (step === rows.length) {                    // last stop: hop home, then the win box
-        setTimeout(function () { var h = spot(home, 10); line(last, spot(home)); place(h); }, 900);
+        setTimeout(function () { var h = spot(home, 10); line(last, spot(home)); place(h); path.push(home); }, 900);
         say(["yes", word], yes, function () { winT.push(setTimeout(showWin, 400)); });
         winT.push(setTimeout(showWin, 6000));
-      } else { say(["yes", word], yes); setTimeout(function () { busy = false; mouse.src = "mouse_sit.webp"; }, 650); }
+      } else {
+        say(["yes", word], yes);
+        setTimeout(function () { busy = false; mouse.src = "mouse_sit.webp"; var nx = rows[step]; if (nx) { show(nx.el); var ft = nx.el.querySelector(".tile"); if (document.activeElement && document.activeElement.classList.contains("tile")) ft.focus({ preventScroll: true }); } }, 650);
+      }
     }
     function build() {
       rowsBox.innerHTML = ""; trail.innerHTML = ""; rows = [];
@@ -346,15 +374,15 @@
       cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); winT.forEach(clearTimeout); winT = [];
       step = 0; finished = false; busy = false; win.hidden = true; heard.innerHTML = "&nbsp;";
       mouse.classList.remove("party"); mouse.src = "mouse_sit.webp"; build(); mark();
-      mouse.style.transition = "none"; last = startSpot(); place({ x: last.x, y: last.y - 6 }); void mouse.offsetWidth; mouse.style.transition = "";
+      mouse.style.transition = "none"; last = startSpot(); path = ["start"]; place({ x: last.x, y: last.y - 6 }); void mouse.offsetWidth; mouse.style.transition = "";
       if (started) { armIdle(); say(["ins_mouse"], ASK); }
     }
     document.getElementById("start").addEventListener("click", function () {   // first tap unlocks sound on phones, then the question is read
       started = true; go.hidden = true; armIdle(); say(["ins_mouse"], ASK);
-      if (rows[0]) rows[0].el.querySelector(".tile").focus({ preventScroll: true });
+      if (rows[0]) { show(rows[0].el); rows[0].el.querySelector(".tile").focus({ preventScroll: true }); }
     });
-    document.getElementById("again").addEventListener("click", function () { newRound(); if (rows[0]) rows[0].el.querySelector(".tile").focus(); });
-    window.addEventListener("resize", function () { if (!started) { last = startSpot(); place({ x: last.x, y: last.y - 6 }); } });
+    document.getElementById("again").addEventListener("click", function () { newRound(); if (rows[0]) { show(rows[0].el); rows[0].el.querySelector(".tile").focus({ preventScroll: true }); } });
+    window.addEventListener("resize", function () { if (!finished || path.length) redraw(); });
     mouse.addEventListener("load", function () { if (!started) { last = startSpot(); place({ x: last.x, y: last.y - 6 }); } }, { once: true });
     newRound();
   })();
