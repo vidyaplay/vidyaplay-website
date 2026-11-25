@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Necklace Maker: Letter N Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free letter N game for LKG kids: make a necklace with nest, net, nose, nut and noodles beads, then big N and small n. Works on phones.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=11">
+  <link rel="canonical" href="https://vidyaplay.in/play/necklace-maker/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Necklace Maker: Letter N Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free letter N game for LKG kids: make a necklace with nest, net, nose, nut and noodles beads, then big N and small n. Works on phones.">
+  <meta property="og:url" content="https://vidyaplay.in/play/necklace-maker/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: Necklace Maker (only used on this page) ===== */
+    .game-card { position: relative; max-width: 480px; margin: 0 auto 20px; padding: 12px 10px 14px; border-radius: 24px; background: #FDEFF4; text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 6px; }
+    .game-ask { margin: 0; font-size: 19px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .board { position: relative; }
+    .string { position: relative; width: 100%; aspect-ratio: 400 / 150; margin: 0 0 6px; border-radius: 18px; background: linear-gradient(#FFFFFF, #FBE3EC); }
+    .string svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .string.shine { animation: shine 1.2s ease-in-out infinite; }
+    .on-string { position: absolute; width: 13%; aspect-ratio: 1 / 1; transform: translate(-50%, -50%); }
+    .bead { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 1 / 1; padding: 10%;
+      border-radius: 50%; border: 5px solid var(--c, #E8456B); background: radial-gradient(circle at 35% 30%, #FFFFFF 0 55%, #FFF4F8 70%);
+      box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .08), 0 3px 0 rgba(44, 53, 80, .25); font-family: inherit; cursor: pointer;
+      -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+    .bead img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+    .bead .let { font-size: clamp(30px, 9vw, 46px); font-weight: 800; line-height: 1; color: var(--navy); }
+    .on-string .bead { border-width: 3px; padding: 8%; cursor: default; box-shadow: 0 2px 0 rgba(44, 53, 80, .25); }
+    .on-string .bead .let { font-size: clamp(14px, 4vw, 22px); }
+    .tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px 14px; border-radius: 18px; background: #FFFFFF; }
+    .tray .bead:focus-visible { outline: 4px solid #1E88E5; outline-offset: 3px; }
+    .bead.used { visibility: hidden; }
+    .bead.nope::after { content: "✕"; position: absolute; right: -6px; top: -6px; width: 28px; height: 28px; border-radius: 50%;
+      background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 16px; font-weight: 800; line-height: 22px; text-align: center; }
+    .bead.wig { animation: wiggle .45s ease-in-out; }
+    .fly { position: fixed; z-index: 40; pointer-events: none; transition: left .5s ease-in, top .5s ease-in, width .5s ease-in; }
+    .go { position: absolute; inset: 0; z-index: 8; display: flex; align-items: flex-start; justify-content: center; padding-top: 70px; border-radius: 20px; background: rgba(255, 255, 255, .6); }
+    .go[hidden] { display: none; }
+    .tip { margin: 6px 0 0; font-size: 15px; color: #5A6377; }
+    .heard { margin: 4px 0 0; min-height: 30px; font-size: 20px; font-weight: 800; color: var(--navy); }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
+    @keyframes shine { 0%, 100% { box-shadow: 0 0 0 rgba(245, 197, 24, 0); } 50% { box-shadow: 0 0 26px 6px rgba(245, 197, 24, .8); } }
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 9; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 14px 14px;
+      border-radius: 20px; background: #FFFFFF; box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win-big { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 17px; color: var(--navy); }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 480px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 480px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (orientation: landscape) and (max-height: 560px) {
+      .game-card { max-width: 760px; }
+      .board { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center; }
+      .tray { grid-template-columns: repeat(3, 17vh); justify-content: center; gap: 6px; padding: 6px; }
+      .go { padding-top: 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .bead, .string, .fly { animation: none !important; transition: none !important; } }
+  </style>
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
+  <script>
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Necklace Maker","item":"https://vidyaplay.in/play/necklace-maker/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../play/phonics/">Phonics lessons (new)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+        </ul></div>
+      <a href="../../play/phonics/">Phonics</a>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Necklace Maker</span>
+    </nav>
+    <!-- back-to-letter --><p class="back-link"><a class="button btn-download" href="../../lkg/english/letter-n/">&larr; Back to Letter N worksheets</a></p><!--/ back-to-letter -->
+
+    <h1 class="page-title">Necklace Maker</h1>
+    <p class="facts">LKG English · Letter N · Ages 3.5 to 5</p>
+
+    <section class="game-card" id="card" aria-label="Necklace Maker game">
+      <div class="game-top">
+        <p class="game-ask" id="ask">Let's make a necklace! Tap the beads that start with <span class="orange">n</span>.</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <div class="board" id="board">
+        <div class="string" id="string" aria-label="The necklace string"><svg viewBox="0 0 400 150" aria-hidden="true">
+          <path id="cord" d="M 18 22 Q 200 230 382 22" fill="none" stroke="#B9774A" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="18" cy="22" r="8" fill="#F5C518" stroke="#8A6B1E" stroke-width="2"/><circle cx="382" cy="22" r="8" fill="#F5C518" stroke="#8A6B1E" stroke-width="2"/></svg></div>
+        <div class="tray" id="tray"></div>
+        <div class="go" id="go"><button class="button btn-play" id="start" type="button">▶ Play</button></div>
+      </div>
+      <p class="tip" id="tip">Tap a bead to put it on the necklace.</p>
+      <p class="heard" id="heard" aria-live="polite">&nbsp;</p>
+      <p class="score-text" id="score" aria-live="polite">0 of 10 beads</p>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">📿✨📿</div>
+        <p class="win-big">Wow! What a beautiful necklace!</p>
+        <p class="win-text">nest, net, nose, nut, noodles start with the n sound. Big N and small n!</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-N3_Big_N_Small_n_Necklace.pdf" download>Print the Letter N necklace worksheet (PDF)</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say each word out loud and listen for the n sound at the start: nnn, nest. In round 2, point to big N and small n. Then print the Letter N necklace worksheet and do it on paper.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../parents/">Parent's guide</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // Necklace Maker: round 1 = beads whose picture starts with n; round 2 = beads with big N or small n. Each right bead slides onto the string.
+    var R1 = [["nest", true], ["net", true], ["nose", true], ["nut", true], ["noodles", true], ["sun", false], ["fish", false], ["dog", false], ["hen", false]];
+    var R2 = [["N", true], ["n", true], ["N", true], ["n", true], ["n", true], ["s", false], ["a", false], ["t", false], ["A", false]];
+    var COLS = ["#E8456B", "#1E88E5", "#2E9E4F", "#F39A1E", "#7B4CC9"], PER = 5, TOTAL = 10;
+    var ASK1 = "Let's make a necklace! Tap the beads that start with n.", ASK2 = "Now find the big N and the small n.";
+    var tray = document.getElementById("tray"), stringBox = document.getElementById("string"), cord = document.getElementById("cord"), ask = document.getElementById("ask");
+    var heard = document.getElementById("heard"), score = document.getElementById("score"), win = document.getElementById("win"), go = document.getElementById("go");
+    var round = 1, got = 0, started = false, finished = false, busy = false, idleT = null, hints = 0, winT = [], beads = [];
+
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "click") { tone(900, 1300, 0, 0.08, 0.25); tone(1300, 1600, 0.06, 0.06, 0.18); }
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); tone(1047, 1050, 0.5, 0.4, 0.2); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    var NAMES = ["ins_necklace", "nest", "net", "nose", "nut", "noodles", "sun", "fish", "dog", "hen", "not_n", "yes", "ins_letters", "not_letter", "necklace_done"], clips = {};
+    NAMES.forEach(function (k) {
+      var a = new Audio(); a.preload = "auto";
+      a.addEventListener("canplaythrough", function () { a._ok = true; }); a.addEventListener("error", function () { a._ok = false; });
+      a.src = "audio/" + k + ".mp3"; clips[k] = a;
+    });
+    function stopClips() { NAMES.forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    var voice = null;
+    function pickVoice() {
+      if (!window.speechSynthesis) return;
+      var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return v.localService && /^en[-_](IN|GB|US)/i.test(v.lang); })[0] || vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
+    }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    var pendingT = [];
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
+    function speak(text, then) {
+      var done = false; function once() { if (done) return; done = true; if (then) then(); }
+      if (!window.speechSynthesis) { if (then) later(once, 900); return; }
+      try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(text); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
+        if (then) { u.onend = once; later(once, 3600); } window.speechSynthesis.speak(u); } catch (e) { if (then) later(once, 900); }
+    }
+    function say(names, text, then) {
+      cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { if (then) later(then, 900); return; }
+      var list = names.map(function (n) { return clips[n]; });
+      if (list.some(function (c) { return !c || c._ok === false; })) { speak(text, then); return; }
+      var i = 0;
+      (function next() {
+        if (i >= list.length) { if (then) then(); return; }
+        var c = list[i++]; c.currentTime = 0; c.onended = function () { c.onended = null; next(); };
+        var pr = c.play();
+        if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) { c.onended = null; speak(text, then); } });
+      })();
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇"; soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+    });
+    function askNow() { if (round === 1) say(["ins_necklace"], ASK1); else say(["ins_letters"], ASK2); }
+    document.getElementById("hear").addEventListener("click", askNow);
+
+    function shuffle(l) { for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = l[i]; l[i] = l[j]; l[j] = t; } return l; }
+    function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
+    function pulse(el, cls, ms) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function () { el.classList.remove(cls); }, ms); }
+    function slotPos(k) {                             // k-th place on the string (0..9), in % of the string box
+      var L = cord.getTotalLength(), p = cord.getPointAtLength(L * (0.09 + 0.82 * k / (TOTAL - 1)));
+      return { x: p.x / 400 * 100, y: p.y / 150 * 100 };
+    }
+    function show(el) { if (!el) return; var r = el.getBoundingClientRect(); if (r.top < 60 || r.bottom > innerHeight - 10) { try { el.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) { el.scrollIntoView(); } } }
+    function armIdle(again) {                         // nothing tapped for 9 s: a right bead wiggles (3 times at most), then the question again
+      clearTimeout(idleT); if (!again) hints = 0;
+      idleT = setTimeout(function () {
+        if (finished || !started) return;
+        var left = beads.filter(function (b) { return b.ok && !b.used; });
+        if (!busy && left.length && hints < 3) { pulse(left[hints % left.length].el, "wig", 480); hints++; if (hints === 3) askNow(); }
+        armIdle(true);
+      }, 9000);
+    }
+    function update() { score.textContent = got + " of " + TOTAL + " beads"; }
+    function makeBead(label, isPic, col) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "bead"; b.style.setProperty("--c", col);
+      if (isPic) { b.innerHTML = '<img alt="" width="120" height="120">'; b.querySelector("img").setAttribute("src", label + ".webp"); b.setAttribute("aria-label", label + " bead"); }
+      else { b.innerHTML = '<span class="let"></span>'; b.querySelector(".let").textContent = label; b.setAttribute("aria-label", (label === label.toUpperCase() ? "big " : "small ") + label + " bead"); }
+      return b;
+    }
+    function thread(item) {                           // the bead flies to the next place on the string
+      var k = got, pos = slotPos(k), sb = stringBox.getBoundingClientRect(), src = item.el.getBoundingClientRect();
+      var w = sb.width * 0.13, tx = sb.left + sb.width * pos.x / 100 - w / 2, ty = sb.top + sb.height * pos.y / 100 - w / 2;
+      var fly = makeBead(item.label, round === 1, item.col); fly.classList.add("fly"); fly.tabIndex = -1; fly.setAttribute("aria-hidden", "true");
+      fly.style.left = src.left + "px"; fly.style.top = src.top + "px"; fly.style.width = src.width + "px"; document.body.appendChild(fly);
+      item.used = true; item.el.classList.add("used"); item.el.tabIndex = -1;
+      void fly.offsetWidth; fly.style.left = tx + "px"; fly.style.top = ty + "px"; fly.style.width = w + "px";
+      setTimeout(function () {
+        fly.remove(); var holder = document.createElement("div"); holder.className = "on-string"; holder.style.left = pos.x + "%"; holder.style.top = pos.y + "%";
+        var onS = makeBead(item.label, round === 1 || k < PER ? item.pic : false, item.col); onS.tabIndex = -1; onS.setAttribute("aria-hidden", "true");
+        if (item.pic) { onS.innerHTML = '<img alt="" width="60" height="60">'; onS.querySelector("img").setAttribute("src", item.label + ".webp"); }
+        holder.appendChild(onS); stringBox.appendChild(holder); play("click");
+      }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 520);
+    }
+    function nextFocus() { var f = beads.filter(function (b) { return !b.used; })[0]; if (f && document.activeElement && document.activeElement.classList.contains("bead")) f.el.focus({ preventScroll: true }); }
+    function showWin() {
+      if (finished || got < TOTAL) return;
+      finished = true; clearTimeout(idleT); play("win"); stringBox.classList.add("shine"); tray.setAttribute("inert", "");
+      win.hidden = false; document.getElementById("again").focus(); say(["necklace_done"], "Wow! What a beautiful necklace!");
+    }
+    function tap(item) {
+      if (!started || finished || busy || item.used) return;
+      armIdle();
+      if (!item.ok) {
+        item.el.classList.add("nope"); pulse(item.el, "wig", 480); setTimeout(function () { item.el.classList.remove("nope"); }, 1400); play("nope");
+        if (round === 1) { var t = cap(item.label) + " doesn't start with n."; heard.textContent = t; say([item.label, "not_n"], t); }
+        else { heard.textContent = "That's not N. Look again!"; say(["not_letter"], "That's not N. Look again!"); }
+        return;
+      }
+      busy = true; thread(item); got++; update();
+      var line = round === 1 ? "Yes! Well done! " + cap(item.label) + "." : "Yes! Well done! " + (item.label === "N" ? "Big N." : "Small n.");
+      heard.textContent = line;
+      var names = round === 1 ? ["yes", item.label] : ["yes"];
+      if (got === TOTAL) { say(names, line, function () { winT.push(setTimeout(showWin, 400)); }); winT.push(setTimeout(showWin, 5000)); return; }
+      if (got === PER) {                              // round 1 done: letters round
+        say(names, line, function () { later(startRound2, 300); });
+        winT.push(setTimeout(function () { if (round === 1) startRound2(); }, 5000));
+        return;
+      }
+      say(names, line); setTimeout(function () { busy = false; nextFocus(); }, 600);
+    }
+    function fill(list, isPic) {
+      tray.innerHTML = ""; beads = [];
+      shuffle(list.slice()).forEach(function (w, i) {
+        var col = COLS[i % COLS.length], el = makeBead(w[0], isPic, col), item = { label: w[0], ok: w[1], pic: isPic, el: el, col: col, used: false };
+        el.addEventListener("click", function () { tap(item); }); beads.push(item); tray.appendChild(el);
+      });
+    }
+    function startRound2() {
+      if (round === 2 || finished) return;
+      round = 2; busy = false; ask.innerHTML = 'Now find the big <span class="orange">N</span> and the small <span class="orange">n</span>.';
+      heard.innerHTML = "&nbsp;"; fill(R2, false); show(tray); armIdle(); say(["ins_letters"], ASK2);
+      if (beads[0]) beads[0].el.focus({ preventScroll: true });
+    }
+    function newRound() {
+      cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); winT.forEach(clearTimeout); winT = [];
+      round = 1; got = 0; finished = false; busy = false; win.hidden = true; heard.innerHTML = "&nbsp;"; tray.removeAttribute("inert"); stringBox.classList.remove("shine");
+      [].slice.call(stringBox.querySelectorAll(".on-string")).forEach(function (n) { n.remove(); });
+      ask.innerHTML = 'Let\'s make a necklace! Tap the beads that start with <span class="orange">n</span>.';
+      fill(R1, true); update();
+      if (started) { armIdle(); askNow(); }
+    }
+    document.getElementById("start").addEventListener("click", function () {
+      started = true; go.hidden = true; armIdle(); askNow(); show(tray); if (beads[0]) beads[0].el.focus({ preventScroll: true });
+    });
+    document.getElementById("again").addEventListener("click", function () { newRound(); show(tray); if (beads[0]) beads[0].el.focus({ preventScroll: true }); });
+    newRound();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+<!-- vp-progress -->
+  <script>
+    // Progress (her ask 19 Nov): when the win box shows, remember this game on THIS device only (no data is sent)
+    (function () {
+      var slug = location.pathname.split("/").filter(Boolean).pop();
+      var box = document.getElementById("win") || document.getElementById("end");
+      if (!box || !slug) return;
+      function mark() { try { var d = JSON.parse(localStorage.getItem("vp_played") || "{}"); d[slug] = (d[slug] || 0) + 1; localStorage.setItem("vp_played", JSON.stringify(d)); } catch (e) {} }
+      new MutationObserver(function () { if (!box.hidden) mark(); }).observe(box, {attributes: true, attributeFilter: ["hidden"]});
+    })();
+  </script>
+</body>
+</html>
