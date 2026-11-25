@@ -53,7 +53,7 @@
     .bead.nope::after { content: "✕"; position: absolute; right: -6px; top: -6px; width: 28px; height: 28px; border-radius: 50%;
       background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 16px; font-weight: 800; line-height: 22px; text-align: center; }
     .bead.wig { animation: wiggle .45s ease-in-out; }
-    .fly { position: fixed; z-index: 40; pointer-events: none; transition: left .5s ease-in, top .5s ease-in, width .5s ease-in; }
+    .fly { position: fixed; z-index: 40; pointer-events: none; padding: 6px !important; transition: left .5s ease-in, top .5s ease-in, width .5s ease-in; }
     .go { position: absolute; inset: 0; z-index: 8; display: flex; align-items: flex-start; justify-content: center; padding-top: 70px; border-radius: 20px; background: rgba(255, 255, 255, .6); }
     .go[hidden] { display: none; }
     .tip { margin: 6px 0 0; font-size: 15px; color: #5A6377; }
@@ -214,8 +214,8 @@
   <script>
   (function () {
     // Necklace Maker: round 1 = beads whose picture starts with n; round 2 = beads with big N or small n. Each right bead slides onto the string.
-    var R1 = [["nest", true], ["net", true], ["nose", true], ["nut", true], ["noodles", true], ["sun", false], ["fish", false], ["dog", false], ["hen", false]];
-    var R2 = [["N", true], ["n", true], ["N", true], ["n", true], ["n", true], ["s", false], ["a", false], ["t", false], ["A", false]];
+    var R1 = [["nest", true], ["net", true], ["nose", true], ["nut", true], ["noodles", true], ["sun", false], ["fish", false], ["dog", false], ["ball", false]];
+    var R2 = [["N", true], ["n", true], ["N", true], ["n", true], ["n", true], ["s", false], ["c", false], ["t", false], ["A", false]];
     var COLS = ["#E8456B", "#1E88E5", "#2E9E4F", "#F39A1E", "#7B4CC9"], PER = 5, TOTAL = 10;
     var ASK1 = "Let's make a necklace! Tap the beads that start with n.", ASK2 = "Now find the big N and the small n.";
     var tray = document.getElementById("tray"), stringBox = document.getElementById("string"), cord = document.getElementById("cord"), ask = document.getElementById("ask");
@@ -239,7 +239,7 @@
         if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); tone(1047, 1050, 0.5, 0.4, 0.2); }
       } catch (e) { /* no sound: the game still works */ }
     }
-    var NAMES = ["ins_necklace", "nest", "net", "nose", "nut", "noodles", "sun", "fish", "dog", "hen", "not_n", "yes", "ins_letters", "not_letter", "necklace_done"], clips = {};
+    var NAMES = ["ins_necklace", "nest", "net", "nose", "nut", "noodles", "sun", "fish", "dog", "ball", "not_n", "yes", "ins_letters", "not_letter", "necklace_done"], clips = {};
     NAMES.forEach(function (k) {
       var a = new Audio(); a.preload = "auto";
       a.addEventListener("canplaythrough", function () { a._ok = true; }); a.addEventListener("error", function () { a._ok = false; });
@@ -289,6 +289,7 @@
       var L = cord.getTotalLength(), p = cord.getPointAtLength(L * (0.09 + 0.82 * k / (TOTAL - 1)));
       return { x: p.x / 400 * 100, y: p.y / 150 * 100 };
     }
+    function top() { var c = document.getElementById("card"), r = c.getBoundingClientRect(); if (r.top < 60 || r.top > innerHeight * 0.4) { try { window.scrollTo({ top: window.pageYOffset + r.top - 70, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); } catch (e) { window.scrollTo(0, window.pageYOffset + r.top - 70); } } }
     function show(el) { if (!el) return; var r = el.getBoundingClientRect(); if (r.top < 60 || r.bottom > innerHeight - 10) { try { el.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) { el.scrollIntoView(); } } }
     function armIdle(again) {                         // nothing tapped for 9 s: a right bead wiggles (3 times at most), then the question again
       clearTimeout(idleT); if (!again) hints = 0;
@@ -320,7 +321,7 @@
         holder.appendChild(onS); stringBox.appendChild(holder); play("click");
       }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 520);
     }
-    function nextFocus() { var f = beads.filter(function (b) { return !b.used; })[0]; if (f && document.activeElement && document.activeElement.classList.contains("bead")) f.el.focus({ preventScroll: true }); }
+    function nextFocus(had) { var f = beads.filter(function (b) { return !b.used; })[0]; if (f && had) f.el.focus({ preventScroll: true }); }
     function showWin() {
       if (finished || got < TOTAL) return;
       finished = true; clearTimeout(idleT); play("win"); stringBox.classList.add("shine"); tray.setAttribute("inert", "");
@@ -335,7 +336,7 @@
         else { heard.textContent = "That's not N. Look again!"; say(["not_letter"], "That's not N. Look again!"); }
         return;
       }
-      busy = true; thread(item); got++; update();
+      var had = document.activeElement === item.el; busy = true; thread(item); got++; update();
       var line = round === 1 ? "Yes! Well done! " + cap(item.label) + "." : "Yes! Well done! " + (item.label === "N" ? "Big N." : "Small n.");
       heard.textContent = line;
       var names = round === 1 ? ["yes", item.label] : ["yes"];
@@ -345,7 +346,7 @@
         winT.push(setTimeout(function () { if (round === 1) startRound2(); }, 5000));
         return;
       }
-      say(names, line); setTimeout(function () { busy = false; nextFocus(); }, 600);
+      say(names, line); if (had) nextFocus(true); setTimeout(function () { busy = false; }, 600);
     }
     function fill(list, isPic) {
       tray.innerHTML = ""; beads = [];
@@ -362,16 +363,16 @@
     }
     function newRound() {
       cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); winT.forEach(clearTimeout); winT = [];
-      round = 1; got = 0; finished = false; busy = false; win.hidden = true; heard.innerHTML = "&nbsp;"; tray.removeAttribute("inert"); stringBox.classList.remove("shine");
+      round = 1; got = 0; finished = false; busy = false; win.hidden = true; heard.innerHTML = "&nbsp;"; if (started) tray.removeAttribute("inert"); else tray.setAttribute("inert", ""); stringBox.classList.remove("shine");
       [].slice.call(stringBox.querySelectorAll(".on-string")).forEach(function (n) { n.remove(); });
       ask.innerHTML = 'Let\'s make a necklace! Tap the beads that start with <span class="orange">n</span>.';
       fill(R1, true); update();
       if (started) { armIdle(); askNow(); }
     }
     document.getElementById("start").addEventListener("click", function () {
-      started = true; go.hidden = true; armIdle(); askNow(); show(tray); if (beads[0]) beads[0].el.focus({ preventScroll: true });
+      started = true; go.hidden = true; tray.removeAttribute("inert"); armIdle(); askNow(); top(); if (beads[0]) beads[0].el.focus({ preventScroll: true });
     });
-    document.getElementById("again").addEventListener("click", function () { newRound(); show(tray); if (beads[0]) beads[0].el.focus({ preventScroll: true }); });
+    document.getElementById("again").addEventListener("click", function () { newRound(); top(); if (beads[0]) beads[0].el.focus({ preventScroll: true }); });
     newRound();
   })();
   </script>
