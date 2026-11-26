@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ABC Train: Alphabet Order Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free alphabet game for LKG kids: which letter comes next? Tap it to add a carriage to the ABC train. Works on phones, no sign-up.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=11">
+  <link rel="canonical" href="https://vidyaplay.in/play/abc-train/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="ABC Train: Alphabet Order Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free alphabet game for LKG kids: which letter comes next? Tap it to add a carriage to the ABC train. Works on phones, no sign-up.">
+  <meta property="og:url" content="https://vidyaplay.in/play/abc-train/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    /* ===== Game: ABC Train (only used on this page) ===== */
+    .start-box { display: none; }
+    .game-card.pre > :not(.start-box) { visibility: hidden; }
+    .game-card.pre { min-height: 480px; background: linear-gradient(180deg, #FFD9E4 0%, #FFF0F4 70%, #FBE2EC 100%); }
+    .game-card.pre .start-box { display: flex; visibility: visible; position: absolute; inset: 0; align-items: center; justify-content: center; flex-direction: column; gap: 12px; z-index: 2; }
+    .game-card { position: relative; max-width: 560px; margin: 0 auto 20px; padding: 14px 12px 16px; border-radius: 24px; background: #FFF0F4; text-align: center; overflow: hidden; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 8px; }
+    .game-ask { margin: 0; font-size: 20px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .track { position: relative; overflow: hidden; padding: 34px 4px 18px; border-radius: 18px; background: #FFFFFF; }
+    .track::after { content: ""; position: absolute; left: 0; right: 0; bottom: 12px; height: 4px; background: #8A94A6; border-radius: 2px; }
+    .train { display: flex; align-items: flex-end; gap: 4px; transition: transform 1.2s ease-in; }
+    .train.go { transform: translateX(110%); }
+    .engine, .car { position: relative; flex: none; height: 64px; border-radius: 10px; }
+    .engine { width: 70px; background: #E53935; border: 3px solid #2C3550; }
+    .engine::before { content: ""; position: absolute; left: 6px; top: -22px; width: 30px; height: 26px; background: #1E88E5; border: 3px solid #2C3550; border-radius: 6px; }
+    .engine::after { content: ""; position: absolute; right: 10px; top: -18px; width: 12px; height: 18px; background: #455A64; border: 3px solid #2C3550; border-radius: 3px; }
+    .car { width: min(15vw, 64px); background: #FFFFFF; border: 3px solid #2C3550; display: flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 800; color: var(--navy); }
+    .car.gap { border-style: dashed; border-color: #E8456B; color: #E8456B; }
+    .car.new { animation: hop 0.45s ease-out; background: #E8F5E9; border-color: #43A047; border-style: solid; }
+    .engine i, .car i { position: absolute; bottom: -9px; width: 16px; height: 16px; border-radius: 50%; background: #37474F; border: 2px solid #2C3550; }
+    .engine i:first-child, .car i:first-child { left: 8px; } .engine i:last-child, .car i:last-child { right: 8px; }
+    @keyframes hop { 0% { transform: translateY(-30px) scale(0.6); } 70% { transform: translateY(4px); } 100% { transform: translateY(0); } }
+    .say-word { margin: 8px 0 4px; min-height: 28px; font-size: 20px; font-weight: 800; color: var(--navy); }
+    .say-word .no { color: #C0392B; }
+    .choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
+    .choice { position: relative; border: 4px solid #FFFFFF; border-radius: 18px; background: #FFFFFF; padding: 10px 4px; cursor: pointer; font: inherit; font-size: 44px; font-weight: 800; color: var(--navy); min-height: 88px; -webkit-tap-highlight-color: transparent; }
+    .choice:focus-visible { outline: 4px solid var(--blue); }
+    .choice.nope { animation: wiggle 0.45s ease-in-out; }
+    .choice.nope::after { content: "✕"; position: absolute; right: -4px; top: -4px; width: 30px; height: 30px; border-radius: 50%; background: #E5533D; color: #FFFFFF; border: 3px solid #FFFFFF; font-size: 17px; font-weight: 800; line-height: 24px; }
+    .choice.good { border-color: #43A047; background: #E8F5E9; }
+    @keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 50% { transform: rotate(5deg); } 75% { transform: rotate(-3deg); } }
+    .score { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; }
+    .basket { display: flex; gap: 4px; }
+    .basket span { width: 22px; height: 22px; border-radius: 50%; border: 2.5px dashed #9AA3B2; background: #FFFFFF; }
+    .basket span.on { background: #E8456B; border: 2.5px solid #9C1F45; }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); }
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 14px 14px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 4px 18px rgba(44,53,80,0.18); z-index: 3; }
+    .win[hidden] { display: none; }
+    .win-big { margin: 0; font-size: 28px; font-weight: 800; color: #E8456B; }
+    .win-text { margin: 0 0 6px; font-size: 18px; color: var(--navy); }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .sb-title { margin: 0; font-family: "Baloo 2", inherit; font-size: 34px; font-weight: 800; color: #E8456B; line-height: 1.1; }
+    .sb-line { margin: 0 16px 4px; font-size: 18px; font-weight: 700; color: var(--navy); }
+    .sb-go { font-size: 22px; padding: 14px 30px; border-radius: 40px; box-shadow: 0 6px 0 #C46F00; animation: pulse 1.6s ease-in-out infinite; }
+    .sb-train { display: flex; align-items: flex-end; gap: 4px; animation: chug 2.6s ease-in-out infinite; }
+    .sb-train .car { font-size: 30px; width: 54px; height: 54px; }
+    @keyframes chug { 0%, 100% { transform: translateX(-10px); } 50% { transform: translateX(10px); } }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+    .game-help { max-width: 560px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 560px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { .choice, .car, .train, .sb-train, .sb-go { animation: none !important; transition: none !important; } }
+    @media (max-width: 420px) { .train { gap: 2px; } .engine { width: 46px; } .train .car { flex: 1 1 0; width: auto; min-width: 0; max-width: 64px; } }
+  </style>
+
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
+  <script>
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"ABC Train","item":"https://vidyaplay.in/play/abc-train/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals: Diwali</a></li>
+          <li><a href="../../festivals/christmas/">Festivals: Christmas</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../play/phonics/">Phonics lessons (new)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-z/">A to Z activities</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+          <li><a class="sub" href="../../festivals/christmas/">Christmas</a></li>
+        </ul></div>
+      <a href="../../play/phonics/">Phonics</a>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>ABC Train</span>
+    </nav>
+    <h1 class="page-title">ABC Train</h1>
+    <p class="facts">LKG English · A to Z · Ages 3.5 to 5</p>
+    <section class="game-card pre" id="card" aria-label="ABC Train game">
+      <div class="start-box">
+        <div class="sb-train" aria-hidden="true"><span class="engine"><i></i><i></i></span><span class="car">A<i></i><i></i></span><span class="car">B<i></i><i></i></span><span class="car">C<i></i><i></i></span></div>
+        <p class="sb-title">All aboard!</p>
+        <p class="sb-line">Help the ABC train find the next letter.</p>
+        <button class="button btn-play sb-go" id="start" type="button">🚂 Let's go!</button>
+      </div>
+      <div class="game-top">
+        <p class="game-ask">Which letter comes next?</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <div class="track"><div class="train" id="train" aria-live="polite"></div></div>
+      <p class="say-word" id="heard" aria-live="polite">&nbsp;</p>
+      <div class="choices" id="choices"></div>
+      <div class="score">
+        <div class="basket" id="basket" aria-hidden="true"></div>
+        <p class="score-text" id="score" aria-live="polite">0 of 8 done</p>
+      </div>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🚂🔤⭐</div>
+        <p class="win-big">All aboard! You know your ABC!</p>
+        <p class="win-text">A, B, C, D... all the way to Z.</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-download" href="../../lkg/english/a-to-z/">A to Z worksheets</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Say the letters on the train out loud, then ask "what comes next?". Sing the ABC song to check.
+    </p>
+  </main>
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../parents/">Parent's guide</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // ABC Train: 8 rounds; the train shows 3 letters in order, the child taps the 4th. Wrong letters are never neighbours or look-alikes.
+    var ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    var LOOK = ["EF", "MN", "OQ", "PR", "UV", "IJ", "CG", "VW", "BD", "KX"];
+    var INS = {clip: "ins_train", text: "Which letter comes next? Tap it to add a carriage."};
+    var YES = {clip: "yes", text: "Yes!"}, TRY = {clip: "try_again", text: "Try again!"}, WIN = {clip: "abc_win", text: "All aboard! You know your ABC!"};
+    var train = document.getElementById("train"), choices = document.getElementById("choices"), basket = document.getElementById("basket");
+    var scoreText = document.getElementById("score"), heard = document.getElementById("heard"), win = document.getElementById("win"), card = document.getElementById("card");
+    var ROUNDS = 8, starts = [], round = 0, locked = false, soundOn = true, audio = null, voice = null, timer = null;
+    var soundBtn = document.getElementById("sound");
+    function tone(f, e, s, l, v) { var t = audio.currentTime + s, o = audio.createOscillator(), g = audio.createGain();
+      o.type = "sine"; o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(e, t + l);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + l);
+      o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + l + 0.02); }
+    function play(kind) { if (!soundOn) return; try {
+      if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === "suspended") audio.resume();
+      if (kind === "toot") { tone(660, 640, 0, 0.25, 0.22); tone(880, 860, 0.05, 0.25, 0.12); tone(660, 640, 0.32, 0.35, 0.22); tone(880, 860, 0.37, 0.35, 0.12); }
+      if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+      if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); }
+    } catch (e) {} }
+    function pickVoice() { if (!window.speechSynthesis) return; var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return /^en[-_](IN|GB|US)/i.test(v.lang); })[0] || null; }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    function speakTTS(t) { if (!soundOn || !window.speechSynthesis) return; try { window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(t); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85; window.speechSynthesis.speak(u); } catch (e) {} }
+    var LIB = "../../audio/voice/", clips = {}, queue = [];
+    function clip(n) { if (!clips[n]) { var a = new Audio(); a.preload = "auto"; a._ok = null;
+        a.addEventListener("canplaythrough", function () { a._ok = true; }); a.addEventListener("error", function () { a._ok = false; });
+        a.src = LIB + n + ".mp3"; clips[n] = a; } return clips[n]; }
+    function stopAll() { queue = []; Object.keys(clips).forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+    function sayList(items) { stopAll(); if (!soundOn) return; queue = items.slice(); next(); }
+    function next() { var it = queue.shift(); if (!it) return; var c = it.clip ? clip(it.clip) : null;
+      if (c && c._ok !== false) { c.currentTime = 0; c.onended = function () { c.onended = null; next(); };
+        var pr = c.play(); if (pr && pr.catch) pr.catch(function (e) { if (e && e.name === "AbortError") return; speakTTS(it.text); setTimeout(next, 1800); }); }
+      else { speakTTS(it.text); setTimeout(next, 2400); } }
+    soundBtn.addEventListener("click", function () { soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
+      soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn) stopAll(); });
+    document.getElementById("hear").addEventListener("click", function () { sayList([INS]); });
+    function shuffle(l) { for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = l[i]; l[i] = l[j]; l[j] = t; } return l; }
+    function car(L, cls) { var c = document.createElement("span"); c.className = "car" + (cls ? " " + cls : ""); c.textContent = L;
+      c.appendChild(document.createElement("i")); c.appendChild(document.createElement("i")); return c; }
+    function update() { var d = basket.children; for (var i = 0; i < d.length; i++) d[i].className = i < round ? "on" : "";
+      scoreText.textContent = round + " of " + ROUNDS + " done"; }
+    function wrongs(ans) { var i = ABC.indexOf(ans), bad = {}; bad[ans] = 1;
+      [i - 3, i - 2, i - 1, i + 1].forEach(function (k) { if (ABC[k]) bad[ABC[k]] = 1; });       // never a letter on the train or right after the answer
+      LOOK.forEach(function (g) { if (g.indexOf(ans) > -1) { bad[g[0]] = 1; bad[g[1]] = 1; } });
+      return shuffle(ABC.filter(function (L) { return !bad[L]; })).slice(0, 2); }
+    function showRound() {
+      var s0 = starts[round], ans = ABC[s0 + 3]; train.className = "train"; train.innerHTML = "";
+      var e = document.createElement("span"); e.className = "engine"; e.appendChild(document.createElement("i")); e.appendChild(document.createElement("i")); train.appendChild(e);
+      for (var k = 0; k < 3; k++) train.appendChild(car(ABC[s0 + k]));
+      var gap = car("?", "gap"); gap.id = "gapcar"; train.appendChild(gap);
+      heard.innerHTML = "&nbsp;"; choices.innerHTML = ""; locked = false;
+      shuffle([ans].concat(wrongs(ans))).forEach(function (L) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "choice"; b.textContent = L; b.setAttribute("aria-label", "Letter " + L);
+        b.addEventListener("click", function () { answer(L, ans, b); }); choices.appendChild(b); });
+    }
+    function answer(L, ans, b) {
+      if (locked || round >= ROUNDS) return;
+      if (L === ans) {
+        locked = true; Array.prototype.forEach.call(choices.children, function (x) { x.classList.remove("nope"); }); b.classList.add("good");
+        var g = document.getElementById("gapcar"); g.className = "car new"; g.firstChild.nodeValue = ans;
+        play("toot"); heard.textContent = "Yes! " + ans + " comes next."; sayList([YES]); round++; update();
+        clearTimeout(timer);
+        timer = setTimeout(function () { train.classList.add("go"); }, 1300);
+        if (round === ROUNDS) timer = setTimeout(function () { train.classList.add("go"); setTimeout(function () { play("win"); win.hidden = false; choices.setAttribute("inert", ""); document.getElementById("again").focus(); sayList([WIN]); }, 1300); }, 1300);
+        else timer = setTimeout(function () { showRound(); sayList([INS]); }, 2800);
+      } else {
+        heard.innerHTML = '<span class="no">Not ' + L + '.</span> Say the letters again!';
+        b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); play("nope"); sayList([TRY]);
+        setTimeout(function () { b.classList.remove("nope"); }, 1400);
+      }
+    }
+    function newGame() { clearTimeout(timer); choices.removeAttribute("inert");
+      var all = []; for (var i = 0; i <= 22; i++) all.push(i);                     // start letter A..W, so the answer is D..Z
+      starts = shuffle(all).slice(0, ROUNDS).sort(function (a, b) { return a - b; });   // rounds go along the alphabet, A side first
+      round = 0; basket.innerHTML = ""; for (var k = 0; k < ROUNDS; k++) basket.appendChild(document.createElement("span"));
+      win.hidden = true; update(); showRound(); }
+    document.getElementById("again").addEventListener("click", function () { newGame(); sayList([INS]); });
+    ["ins_train", "yes", "try_again", "abc_win"].forEach(clip);
+    newGame();
+    document.getElementById("start").addEventListener("click", function () { card.classList.remove("pre"); sayList([INS]); });
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+<!-- vp-progress -->
+  <script>
+    // Progress (her ask 19 Nov): when the win box shows, remember this game on THIS device only (no data is sent)
+    (function () {
+      var slug = location.pathname.split("/").filter(Boolean).pop();
+      var box = document.getElementById("win") || document.getElementById("end");
+      if (!box || !slug) return;
+      function mark() { try { var d = JSON.parse(localStorage.getItem("vp_played") || "{}"); d[slug] = (d[slug] || 0) + 1; localStorage.setItem("vp_played", JSON.stringify(d)); } catch (e) {} }
+      new MutationObserver(function () { if (!box.hidden) mark(); }).observe(box, {attributes: true, attributeFilter: ["hidden"]});
+    })();
+  </script>
+</body>
+</html>
