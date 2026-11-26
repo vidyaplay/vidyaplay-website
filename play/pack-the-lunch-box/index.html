@@ -115,6 +115,8 @@
     @media (max-height: 820px) { .game-card.pre .sb-hero { width: 140px; height: 140px; } }
     @media (min-width: 700px) and (max-height: 900px) { .tray { max-width: 360px; margin-left: auto; margin-right: auto; } }
     @media (max-height: 680px) and (orientation: portrait) { .tray { max-width: 270px; margin-left: auto; margin-right: auto; } }
+    .game-card.pre .start-box { padding-top: 84px; }   /* room for the dropping fruit */
+    @media (max-height: 600px) { .game-card.pre .start-box { padding-bottom: 10px; gap: 6px; } }
   </style>
   <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
   <script>
@@ -442,7 +444,7 @@
       basket.innerHTML = ""; for (var i = 0; i < NEED; i++) basket.appendChild(document.createElement("span"));
       heard.innerHTML = "&nbsp;"; inbox.innerHTML = ""; win.hidden = true; update(); armIdle();
     }
-    document.getElementById("again").addEventListener("click", function () { newRound(); if (tray.firstChild) tray.firstChild.focus(); });
+    document.getElementById("again").addEventListener("click", function () { newRound(); card.scrollIntoView({block: "start"}); if (tray.firstChild) tray.firstChild.focus({preventScroll: true}); });
     newRound();
     // phones block sound until the first tap: the instruction is read after Start
     document.getElementById("start").addEventListener("click", function () { card.classList.remove("pre"); card.scrollIntoView({block: "start"}); say(["ins_lunch"], ASK); armIdle(); });
