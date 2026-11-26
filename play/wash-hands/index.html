@@ -89,6 +89,11 @@
     .game-help .buttons { margin-bottom: 14px; }
     .parent-note { margin: 0 auto 28px; max-width: 520px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
     @media (prefers-reduced-motion: reduce) { .choice, .bubbles i, .sb-hero, .sb-go, .sb-bubbles i { animation: none !important; } }
+    /* review 26 Nov: Start button on the first screen */
+    .game-card.pre { min-height: 0; }
+    .game-card.pre > :not(.start-box) { display: none; }
+    .game-card.pre .start-box { position: relative; inset: auto; padding: 14px 4px 20px; gap: 8px; }
+    @media (max-height: 820px) { .game-card.pre .sb-hero { width: 140px; height: 140px; } }
   </style>
 
   <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
@@ -258,15 +263,15 @@
     function sayList(items) { stopAll(); if (!soundOn) return; queue = items.slice(); next(); }
     function next() { var it = queue.shift(); if (!it) return; var c = it.clip ? clip(it.clip) : null;
       if (c && c._ok !== false) { c.currentTime = 0; c.onended = function () { c.onended = null; next(); };
-        var pr = c.play(); if (pr && pr.catch) pr.catch(function () { speakTTS(it.text); setTimeout(next, 1800); }); }
+        var pr = c.play(); if (pr && pr.catch) pr.catch(function (e) { if (e && e.name === "AbortError") return; speakTTS(it.text); setTimeout(next, 1800); }); }
       else { speakTTS(it.text); setTimeout(next, 2200); } }
     soundBtn.addEventListener("click", function () { soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
       if (!soundOn) stopAll(); });
     function shuffle(l) { for (var i = l.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = l[i]; l[i] = l[j]; l[j] = t; } return l; }
     function cur() { var r = order[round]; return {clip: r.clip, text: r.text}; }
-    document.getElementById("hear").addEventListener("click", function () { if (round < ROUNDS.length) sayList([INS, cur()]); });
-    document.getElementById("scene").addEventListener("click", function () { if (round < ROUNDS.length) sayList([cur()]); });
+    document.getElementById("hear").addEventListener("click", function () { if (!locked && round < ROUNDS.length) sayList([INS, cur()]); });
+    document.getElementById("scene").addEventListener("click", function () { if (!locked && round < ROUNDS.length) sayList([cur()]); });
     function update() { var d = basket.children; for (var i = 0; i < d.length; i++) d[i].className = i < round ? "on" : "";
       scoreText.textContent = round + " of " + ROUNDS.length + " done"; }
     function bubble() { bubbles.innerHTML = ""; for (var i = 0; i < 9; i++) { var b = document.createElement("i");
@@ -296,7 +301,7 @@
     ["ins_wash", "yes", "try_again", "wash_with_soap", "no_need_clean", "clean_hands_win"].concat(ROUNDS.map(function (r) { return r.clip; })).forEach(clip);
     newGame();
     // phones block sound until the first tap, so the first question is read after Start
-    document.getElementById("start").addEventListener("click", function () { document.getElementById("card").classList.remove("pre"); sayList([INS, cur()]); });
+    document.getElementById("start").addEventListener("click", function () { document.getElementById("card").classList.remove("pre"); document.getElementById("card").scrollIntoView({block: "start"}); sayList([INS, cur()]); });
   })();
   </script>
 <!-- nav-menu -->
