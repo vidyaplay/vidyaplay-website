@@ -83,6 +83,7 @@
     .game-help .buttons { margin-bottom: 14px; }
     .parent-note { margin: 0 auto 28px; max-width: 560px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
     @media (prefers-reduced-motion: reduce) { .choice, .car, .train, .sb-train, .sb-go { animation: none !important; transition: none !important; } }
+    @media (max-width: 420px) { .train { gap: 2px; } .engine { width: 46px; } .train .car { flex: 1 1 0; width: auto; min-width: 0; max-width: 64px; } }
   </style>
 
   <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
@@ -244,7 +245,7 @@
     function sayList(items) { stopAll(); if (!soundOn) return; queue = items.slice(); next(); }
     function next() { var it = queue.shift(); if (!it) return; var c = it.clip ? clip(it.clip) : null;
       if (c && c._ok !== false) { c.currentTime = 0; c.onended = function () { c.onended = null; next(); };
-        var pr = c.play(); if (pr && pr.catch) pr.catch(function () { speakTTS(it.text); setTimeout(next, 1800); }); }
+        var pr = c.play(); if (pr && pr.catch) pr.catch(function (e) { if (e && e.name === "AbortError") return; speakTTS(it.text); setTimeout(next, 1800); }); }
       else { speakTTS(it.text); setTimeout(next, 2400); } }
     soundBtn.addEventListener("click", function () { soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇";
       soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
