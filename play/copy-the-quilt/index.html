@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copy the Quilt: Letter Q Game for Kids | VidyaPlay</title>
+  <meta name="description" content="Free letter Q game for LKG kids: tap the squares to make the big quilt the same as the small one. 3 quilts, easy to harder. Works on phones.">
+
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../../vidyaplay-icon-512.png">
+  <link rel="apple-touch-icon" href="../../vidyaplay-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../style.css?v=11">
+  <link rel="canonical" href="https://vidyaplay.in/play/copy-the-quilt/">
+  <!-- Share preview (WhatsApp, Facebook and others) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VidyaPlay">
+  <meta property="og:title" content="Copy the Quilt: Letter Q Game for Kids | VidyaPlay">
+  <meta property="og:description" content="Free letter Q game for LKG kids: tap the squares to make the big quilt the same as the small one. 3 quilts, easy to harder. Works on phones.">
+  <meta property="og:url" content="https://vidyaplay.in/play/copy-the-quilt/">
+  <meta property="og:image" content="https://vidyaplay.in/images/og-vidyaplay.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VidyaPlay: free printable worksheets and learning games for Nursery and LKG">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    .game-card { position: relative; max-width: 480px; margin: 0 auto 20px; padding: 12px 10px 14px; border-radius: 24px; background: var(--bg, #FDEFF4); text-align: center; }
+    .game-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px 8px; }
+    .game-ask { margin: 0; font-size: 19px; font-weight: 800; color: var(--navy); text-align: left; line-height: 1.2; }
+    .sound-btn { flex: none; width: 48px; height: 48px; border: 0; border-radius: 14px; background: #FFFFFF; font-size: 22px; cursor: pointer; }
+    .btn-pair { display: flex; gap: 6px; flex: none; }
+    .go { position: absolute; inset: 0; z-index: 8; display: flex; align-items: center; justify-content: center; border-radius: 20px; background: rgba(255, 255, 255, .55); }
+    .go[hidden] { display: none; }
+    .tip { margin: 8px 0 0; font-size: 15px; color: #5A6377; }
+    .heard { margin: 4px 0 0; min-height: 30px; font-size: 20px; font-weight: 800; color: var(--navy); }
+    .score-text { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+    .win { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 9; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 14px 14px;
+      border-radius: 20px; background: #FFFFFF; box-shadow: 0 4px 18px rgba(44, 53, 80, 0.18); }
+    .win[hidden] { display: none; }
+    .win-icons { font-size: 30px; letter-spacing: 6px; }
+    .win-big { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.1; color: var(--orange); text-wrap: balance; }
+    .win-text { margin: 0 0 6px; font-size: 17px; color: var(--navy); }
+    .btn-play { background: var(--orange); border: 0; cursor: pointer; font-family: inherit; }
+    .btn-print { background: var(--green); }
+    .game-help { max-width: 480px; margin: 0 auto 24px; text-align: center; }
+    .game-help .buttons { margin-bottom: 14px; }
+    .parent-note { margin: 0 auto 28px; max-width: 480px; padding: 14px 18px; border-radius: 18px; background: var(--soft); font-size: 16px; }
+    @keyframes wiggle { 0%, 100% { transform: translate(-50%, -50%) rotate(0); } 25% { transform: translate(-50%, -50%) rotate(-9deg); } 50% { transform: translate(-50%, -50%) rotate(8deg); } 75% { transform: translate(-50%, -50%) rotate(-4deg); } }
+    .game-card { --bg: #EFE7FB; }
+    .quilts { position: relative; display: grid; grid-template-columns: 34% 1fr; gap: 12px; align-items: center; padding: 12px; border-radius: 18px; background: #FFFFFF; min-height: 220px; }
+    .label { margin: 0 0 6px; font-size: 14px; font-weight: 800; color: #5A6377; }
+    .q { display: grid; gap: 4px; padding: 6px; border-radius: 12px; background: #7B4CC9; }
+    .q .sq { aspect-ratio: 1; border-radius: 6px; background: #FFFFFF; }
+    .big .sq { border: 0; cursor: pointer; font: inherit; -webkit-tap-highlight-color: transparent; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .12); }
+    .big .sq:focus-visible { outline: 4px solid #1E88E5; outline-offset: 2px; }
+    .big .sq.ok { box-shadow: inset 0 0 0 4px #2E9E4F; }
+    .q.same { animation: same .9s ease-in-out 2; }
+    .level { margin: 8px 0 0; font-size: 15px; font-weight: 700; color: var(--navy); }
+    @keyframes same { 0%, 100% { box-shadow: 0 0 0 rgba(245, 197, 24, 0); } 50% { box-shadow: 0 0 24px 6px rgba(245, 197, 24, .9); } }
+    @media (prefers-reduced-motion: reduce) { .q { animation: none !important; } }
+  </style>
+  <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
+  <script>
+    (function () {
+      var me = false;
+      try {
+        var q = location.search;
+        if (q.indexOf('vp_me=1') > -1) localStorage.setItem('vp_notrack', '1');
+        if (q.indexOf('vp_me=0') > -1) localStorage.removeItem('vp_notrack');
+        me = localStorage.getItem('vp_notrack') === '1';
+        if (q.indexOf('vp_me=') > -1) document.addEventListener('DOMContentLoaded', function () {
+          var n = document.createElement('div');
+          n.textContent = me ? 'This device is not counted in VidyaPlay visits any more.' : 'This device is counted again.';
+          n.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:99;padding:12px 16px;border-radius:12px;background:#13234A;color:#fff;font:16px sans-serif;text-align:center';
+          document.body.appendChild(n); setTimeout(function () { n.remove(); }, 6000);
+        });
+      } catch (e) {}
+      if (me) return;
+      if (location.hostname !== 'vidyaplay.in' && location.hostname !== 'www.vidyaplay.in') return;
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7E4JL762GG';
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+      gtag('consent', 'default', {'analytics_storage': 'denied', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied', 'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+      gtag('consent', 'default', {'analytics_storage': 'granted', 'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied'});
+      gtag('js', new Date());
+      gtag('config', 'G-7E4JL762GG', {'allow_google_signals': false, 'allow_ad_personalization_signals': false});
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a || !/\.pdf($|[?#])/i.test(a.getAttribute('href'))) return;
+        gtag('event', 'worksheet_download', {'file_name': a.getAttribute('href').split('/').pop().split('?')[0], 'page_path': location.pathname});
+      }, true);
+    })();
+  </script>
+
+  <script type="application/ld+json" data-seo="vidyaplay">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vidyaplay.in/"},{"@type":"ListItem","position":2,"name":"Games","item":"https://vidyaplay.in/play/"},{"@type":"ListItem","position":3,"name":"Copy the Quilt","item":"https://vidyaplay.in/play/copy-the-quilt/"}]}</script>
+</head>
+<body>
+
+  <!-- Site header: same on every page -->
+  <header class="site-header">
+    <a class="topbar-logo" href="../../" aria-label="VidyaPlay home">
+      <span class="blue">Vidya</span><span class="pink">P</span><span class="orange">l</span><span class="green">a</span><span class="purple">y</span>
+    </a>
+    <nav class="site-nav" aria-label="Main menu">
+      <div class="nav-item"><a href="../../nursery/">Nursery</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-nursery" aria-label="Open the Nursery menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-nursery">
+          <li><a href="../../nursery/pre-writing/">Pre-writing</a></li>
+          <li><a href="../../nursery/colours/">Colours</a></li>
+          <li><a href="../../nursery/colouring/">Colouring</a></li>
+          <li><a href="../../nursery/dot-painting/">Dot painting</a></li>
+          <li><a href="../../nursery/cutting/">Cutting</a></li>
+          <li><a href="../../nursery/looking/">Looking and thinking</a></li>
+          <li><a href="../../nursery/diwali/">Festivals: Diwali</a></li>
+          <li><a href="../../festivals/christmas/">Festivals: Christmas</a></li>
+        </ul></div>
+      <div class="nav-item"><a href="../../lkg/">LKG</a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-lkg" aria-label="Open the LKG menu"><span aria-hidden="true">▾</span></button>
+        <ul class="nav-menu" id="menu-lkg">
+          <li class="nav-group">English</li>
+          <li><a class="sub" href="../../lkg/english/">Letters A to Z</a></li>
+          <li><a class="sub" href="../../play/phonics/">Phonics lessons (new)</a></li>
+          <li><a class="sub" href="../../lkg/english/action-words/">Words and vocabulary</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-z/">A to Z activities</a></li>
+          <li><a class="sub" href="../../lkg/english/a-to-e-revision/">A to E Revision</a></li>
+          <li><a class="sub" href="../../lkg/english/f-to-j-revision/">F to J Revision</a></li>
+          <li class="nav-group">Maths</li>
+          <li><a class="sub" href="../../lkg/maths/">Numbers 1 to 20</a></li>
+          <li class="nav-group">EVS</li>
+          <li><a class="sub" href="../../lkg/evs/">EVS worksheets</a></li>
+          <li class="nav-group">Brain games</li>
+          <li><a class="sub" href="../../lkg/brain-games/">Brain games</a></li>
+          <li class="nav-group">Colouring</li>
+          <li><a class="sub" href="../../lkg/colouring/">Colouring pages</a></li>
+          <li class="nav-group">Festivals</li>
+          <li><a class="sub" href="../../lkg/diwali/">Diwali</a></li>
+          <li><a class="sub" href="../../festivals/christmas/">Christmas</a></li>
+        </ul></div>
+      <a href="../../play/phonics/">Phonics</a>
+      <a href="../../play/" aria-current="page">Play</a>
+      <a href="../../about/">About</a>
+    </nav>
+  </header>
+
+  <main class="page page-wide">
+
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Home</a> › <a href="../">Play</a> › <span>Copy the Quilt</span>
+    </nav>
+    <!-- back-to-letter --><p class="back-link"><a class="button btn-download" href="../../lkg/english/letter-q/">&larr; Back to Letter Q worksheets</a></p><!--/ back-to-letter -->
+
+    <h1 class="page-title">Copy the Quilt</h1>
+    <p class="facts">LKG English · Letter Q · Ages 3.5 to 5</p>
+
+    <section class="game-card" id="card" aria-label="Copy the Quilt game">
+      <div class="game-top">
+        <p class="game-ask" id="ask"><span class="orange">Q</span> for quilt! Make the big quilt the same as the small one.</p>
+        <span class="btn-pair"><button class="sound-btn" id="hear" type="button" aria-label="Hear the question">🗣️</button>
+        <button class="sound-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound on">🔊</button></span>
+      </div>
+      <div class="quilts" id="quilts">
+        <div><p class="label">Copy this</p><div class="q small" id="model" aria-label="The small quilt to copy"></div></div>
+        <div><p class="label">Your quilt</p><div class="q big" id="mine"></div></div>
+        <div class="go" id="go"><button class="button btn-play" id="start" type="button">▶ Play</button></div>
+      </div>
+      <p class="level" id="level">Quilt 1 of 3</p>
+      <p class="tip" id="tip">Tap a square to change its colour.</p>
+      <p class="heard" id="heard" aria-live="polite">&nbsp;</p>
+      <div class="win" id="win" hidden>
+        <div class="win-icons" aria-hidden="true">🧩👑🧩</div>
+        <p class="win-big">Wonderful! All 3 quilts are the same!</p>
+        <p class="win-text">You copied all 3 quilts. Q for quilt!</p>
+        <button class="button btn-play" id="again" type="button">Play again</button>
+      </div>
+    </section>
+
+    <div class="game-help">
+      <div class="buttons">
+        <a class="button btn-print" href="../../downloads/L-EN-Q4_Copy_the_Quilt.pdf" download>Print the Copy the Quilt worksheet (PDF)</a>
+        <a class="button btn-blue" href="../">More games</a>
+      </div>
+    </div>
+
+    <p class="parent-note">
+      <strong>For parents:</strong> play together for about 5 minutes. Ask your child to look at one square at a time, top row first. Say: Q for quilt. Then print the Copy the Quilt worksheet and colour it with crayons.
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links"><a href="../../about/">About</a> <a href="../../parents/">Parent's guide</a> <a href="../../privacy/">Privacy</a></p>
+    <p>© 2026 VidyaPlay · <a href="mailto:vidyaplay.contact@gmail.com">vidyaplay.contact@gmail.com</a></p>
+  </footer>
+
+  <script>
+  (function () {
+    // Copy the Quilt: tap the squares of the big quilt until it is the same as the small quilt. 3 quilts: 2x2, 3x3, 3x3 with 3 colours.
+    var COL = { w: "#FFFFFF", r: "#E5533D", b: "#1E88E5", y: "#F5C518" }, NICE = { w: "white", r: "red", b: "blue", y: "yellow" };
+    var LEVELS = [{ n: 2, cols: ["w", "r"] }, { n: 3, cols: ["w", "b"] }, { n: 3, cols: ["w", "r", "y"] }];
+    var NAMES = ["ins_quilt", "tap_square", "quilt_same", "bigger_quilt", "yes"];
+    var ASK = "Q for quilt! Make the big quilt the same as the small one.";
+
+    var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
+    function tone(freq, endFreq, start, length, volume) {
+      var t = audio.currentTime + start, osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = "sine"; osc.frequency.setValueAtTime(freq, t); osc.frequency.exponentialRampToValueAtTime(endFreq, t + length);
+      gain.gain.setValueAtTime(0.0001, t); gain.gain.exponentialRampToValueAtTime(volume, t + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain); gain.connect(audio.destination); osc.start(t); osc.stop(t + length + 0.02);
+    }
+    function play(kind) {
+      if (!soundOn) return;
+      try {
+        if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+        if (audio.state === "suspended") audio.resume();
+        if (kind === "click") { tone(900, 1300, 0, 0.08, 0.25); tone(1300, 1600, 0.06, 0.06, 0.18); }
+        if (kind === "nope") { tone(330, 260, 0, 0.14, 0.3); tone(260, 190, 0.14, 0.2, 0.3); }
+        if (kind === "ding") { tone(880, 1760, 0, 0.25, 0.22); }
+        if (kind === "win") { tone(523, 530, 0, 0.18, 0.25); tone(659, 665, 0.16, 0.18, 0.25); tone(784, 790, 0.32, 0.35, 0.25); tone(1047, 1050, 0.5, 0.4, 0.2); }
+      } catch (e) { /* no sound: the game still works */ }
+    }
+    var clips = {};
+    NAMES.forEach(function (k) {
+      var a = new Audio(); a.preload = "auto";
+      a.addEventListener("canplaythrough", function () { a._ok = true; }); a.addEventListener("error", function () { a._ok = false; });
+      a.src = "audio/" + k + ".mp3"; clips[k] = a;
+    });
+    function stopClips() { NAMES.forEach(function (k) { clips[k].pause(); clips[k].onended = null; }); }
+    var voice = null;
+    function pickVoice() {
+      if (!window.speechSynthesis) return;
+      var vs = window.speechSynthesis.getVoices() || [];
+      voice = vs.filter(function (v) { return v.localService && /^en[-_](IN|GB|US)/i.test(v.lang); })[0] || vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); })[0] || null;
+    }
+    if (window.speechSynthesis) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+    var pendingT = [];
+    function later(fn, ms) { pendingT.push(setTimeout(fn, ms)); }
+    function cancelLater() { pendingT.forEach(clearTimeout); pendingT = []; }
+    function speak(text, then) {
+      var done = false; function once() { if (done) return; done = true; if (then) then(); }
+      if (!window.speechSynthesis) { if (then) later(once, 900); return; }
+      try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(text); u.lang = voice ? voice.lang : "en-IN"; if (voice) u.voice = voice; u.rate = 0.85;
+        if (then) { u.onend = once; later(once, 4200); } window.speechSynthesis.speak(u); } catch (e) { if (then) later(once, 900); }
+    }
+    function say(names, text, then) {
+      cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel();
+      if (!soundOn) { if (then) later(then, 900); return; }
+      var list = names.map(function (n) { return clips[n]; });
+      if (list.some(function (c) { return !c || c._ok === false; })) { speak(text, then); return; }
+      var i = 0;
+      (function next() {
+        if (i >= list.length) { if (then) then(); return; }
+        var c = list[i++]; c.currentTime = 0; c.onended = function () { c.onended = null; next(); };
+        var pr = c.play();
+        if (pr && pr.catch) pr.catch(function (err) { if (err && (err.name === "NotAllowedError" || err.name === "NotSupportedError")) { c.onended = null; speak(text, then); } });
+      })();
+    }
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn; soundBtn.textContent = soundOn ? "🔊" : "🔇"; soundBtn.setAttribute("aria-pressed", soundOn); soundBtn.setAttribute("aria-label", soundOn ? "Sound on" : "Sound off");
+      if (!soundOn) { stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+    });
+    function top() { var c = document.getElementById("card"), r = c.getBoundingClientRect(); if (r.top < 60 || r.top > innerHeight * 0.4) { try { window.scrollTo({ top: window.pageYOffset + r.top - 70, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); } catch (e) { window.scrollTo(0, window.pageYOffset + r.top - 70); } } }
+
+    var model = document.getElementById("model"), mine = document.getElementById("mine"), go = document.getElementById("go"), win = document.getElementById("win");
+    var heard = document.getElementById("heard"), levelText = document.getElementById("level");
+    var lv = 0, goal = [], cur = [], started = false, done = false, idleT = null, timers = [];
+    function askNow() { say(["ins_quilt", "tap_square"], ASK + " Tap a square to change its colour."); }
+    document.getElementById("hear").addEventListener("click", askNow);
+    function pattern(L) {                              // random pattern with at least one square of each colour (not all white)
+      var n = L.n * L.n, p;
+      do { p = []; for (var i = 0; i < n; i++) p.push(L.cols[Math.floor(Math.random() * L.cols.length)]); }
+      while (L.cols.some(function (c) { return p.indexOf(c) < 0; }) || p.filter(function (c) { return c !== "w"; }).length < 2);
+      return p;
+    }
+    function armIdle() {                               // 10 s with no tap: the first wrong square wiggles
+      clearTimeout(idleT);
+      idleT = setTimeout(function () {
+        if (!started || done) return;
+        var k = cur.findIndex(function (c, i) { return c !== goal[i]; });
+        if (k >= 0) { var el = mine.children[k]; el.animate([{ transform: "scale(1)" }, { transform: "scale(1.15)" }, { transform: "scale(1)" }], { duration: 500, iterations: 2 }); }
+        armIdle();
+      }, 10000);
+    }
+    function draw() {
+      var L = LEVELS[lv]; [model, mine].forEach(function (q) { q.style.gridTemplateColumns = "repeat(" + L.n + ", 1fr)"; q.classList.remove("same"); q.innerHTML = ""; });
+      goal.forEach(function (c) { var d = document.createElement("div"); d.className = "sq"; d.style.background = COL[c]; model.appendChild(d); });
+      cur.forEach(function (c, i) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "sq"; b.style.background = COL[c];
+        b.setAttribute("aria-label", "Square " + (i + 1) + ", " + NICE[c] + ". The small quilt has " + NICE[goal[i]] + " here.");
+        b.addEventListener("click", function () { tapSq(i); }); mine.appendChild(b);
+      });
+      levelText.textContent = "Quilt " + (lv + 1) + " of 3";
+    }
+    function tapSq(i) {
+      if (!started || done) return;
+      var L = LEVELS[lv]; cur[i] = L.cols[(L.cols.indexOf(cur[i]) + 1) % L.cols.length];
+      var el = mine.children[i]; el.style.background = COL[cur[i]]; el.setAttribute("aria-label", "Square " + (i + 1) + ", " + NICE[cur[i]] + ". The small quilt has " + NICE[goal[i]] + " here.");
+      el.classList.toggle("ok", cur[i] === goal[i] && goal[i] !== "w"); play("click"); armIdle();
+      if (cur.every(function (c, k) { return c === goal[k]; })) levelDone();
+    }
+    function levelDone() {
+      done = true; clearTimeout(idleT); model.classList.add("same"); mine.classList.add("same"); play("win"); heard.textContent = "The quilts are the same!";
+      if (lv === 2) { say(["quilt_same"], "The quilts are the same!", function () { later(showWin, 400); }); timers.push(setTimeout(showWin, 3500)); return; }
+      say(["quilt_same", "bigger_quilt"], "The quilts are the same! Now a bigger quilt!", function () { later(next, 400); }); timers.push(setTimeout(next, 5500));
+    }
+    function next() { if (!done || lv === 2) return; lv++; start(); }
+    function showWin() { if (win.hidden === false) return; win.hidden = false; document.getElementById("again").focus(); say(["yes"], "Yes! Well done!"); }
+    function start() {
+      var L = LEVELS[lv]; goal = pattern(L); cur = goal.map(function () { return "w"; }); done = false; heard.innerHTML = "&nbsp;"; draw();
+      if (started) { armIdle(); if (mine.children[0]) mine.children[0].focus({ preventScroll: true }); }
+    }
+    function newGame() {
+      cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); timers.forEach(clearTimeout); timers = [];
+      lv = 0; win.hidden = true; start(); if (started) askNow();
+    }
+    document.getElementById("start").addEventListener("click", function () { started = true; go.hidden = true; armIdle(); askNow(); top(); if (mine.children[0]) mine.children[0].focus({ preventScroll: true }); });
+    document.getElementById("again").addEventListener("click", function () { newGame(); top(); });
+    newGame();
+  })();
+  </script>
+<!-- nav-menu -->
+  <script>
+    // Dropdown menu: tap the arrow to open or close; Escape or a tap outside closes it
+    (function () {
+      var btns = document.querySelectorAll('.nav-toggle');
+      function closeAll(except) {
+        btns.forEach(function (b) { if (b !== except) { b.setAttribute('aria-expanded', 'false'); b.parentNode.classList.remove('open'); } });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = b.getAttribute('aria-expanded') !== 'true';
+          closeAll(b); b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.parentNode.classList.toggle('open', open);
+        });
+      });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-item')) closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+    })();
+  </script>
+<!-- vp-progress -->
+  <script>
+    // Progress (her ask 19 Nov): when the win box shows, remember this game on THIS device only (no data is sent)
+    (function () {
+      var slug = location.pathname.split("/").filter(Boolean).pop();
+      var box = document.getElementById("win") || document.getElementById("end");
+      if (!box || !slug) return;
+      function mark() { try { var d = JSON.parse(localStorage.getItem("vp_played") || "{}"); d[slug] = (d[slug] || 0) + 1; localStorage.setItem("vp_played", JSON.stringify(d)); } catch (e) {} }
+      new MutationObserver(function () { if (!box.hidden) mark(); }).observe(box, {attributes: true, attributeFilter: ["hidden"]});
+    })();
+  </script>
+</body>
+</html>
