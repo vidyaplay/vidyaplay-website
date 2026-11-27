@@ -195,7 +195,7 @@
     </div>
 
     <p class="parent-note">
-      <strong>For parents:</strong> play together for about 5 minutes. When a picture lights up, say the word slowly and listen to the start: octopus, orange, otter, ox, olive. Then print the Letter O worksheet.
+      <strong>For parents:</strong> play together for about 5 minutes. When a picture lights up, say the word slowly and listen to the start: octopus, orange, otter, ox, olive. An ox is like a big cow. Then print the Letter O worksheet.
     </p>
 
   </main>
@@ -208,8 +208,8 @@
   <script>
   (function () {
     // Otter's Night Torch: drag the torch over the dark garden; an O thing is found when the light rests on it.
-    var THINGS = [["octopus", 20, 84, 22], ["orange", 41, 24, 13], ["otter", 47, 66, 20], ["ox", 79, 80, 25], ["olive", 67, 55, 12]];
-    var NAMES = ["ins_torch", "octopus", "orange", "otter", "ox", "olive", "torch_done", "yes"];
+    var THINGS = [["octopus", 20, 84, 22], ["orange", 41, 24, 13], ["otter", 47, 66, 20], ["ox", 79, 80, 25], ["olive", 67, 55, 15]];
+    var NAMES = ["ins_torch", "octopus", "orange", "otter", "ox", "olive", "torch_done"];
     var ASK = "It's night time! Move the torch and find the O things.";
 
     var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
@@ -274,7 +274,7 @@
 
     var scene = document.getElementById("scene"), dark = document.getElementById("dark"), ring = document.getElementById("ring"), tray = document.getElementById("tray");
     var heard = document.getElementById("heard"), score = document.getElementById("score"), win = document.getElementById("win"), go = document.getElementById("go");
-    var items = [], got = 0, started = false, finished = false, tx = .28, ty = .42, idleT = null, hints = 0, raf = null, last = 0;
+    var items = [], got = 0, started = false, finished = false, ended = false, tx = .28, ty = .42, idleT = null, hints = 0, raf = null, last = 0;
     function askNow() { say(["ins_torch"], ASK); }
     document.getElementById("hear").addEventListener("click", askNow);
     function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
@@ -308,15 +308,15 @@
     function found(it) {
       it.found = true; got++; it.el.classList.add("found"); play("ding");
       var slot = tray.children[got - 1]; slot.classList.add("full"); slot.innerHTML = '<img alt="" width="60" height="60">'; slot.querySelector("img").src = it.name + ".webp";
-      var line = "O for " + it.name + "!"; heard.textContent = cap(it.name) + "! It starts with O."; score.textContent = got + " of 5 found";
+      var line = "O for " + it.name + "!"; heard.textContent = line; score.textContent = got + " of 5 found";
       armIdle();
-      if (got === 5) { finished = true; say([it.name], line, function () { later(finishGame, 300); }); setTimeout(finishGame, 4000); }
+      if (got === 5) { finished = true; say([it.name], line, function () { later(finishGame, 300); }); later(finishGame, 4000); }
       else say([it.name], line);
     }
     function finishGame() {
-      if (win.hidden === false) return;
+      if (!finished || ended) return; ended = true;
       clearTimeout(idleT); dark.classList.add("off"); ring.hidden = true; play("win");
-      setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); say(["torch_done"], "You found them all! Octopus, orange, otter, ox and olive all start with O."); }, 1300);
+      later(function () { win.hidden = false; document.getElementById("again").focus({ preventScroll: true }); say(["torch_done"], "You found them all! Octopus, orange, otter, ox and olive all start with O."); }, 1300);
     }
     function loop(t) {                                 // the light must rest on a thing for a moment
       var dt = last ? Math.min(100, t - last) : 16; last = t;
@@ -343,7 +343,7 @@
     window.addEventListener("resize", place);
     function newGame() {
       cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel();
-      got = 0; finished = false; win.hidden = true; heard.innerHTML = "&nbsp;"; score.textContent = "0 of 5 found"; dark.classList.remove("off"); tx = .28; ty = .42;
+      got = 0; finished = false; ended = false; win.hidden = true; heard.innerHTML = "&nbsp;"; score.textContent = "0 of 5 found"; dark.classList.remove("off"); tx = .28; ty = .42;
       build(); place(); ring.hidden = !started;
       if (started) { armIdle(); askNow(); }
     }

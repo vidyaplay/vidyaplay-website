@@ -74,7 +74,7 @@
     .fly img { width: 100%; }
     @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-9deg); } 50% { transform: rotate(8deg); } 75% { transform: rotate(-4deg); } }
     @keyframes glow { from { filter: brightness(.9); } to { filter: brightness(1.25); } }
-    @media (prefers-reduced-motion: reduce) { .pizza, .fly, .oven, .food { animation: none !important; transition: none !important; } }
+    @media (prefers-reduced-motion: reduce) { .pizza, .fly, .oven, .oven::after, .food { animation: none !important; transition: none !important; } }
   </style>
   <!-- Google Analytics (only on vidyaplay.in; analytics cookies, no ads; worksheet downloads; owner devices skipped) -->
   <script>
@@ -213,7 +213,7 @@
     // Pizza Party: tap the foods that start with P; they fly onto the pizza. Then the pizza bakes in the oven.
     var FOODS = [["peas", true], ["pepper", true], ["pineapple", true], ["potato", true], ["plum", true], ["banana", false], ["cake", false], ["apple", false]];
     var SPOTS = [[50, 30], [72, 46], [64, 70], [36, 70], [28, 46]];
-    var NAMES = ["ins_pizza", "peas", "pepper", "pineapple", "potato", "plum", "not_p", "oven", "pizza_done", "yes"];
+    var NAMES = ["ins_pizza", "peas", "pepper", "pineapple", "potato", "plum", "not_p", "oven", "pizza_done"];
     var ASK = "Let's make a pizza! Put only the P things on the pizza.";
 
     var soundBtn = document.getElementById("sound"), soundOn = true, audio = null;
@@ -278,7 +278,7 @@
 
     var stage = document.getElementById("stage"), pizza = document.getElementById("pizza"), oven = document.getElementById("oven"), tray = document.getElementById("tray");
     var heard = document.getElementById("heard"), score = document.getElementById("score"), win = document.getElementById("win"), go = document.getElementById("go");
-    var got = 0, started = false, finished = false, busy = false, items = [], idleT = null, hints = 0, timers = [];
+    var got = 0, started = false, finished = false, baked = false, busy = false, items = [], idleT = null, hints = 0, timers = [];
     function askNow() { say(["ins_pizza"], ASK); }
     document.getElementById("hear").addEventListener("click", askNow);
     function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1); }
@@ -306,13 +306,13 @@
       }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 520);
     }
     function bake() {
-      if (win.hidden === false || pizza.classList.contains("bake")) return;
+      if (baked) return; baked = true;
       clearTimeout(idleT); tray.setAttribute("inert", ""); heard.textContent = "Into the oven!";
       oven.classList.add("on"); pizza.classList.add("bake");
       say(["oven"], "Into the oven!");
       timers.push(setTimeout(function () {
         oven.classList.remove("on"); pizza.classList.remove("bake"); pizza.classList.add("done"); play("win");
-        timers.push(setTimeout(function () { win.hidden = false; document.getElementById("again").focus(); say(["pizza_done"], "Yummy! Your P pizza is ready!"); }, 900));
+        timers.push(setTimeout(function () { win.hidden = false; document.getElementById("again").focus({ preventScroll: true }); say(["pizza_done"], "Yummy! Your P pizza is ready!"); }, 900));
       }, 2600));
     }
     function tap(it) {
@@ -320,16 +320,16 @@
       armIdle();
       if (!it.ok) {
         it.el.classList.add("nope"); pulse(it.el, "wig", 480); setTimeout(function () { it.el.classList.remove("nope"); }, 1400); play("nope");
-        var t = "Oops! " + cap(it.name) + " does not start with P."; heard.textContent = t; say(["not_p"], t); return;
+        var t = "Oops! That does not start with P."; heard.textContent = t; say(["not_p"], t); return;
       }
       busy = true; onPizza(it); got++; score.textContent = got + " of 5 toppings";
-      var line = "P for " + it.name + "!"; heard.textContent = cap(it.name) + "! It starts with P.";
+      var line = "P for " + it.name + "!"; heard.textContent = line;
       if (got === 5) { finished = true; say([it.name], line, function () { later(bake, 300); }); timers.push(setTimeout(bake, 4000)); return; }
       say([it.name], line); setTimeout(function () { busy = false; }, 650);
     }
     function newGame() {
       cancelLater(); stopClips(); if (window.speechSynthesis) window.speechSynthesis.cancel(); timers.forEach(clearTimeout); timers = [];
-      got = 0; finished = false; busy = false; win.hidden = true; heard.innerHTML = "&nbsp;"; score.textContent = "0 of 5 toppings";
+      got = 0; finished = false; baked = false; busy = false; win.hidden = true; heard.innerHTML = "&nbsp;"; score.textContent = "0 of 5 toppings";
       pizza.className = "pizza"; pizza.innerHTML = ""; oven.classList.remove("on"); tray.innerHTML = ""; items = [];
       if (started) tray.removeAttribute("inert"); else tray.setAttribute("inert", "");
       shuffle(FOODS.slice()).forEach(function (f) {
